@@ -38,12 +38,12 @@ export const addWork = async (workPayload:  WorkPayload, token: string) => {
     }
 }
 
-export const getWorkByFinCode = async (fin_kod: string, token: string) => {
+export const getWorkByFinCode = async (fin_kod: string) => {
     try {
         const response = await apiClient.get(`/api/work/${fin_kod}?lang=${lang_code}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+            // headers: {
+            //     Authorization: `Bearer ${token}`,
+            // },
         });
 
         if (response.data.status_code === 200) {

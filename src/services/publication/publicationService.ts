@@ -13,12 +13,12 @@ export interface Publication {
     publication_name: string;
 }
 
-export const getPublicationByFinCode = async (fin_kod: string, token: string) => {
+export const getPublicationByFinCode = async (fin_kod: string) => {
     try {
         const response = await apiClient.get(`/api/publication/${fin_kod}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+            // headers: {
+            //     Authorization: `Bearer ${token}`
+            // }
         });
 
         if (response.data.status_code === 200) {

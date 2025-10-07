@@ -8,6 +8,7 @@ export interface UserPayload {
     scientific_name: string;
     bio: string;
     scopus_url: string;
+    profile_image: string;
 }
 
 export interface UserProfile {
@@ -18,6 +19,8 @@ export interface UserProfile {
     birth_date: string;
     fin_kod: string;
     scopus: string;
+    web_of_science: string;
+    google_scholar: string;
     scientific_degree_name: string;
     scientific_name: string;
     bio: string;

@@ -17,6 +17,8 @@ export default function UserCredentials() {
     const [creationLoading, setCreationLoading] = useState(false);
     const [scopusUrl, setScopusUrl] = useState("");
     const [loading, setLoading] = useState(true);
+    const [imageBase64, setImageBase64] = useState<string>("");
+
     const name = useSelector((state: RootState) => state.auth.name);
     const token = useSelector((state: RootState) => state.auth.token);
     const surname = useSelector((state: RootState) => state.auth.surname);
@@ -77,6 +79,9 @@ export default function UserCredentials() {
 
     console.log(user);
 
+    console.log(imageBase64);
+    
+
     const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
@@ -86,7 +91,8 @@ export default function UserCredentials() {
                 scientific_degree_name: scientificDegree,
                 scientific_name: scientificName,
                 bio: bio,
-                scopus_url: scopusUrl
+                scopus_url: scopusUrl,
+                profile_image: imageBase64
             };
 
             const result = await createUserProfile(userPayload, token ? token : "");
@@ -132,6 +138,17 @@ export default function UserCredentials() {
             });
         }
     }
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files && e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImageBase64(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     return (
         <form onSubmit={handleCreate}>
@@ -275,6 +292,18 @@ export default function UserCredentials() {
                                 value={bio ? bio : ""}
                                 placeholder="Bio"
                                 onChange={(value) => { setBio(value) }}
+                            />
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-1 mb-[20px]">
+                        <div className="sm:col-span-1">
+                            <Label>
+                                Profil şəkli
+                            </Label>
+                            <input 
+                                type="file" 
+                                accept="image/*" 
+                                onChange={handleImageChange} 
                             />
                         </div>
                     </div>

@@ -3,11 +3,17 @@ import apiClient from "../../util/apiClient";
 export interface InterCorpPayload {
     fin_kod: string;
     inter_coor_name: string;
+    name: string;
+    surname: string;
+    email: string;
 }
 
 export interface InterCorp {
     inter_corp_name: string;
     inter_corp_code: string;
+    name: string;
+    surname: string;
+    email: string;
 }
 
 export const createInterCorp = async (interCorpPayload: InterCorpPayload, token: string) => {

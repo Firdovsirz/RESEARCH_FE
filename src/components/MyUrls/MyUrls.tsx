@@ -5,27 +5,28 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { RootState } from "../../redux/store";
 import { useModal } from "../../hooks/useModal";
-import { createInterCorp, getInterCorpByFinCode, InterCorp, InterCorpPayload } from "../../services/interCorp/InterCorpService";
+import { createUrl, getUrls, Url, UrlPayload } from "../../services/links/linkService";
 
-export default function MyInternationalCoorperations() {
+export default function MyUrls() {
+    const [duty, setDuty] = useState("");
     const [loading, setLoading] = useState(false);
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [surname, setSurname] = useState("");
+    const [urls, setUrls] = useState<Url[]>([]);
+    const [scopusUrl, setScopusUrl] = useState("");
+    const [workPlace, setWorkPlace] = useState("");
+    const [scholarUrl, setScholarUrl] = useState("");
     const { isOpen, openModal, closeModal } = useModal();
-    const [interCorpName, setInterCorpName] = useState("");
-    const [interCorps, setInterCorps] = useState<InterCorp[]>([]);
+    const [webOfScienceUrl, setWebOfScienceUrl] = useState("");
     const token = useSelector((state: RootState) => state.auth.token);
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
 
     useEffect(() => {
         setLoading(true);
-        getInterCorpByFinCode(fin_kod || "", token ? token : "")
+        getUrls(fin_kod || "")
             .then((res) => {
-                if (res && Array.isArray(res)) {
-                    setInterCorps(res);
+                if (res && typeof res === "object") {
+                    setUrls(res)
                 } else {
-                    setInterCorps([]);
+                    setUrls([]);
                 }
             })
             .finally(() => {
@@ -33,17 +34,16 @@ export default function MyInternationalCoorperations() {
             });
     }, [fin_kod]);
 
-    const handleInterCorpCreate = async () => {
+    const handleCreateUrl = async () => {
         try {
             setLoading(true);
-            const interCorpPayload: InterCorpPayload = {
+            const urlPayload: UrlPayload = {
                 fin_kod: fin_kod || "",
-                inter_coor_name: interCorpName,
-                name: name,
-                surname: surname,
-                email: email
+                scopus_url: scopusUrl,
+                webofscience_url: webOfScienceUrl,
+                google_scholar_url: scholarUrl
             }
-            const result = await createInterCorp(interCorpPayload, token || "");
+            const result = await createUrl(urlPayload);
 
             closeModal();
             setLoading(false);
@@ -52,13 +52,7 @@ export default function MyInternationalCoorperations() {
                 Swal.fire({
                     icon: "success",
                     title: "Uğurla əlavə olundu",
-                    text: "Beynəlxalq əlaqə uğurla əlavə edildi!"
-                });
-            } else if (result === "NOT_FOUND") {
-                Swal.fire({
-                    icon: "error",
-                    title: "Xəta",
-                    text: "İstifadəçi tapılmadı!"
+                    text: "İş yeri uğurla əlavə edildi!"
                 });
             } else {
                 Swal.fire({
@@ -77,7 +71,7 @@ export default function MyInternationalCoorperations() {
             });
         }
     }
-    console.log(interCorps);
+    console.log(urls);
     return (
         <>
             <div>
@@ -90,27 +84,39 @@ export default function MyInternationalCoorperations() {
                             <div className="h-5 bg-gray-300 dark:bg-gray-700 rounded w-3/4"></div>
                         </div>
                     ))
-                ) : interCorps.length === 0 ? (
+                ) : urls.length === 0 ? (
                     <div className="flex justify-center items-center">
                         <div className="bg-yellow-200 text-yellow-800 w-[110px] flex justify-center items-center rounded-[20px] px-[5px]">Mövcud deyil</div>
                     </div>
                 ) : (
-                    interCorps.map((interCorp, index) => {
+                    urls.map((url, index) => {
                         return (
                             <div
                                 key={index}
                                 className="border border-gray-300 dark:border-gray-700 rounded-lg p-4 mb-3 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow"
                             >
-                                <p className="text-gray-800 dark:text-gray-100 font-medium">
-                                    {interCorp.inter_corp_name} - {interCorp.name} {interCorp.surname} ({interCorp.email})
+                               {url.scopus_url ? (
+                                 <p className="text-gray-800 dark:text-gray-100 font-medium">
+                                    Scopus: <a className="italic" href={url.scopus_url}>{url.scopus_url}</a>
                                 </p>
+                               ) : null}
+                                {url.web_of_science ? (
+                                    <p className="text-gray-800 dark:text-gray-100 font-medium">
+                                    Web of Science: <a className="italic" href={url.web_of_science}>{url.web_of_science}</a>
+                                </p>
+                                ) : null}
+                                {url.google_scholar ? (
+                                    <p className="text-gray-800 dark:text-gray-100 font-medium">
+                                    Google Scholar: <a className="italic" href={url.google_scholar}>{url.google_scholar}</a>
+                                </p>
+                                ) : null}
                             </div>
                         )
                     })
                 )}
                 <div className="flex justify-end items-end">
                     <Button onClick={openModal}>
-                        Yeni beynəlxalq əlaqə
+                        Yeni iş yeri
                     </Button>
                 </div>
             </div>
@@ -122,59 +128,50 @@ export default function MyInternationalCoorperations() {
                 <div className="flex flex-col px-2 overflow-y-auto custom-scrollbar">
                     <div>
                         <h5 className="mb-2 font-semibold text-gray-800 modal-title text-theme-xl dark:text-white/90 lg:text-2xl">
-                            Yeni beynəlxalq əlaqə
+                            Yeni iş yeri
                         </h5>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                            Yeni beynəlxalq əlaqə əlavə etmək üçün adı daxil edin və yadda saxlayın!
+                            Yeni iş yeri əlavə etmək üçün müəssisəni və vəzifəni daxil edib yadda saxlayın!
                         </p>
                     </div>
                     <div className="mt-8">
                         <div>
                             <div className="mb-[20px]">
                                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Beynəlxalq əlaqə adı
+                                    Scopus linki
                                 </label>
                                 <input
                                     id="event-title"
                                     type="text"
-                                    value={interCorpName}
-                                    onChange={(e) => setInterCorpName(e.target.value)}
+                                    placeholder="https://scopus.com/"
+                                    value={scopusUrl}
+                                    onChange={(e) => setScopusUrl(e.target.value)}
                                     className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                                 />
                             </div>
                             <div className="mb-[20px]">
                                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Əməkdaşlıq etdiyiniz şəxsin adı
+                                    Web of Science linki
                                 </label>
                                 <input
                                     id="event-title"
                                     type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    placeholder="https://weofscience.com/"
+                                    value={webOfScienceUrl}
+                                    onChange={(e) => setWebOfScienceUrl(e.target.value)}
                                     className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                                 />
                             </div>
                             <div className="mb-[20px]">
                                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Əməkdaşlıq etdiyiniz şəxsin soyadı
+                                    Google Scholar linki
                                 </label>
                                 <input
                                     id="event-title"
                                     type="text"
-                                    value={surname}
-                                    onChange={(e) => setSurname(e.target.value)}
-                                    className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
-                                />
-                            </div>
-                            <div className="mb-[20px]">
-                                <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Əməkdaşlıq etdiyiniz şəxsin email-i
-                                </label>
-                                <input
-                                    id="event-title"
-                                    type="text"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="https://scholar.google.com/"
+                                    value={scholarUrl}
+                                    onChange={(e) => setScholarUrl(e.target.value)}
                                     className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                                 />
                             </div>
@@ -189,7 +186,7 @@ export default function MyInternationalCoorperations() {
                             Bağla
                         </button>
                         <button
-                            onClick={handleInterCorpCreate}
+                            onClick={handleCreateUrl}
                             type="button"
                             disabled={loading}
                             className="btn btn-success btn-update-event flex w-full justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 sm:w-auto"

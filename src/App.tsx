@@ -5,6 +5,7 @@ import SignIn from "./pages/AuthPages/SignIn";
 import SignUp from "./pages/AuthPages/SignUp";
 import UserProfiles from "./pages/UserProfiles";
 import NotFound from "./pages/OtherPage/NotFound";
+import MyUrlsPage from "./pages/MyUrlsPage/MyUrlsPage";
 import CvViewPage from "./pages/CvViewPage/CvViewPage";
 import MyWorksPage from "./pages/MyWorksPage/MyWorksPage";
 import { ScrollToTop } from "./components/common/ScrollToTop";
@@ -19,6 +20,7 @@ import UserCredentialsPage from "./pages/UserCredentialsPage/UserCredentialsPage
 import LanguageDetailsPage from "./pages/LanguageDetailsPage/LanguageDetailsPage";
 import NewScientificDetailsPage from "./pages/NewScientficDetailsPage/NewScientificDetailsPage";
 import MyInternationalCoorperationsPage from "./pages/MyInternationalCoorperationsPage/MyInternationalCoorperationsPage";
+import ResearcherDetailsPage from "./pages/ResearcherDetailsPage/ResearcherDetailsPage";
 
 export default function App() {
   return (
@@ -61,6 +63,9 @@ export default function App() {
             {/* Works */}
             <Route path="/my-work-places" element={<MyWorksPage />} />
 
+            {/* Urls */}
+            <Route path="/my-urls" element={<MyUrlsPage />} />
+
             {/* Cv */}
             <Route path="/cv" element={<CvPage />} />
             <Route path="/cv-view" element={<CvViewPage />} />
@@ -68,9 +73,13 @@ export default function App() {
           </Route>
 
           {/* Auth Layout */}
-          <Route path="/" element={<SignIn />} />
+          <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/verify-signup" element={<ValidateSignUpPage />} />
+
+          {/* Public Layout */}
+          <Route path="/" element={<ResearchersPage />} />
+          <Route path="/researcher-details" element={<ResearcherDetailsPage />} />
 
           {/* Fallback Route */}
           <Route path="*" element={<NotFound />} />

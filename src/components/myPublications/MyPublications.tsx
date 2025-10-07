@@ -18,7 +18,7 @@ export default function MyPublications() {
 
   useEffect(() => {
     setLoading(true);
-    getPublicationByFinCode(fin_kod || "", token ? token : "")
+    getPublicationByFinCode(fin_kod || "")
       .then((res) => {
         if (res && Array.isArray(res)) {
           setPublications(res);

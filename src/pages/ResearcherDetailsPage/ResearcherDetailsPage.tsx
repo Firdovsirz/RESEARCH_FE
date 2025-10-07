@@ -1,7 +1,7 @@
 import PageMeta from "../../components/common/PageMeta";
-import Researchers from "../../components/researchers/Researchers";
+import ResearcherDetail from "../../components/reasearcherDetail/ResearcherDetail";
 
-export default function ResearchersPage() {
+export default function ResearcherDetailsPage() {
     return (
         <>
             <PageMeta
@@ -9,7 +9,7 @@ export default function ResearchersPage() {
                 description="AzTU Tədqiqatçılar bazası AzTU olan tədqiqatçılar və onlar haqqında məlumatları özündə saxlayır."
             />
             <main className="space-y-6 bg-white min-h-screen">
-                <Researchers />
+                <ResearcherDetail />
             </main>
         </>
     );

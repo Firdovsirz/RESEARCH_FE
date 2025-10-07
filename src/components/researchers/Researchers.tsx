@@ -1,11 +1,11 @@
-import { Link } from 'react-router';
-import Stack from '@mui/material/Stack';
-import Button from '../ui/button/Button';
+import { Link } from "react-router";
 import { useEffect, useState } from "react";
-import Pagination from '@mui/material/Pagination';
-import ProfileImage from "../../../public/profile-image.webp";
-import { getAllUsers, UserProfile } from "../../services/user/userService";
 import Skeleton from '@mui/material/Skeleton';
+import EmailIcon from '@mui/icons-material/Email';
+import PublicHeader from '../publicHeader/PublicHeader';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import { getAllUsers, UserProfile } from "../../services/user/userService";
 
 export default function Researchers() {
     const [users, setUsers] = useState<UserProfile[]>([]);
@@ -33,87 +33,157 @@ export default function Researchers() {
 
     return (
         <>
-            <div className='flex justify-between items-center'>
+            <PublicHeader />
+            <div className='flex justify-between items-center px-[40px]'>
                 {loading
                     ? Array.from({ length: 3 }).map((_, index) => (
-                        <div key={index} style={{ width: "calc((100% / 3) - 20px)", height: 300 }} className='flex flex-col justify-between items-center border rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300'>
-                            <div className='flex flex-col justify-center items-center h-[200px]'>
-                                <Skeleton variant="circular" width={100} height={100} className='mb-[10px] rounded-[50%]' />
-                                <Skeleton variant="text" width={120} height={25} />
-                                <Skeleton variant="text" width={100} height={20} />
-                                <Skeleton variant="text" width={140} height={20} />
-                                <Skeleton variant="rectangular" width={160} height={40} className='mt-2' />
+                        <div
+                            key={index}
+                            style={{ width: "calc((100% / 3) - 20px)", borderRadius: 20 }}
+                            className='flex flex-col justify-between items-center p-4 bg-gray-100 shadow-md rounded-lg hover:shadow-lg transition-shadow duration-300'
+                        >
+                            <div className='flex justify-between items-start w-full mb-4'>
+                                <div className='flex flex-col items-center'>
+                                    <Skeleton variant="circular" width={70} height={70} className='mb-2' />
+                                    <Skeleton variant="text" width={100} height={20} />
+                                    <Skeleton variant="text" width={80} height={15} />
+                                    <Skeleton variant="text" width={120} height={15} />
+                                </div>
+                                <Skeleton variant="circular" width={24} height={24} />
                             </div>
-                            <Skeleton variant="rectangular" width="100%" height={50} />
+                            <div className='bg-white mt-[5px] rounded-[10px] p-[10px] w-full'>
+                                <div className="flex justify-between items-center mb-[20px]">
+                                    <div>
+                                        <div className='flex justify-start items-center mb-1'>
+                                            <CalendarMonthIcon className='mr-[10px] text-gray-500' /> 
+                                            <Skeleton variant="text" width={80} height={15} />
+                                        </div>
+                                        <Skeleton variant="text" width={100} height={15} />
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        {Array.from({ length: 3 }).map((_, i) => (
+                                            <Skeleton key={i} variant="circular" width={36} height={36} className='mr-2' />
+                                        ))}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="flex justify-start items-center mb-1">
+                                        <EmailIcon className="mr-[10px] text-gray-500" /> 
+                                        <Skeleton variant="text" width={60} height={15} />
+                                    </div>
+                                    <Skeleton variant="text" width={140} height={15} />
+                                </div>
+                            </div>
                         </div>
                     ))
-                    : users.map((user, index) => {
-                        return (
-                            <div key={index} style={{ width: "calc((100% / 3) - 20px)", height: 300 }} className='flex flex-col justify-between items-center border rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300'>
-                                <div className='flex flex-col justify-center items-center h-[200px]'>
-                                    <img src={ProfileImage} alt="profile" className='w-[100px] h-[100px] rounded-[50%] mb-[10px]' />
-                                    {user.name} {user.surname} {user.father_name}
-                                    <p className='text-[rgba(0,0,0,0.4)]'>{user.scientific_degree_name}</p>
-                                    <p className='text-[rgba(0,0,0,0.4)]'>{user.scientific_name}</p>
-                                    <h2>{user.bio}</h2>
+                    : users.map((user, index) => (
+                        <div
+                            key={index}
+                            style={{ backgroundColor: "rgb(244, 245, 245)", padding: "20px", borderRadius: 20, width: "calc(100% / 3 - 20px)" }}
+                            className='hover:shadow-lg transition-shadow duration-300'
+                        >
+                            <div className='flex justify-between items-start mb-[20px]'>
+                                <div>
+                                    <img src="/profile-image.webp" alt="" className='w-[70px] h-[70px] rounded-full border-2 border-white' />
+                                    <h2>{user.name} {user.surname}</h2>
+                                    <p className="text-gray-500">{user.scientific_name} | {user.scientific_degree_name}</p>
                                 </div>
-                                <div className='px-[10px] py-[10px] border-t border-gray-300 w-full flex justify-center items-center hover:bg-blue-500 hover:text-white cursor-pointer transition-colors duration-300 rounded-bl-[10px] rounded-br-[10px]'>
-                                    <Link to={"/profile"}>
-                                        Profile
+                                <div>
+                                    <Link to="/researcher-details" state={{ user }}>
+                                        <MoreHorizIcon />
                                     </Link>
                                 </div>
                             </div>
-                        )
-                    })
+                            <div className='bg-white mt-[5px] rounded-[10px] p-[10px]'>
+                                <div className="flex justify-between items-center mb-[20px]">
+                                    <div>
+                                        <div className='flex justify-start items-center'>
+                                            <CalendarMonthIcon className='mr-[10px] text-gray-500' /> <p className='text-gray-500'>Doğum tarixi</p>
+                                        </div>
+                                        <div>
+                                            {user.birth_date && (
+                                                <span>{new Date(user.birth_date).toLocaleDateString('en-GB')}</span>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <div
+                                            style={{
+                                                border: "1px solid rgba(0,0,0,0.2)",
+                                                padding: 5,
+                                                borderRadius: "50%",
+                                                cursor: "pointer",
+                                                minWidth: 50,
+                                                minHeight: 50,
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                marginRight: 10
+                                            }}
+                                        >
+                                            {loading ? (
+                                                <div className="animate-pulse bg-gray-300 dark:bg-gray-700 rounded-full w-15 h-15"></div>
+                                            ) : (
+                                                <a href={user?.google_scholar} target="_blank" rel="noreferrer">
+                                                    <img src="/google-scholar-logo.webp" alt="scopus" className="rounded-full w-9 h-9" />
+                                                </a>
+                                            )}
+                                        </div>
+                                        <div
+                                            style={{
+                                                border: "1px solid rgba(0,0,0,0.2)",
+                                                padding: 5,
+                                                borderRadius: "50%",
+                                                cursor: "pointer",
+                                                minWidth: 50,
+                                                minHeight: 50,
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                marginRight: 10
+                                            }}
+                                        >
+                                            {loading ? (
+                                                <div className="animate-pulse bg-gray-300 dark:bg-gray-700 rounded-full w-15 h-15"></div>
+                                            ) : (
+                                                <a href={user?.scopus} target="_blank" rel="noreferrer">
+                                                    <img src="/scopus-logo.webp" alt="scopus" className="rounded-full w-9 h-9" />
+                                                </a>
+                                            )}
+                                        </div>
+                                        <div
+                                            style={{
+                                                border: "1px solid rgba(0,0,0,0.2)",
+                                                padding: 5,
+                                                borderRadius: "50%",
+                                                cursor: "pointer",
+                                                minWidth: 50,
+                                                minHeight: 50,
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center"
+                                            }}
+                                        >
+                                            {loading ? (
+                                                <div className="animate-pulse bg-gray-300 dark:bg-gray-700 rounded-full w-15 h-15"></div>
+                                            ) : (
+                                                <a href={user?.web_of_science} target="_blank" rel="noreferrer">
+                                                    <img src="/web-of-science-logo.webp" alt="scopus" className="rounded-full w-9 h-9" />
+                                                </a>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="flex justify-start items-center">
+                                        <EmailIcon className="mr-[10px] text-gray-500" /> <p className="text-gray-500">E-poçt</p>
+                                    </div>
+                                    <a href={`mailto:${user?.email}`}>{user?.email}</a>
+                                </div>
+                            </div>
+                        </div>
+                    ))
                 }
-            </div>
-            <div className='flex justify-center items-center'>
-                <Stack spacing={2}>
-                    <Pagination
-                        count={userLength ? (userLength <= 5 ? 1 : Math.ceil(userLength / 5)) : 1}
-                        page={Math.floor(start / (end - start)) + 1}
-                        onChange={(_event, page) => {
-                            const pageSize = end - start;
-                            const newStart = (page - 1) * pageSize;
-                            const newEnd = newStart + pageSize;
-                            setStart(newStart);
-                            setEnd(newEnd);
-                            setLoading(true);
-                            getAllUsers(newStart, newEnd)
-                                .then((res) => {
-                                    if (typeof res === "string") {
-                                        if (res === "NO CONTENT") {
-                                            setUsers([]);
-                                        } else {
-                                            setUsers([]);
-                                        }
-                                    } else if (Array.isArray(res.users)) {
-                                        setUsers(res.users);
-                                        setUserLength(res.total);
-                                    }
-                                })
-                                .finally(() => {
-                                    setLoading(false);
-                                });
-                        }}
-                        sx={{
-                            '& .MuiPaginationItem-root': {
-                                color: 'text.primary',
-                                bgcolor: 'background.paper',
-                            },
-                            '& .MuiPaginationItem-root.Mui-selected': {
-                                bgcolor: 'primary.main',
-                                color: 'primary.contrastText',
-                                '&:hover': {
-                                    bgcolor: 'primary.dark',
-                                },
-                            },
-                            '& .MuiPaginationItem-root:hover': {
-                                bgcolor: 'action.hover',
-                            },
-                        }}
-                    />
-                </Stack>
             </div>
         </>
     )

@@ -3,12 +3,14 @@ import Swal from "sweetalert2";
 import Label from "../form/Label";
 import { Modal } from "../ui/modal";
 import Button from "../ui/button/Button";
+import { useSelector } from "react-redux";
 import Input from "../form/input/InputField";
+import { RootState } from "../../redux/store";
 import { useModal } from "../../hooks/useModal";
 import ScopusLogo from "../../../public/scopus-logo.webp";
+import ScholarLogo from "../../../public/google-scholar-logo.webp";
+import WebOfScienceLogo from "../../../public/web-of-science-logo.webp";
 import { getUserProfile, UserProfile } from "../../services/user/userService";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
 
 export default function UserMetaCard() {
   const { isOpen, openModal, closeModal } = useModal();
@@ -46,7 +48,7 @@ export default function UserMetaCard() {
               {loading ? (
                 <div className="animate-pulse bg-gray-300 dark:bg-gray-700 w-full h-full rounded-[50%]"></div>
               ) : (
-                <img src="/profile-image.webp" alt="user" className="w-20 h-18 rounded-full"/>
+                <img src="/profile-image.webp" alt="user" className="w-20 h-18 rounded-full" />
               )}
             </div>
             <div className="order-3 xl:order-2 w-full">
@@ -95,6 +97,48 @@ export default function UserMetaCard() {
             ) : (
               <a href={user?.scopus} target="_blank" rel="noreferrer">
                 <img src={ScopusLogo} alt="scopus" className="rounded-full w-full h-full" />
+              </a>
+            )}
+          </div>
+          <div
+            style={{
+              border: "1px solid rgba(0,0,0,0.2)",
+              padding: 5,
+              borderRadius: "50%",
+              cursor: "pointer",
+              minWidth: 50,
+              minHeight: 50,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {loading ? (
+              <div className="animate-pulse bg-gray-300 dark:bg-gray-700 rounded-full w-15 h-15"></div>
+            ) : (
+              <a href={user?.web_of_science} target="_blank" rel="noreferrer">
+                <img src={WebOfScienceLogo} alt="scopus" className="rounded-full w-9 h-9" />
+              </a>
+            )}
+          </div>
+          <div
+            style={{
+              border: "1px solid rgba(0,0,0,0.2)",
+              padding: 5,
+              borderRadius: "50%",
+              cursor: "pointer",
+              minWidth: 50,
+              minHeight: 50,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {loading ? (
+              <div className="animate-pulse bg-gray-300 dark:bg-gray-700 rounded-full w-15 h-15"></div>
+            ) : (
+              <a href={user?.google_scholar} target="_blank" rel="noreferrer">
+                <img src={ScholarLogo} alt="scopus" className="rounded-full w-9 h-9" />
               </a>
             )}
           </div>

@@ -1,3 +1,4 @@
+import LinkIcon from '@mui/icons-material/Link';
 import WorkIcon from '@mui/icons-material/Work';
 import { Link, useLocation } from "react-router";
 import PeopleIcon from '@mui/icons-material/People';
@@ -64,6 +65,11 @@ const navItems: NavItem[] = [
     icon: <PublicIcon />,
     name: "Beynəlxalq əlaqələrim",
     path: "/my-international-coorperations",
+  },
+  {
+    icon: <LinkIcon />,
+    name: "Linklərim",
+    path: "/my-urls",
   },
   {
     icon: <TranslateIcon />,

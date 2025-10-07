@@ -38,12 +38,12 @@ export const addLanguage = async (languagePayload: LanguagePaylaod, token: strin
     }
 };
 
-export const getLanguageByFinCode = async (fin_kod: string, token: string) => {
+export const getLanguageByFinCode = async (fin_kod: string) => {
     try {
         const response = await apiClient.get(`/api/language/${fin_kod}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+            // headers: {
+            //     Authorization: `Bearer ${token}`,
+            // },
         });
 
         if (response.data.status_code === 200) {
