@@ -125,6 +125,30 @@ export default function Researchers() {
                                                 <div className="animate-pulse bg-gray-300 dark:bg-gray-700 rounded-full w-15 h-15"></div>
                                             ) : (
                                                 <a href={user?.google_scholar} target="_blank" rel="noreferrer">
+                                                    <img src="/linkedin-logo.webp" alt="scopus" className="rounded-full w-9 h-9" />
+                                                </a>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <div
+                                            style={{
+                                                border: "1px solid rgba(0,0,0,0.2)",
+                                                padding: 5,
+                                                borderRadius: "50%",
+                                                cursor: "pointer",
+                                                minWidth: 50,
+                                                minHeight: 50,
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                marginRight: 10
+                                            }}
+                                        >
+                                            {loading ? (
+                                                <div className="animate-pulse bg-gray-300 dark:bg-gray-700 rounded-full w-15 h-15"></div>
+                                            ) : (
+                                                <a href={user?.google_scholar} target="_blank" rel="noreferrer">
                                                     <img src="/google-scholar-logo.webp" alt="scopus" className="rounded-full w-9 h-9" />
                                                 </a>
                                             )}

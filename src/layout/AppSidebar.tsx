@@ -1,9 +1,10 @@
 import LinkIcon from '@mui/icons-material/Link';
 import WorkIcon from '@mui/icons-material/Work';
 import { Link, useLocation } from "react-router";
+import SchoolIcon from '@mui/icons-material/School';
 import PeopleIcon from '@mui/icons-material/People';
 import PersonIcon from '@mui/icons-material/Person';
-import PublicIcon from '@mui/icons-material/Public';
+// import PublicIcon from '@mui/icons-material/Public';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import TranslateIcon from '@mui/icons-material/Translate';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
@@ -43,13 +44,18 @@ const navItems: NavItem[] = [
   },
   {
     icon: <PeopleIcon />,
-    name: "Tədqiqatçılar",
-    path: "/researchers",
+    name: "İxtisas sahələrim",
+    path: "/research-areas",
   },
   {
     icon: <WorkIcon />,
     name: "İş yeri məlumatlarım",
     path: "/my-work-places",
+  },
+  {
+    icon: <SchoolIcon />,
+    name: "Təhsil məlumatlarım",
+    path: "/my-educations",
   },
   {
     icon: <MenuBookIcon />,
@@ -61,11 +67,11 @@ const navItems: NavItem[] = [
     name: "Nəşrlərim",
     path: "/my-publications",
   },
-  {
-    icon: <PublicIcon />,
-    name: "Beynəlxalq əlaqələrim",
-    path: "/my-international-coorperations",
-  },
+  // {
+  //   icon: <PublicIcon />,
+  //   name: "Beynəlxalq əlaqələrim",
+  //   path: "/my-international-coorperations",
+  // },
   {
     icon: <LinkIcon />,
     name: "Linklərim",

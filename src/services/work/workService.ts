@@ -6,14 +6,25 @@ export interface WorkPayload {
     fin_kod: string;
     work_place: string;
     duty: string;
-}
+};
 
-export interface Work {
-    work_place: string;
-    duty: string;
-}
+export interface ExperiencePayload {
+    fin_kod: string;
+    title: string;
+    university: string;
+    start_date: number;
+    end_date?: number
+};
 
-export const addWork = async (workPayload:  WorkPayload, token: string) => {
+export interface Experience {
+    fin_kod: string;
+    start_date: number;
+    end_date: number;
+    title: string;
+    university: string;
+};
+    
+export const addWork = async (workPayload: WorkPayload, token: string) => {
     try {
         const response = await apiClient.post(
             "/api/work/create",
@@ -60,3 +71,33 @@ export const getWorkByFinCode = async (fin_kod: string) => {
         }
     }
 };
+
+export const createExperience = async (experiencePayload: ExperiencePayload) => {
+    try {
+        const response = await apiClient.post("/api/experience/create", experiencePayload);
+
+        if (response.data.status_code === 201) {
+            return "SUCCESS";
+        } else {
+            return "ERROR";
+        }
+    } catch (err) {
+        return "ERROR";
+    }
+}
+
+export const getExperiences = async (fin_kod: string) => {
+    try {
+        const response = await apiClient.get(`/api/experience/${fin_kod}`);
+
+        if (response.data.status_code === 200) {
+            return response.data.experiences;
+        } else if (response.data.status_code === 204) {
+            return "NO CONTENT";
+        } else {
+            return "ERROR";
+        }
+    } catch (err) {
+        return "ERROR";
+    }
+}

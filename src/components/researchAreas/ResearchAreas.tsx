@@ -5,27 +5,24 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { RootState } from "../../redux/store";
 import { useModal } from "../../hooks/useModal";
-import { createExperience, Experience, ExperiencePayload, getExperiences } from "../../services/work/workService";
+import { addArea, AreaPayload, getAreas, ResearchArea } from "../../services/reasearchArea/researchAreaService";
 
-export default function MyWorks() {
-    const [duty, setDuty] = useState("");
+export default function ResearchAreas() {
+    const [area, setArea] = useState("");
     const [loading, setLoading] = useState(false);
-    const [works, setWorks] = useState<Experience[]>([]);
-    const [workPlace, setWorkPlace] = useState("");
-    const [endDate, setEndDate]= useState<number>();
-    const [startDate, setStartDate]= useState<number>();
+    const [areas, setAreas] = useState<ResearchArea[]>([]);
     const { isOpen, openModal, closeModal } = useModal();
     const token = useSelector((state: RootState) => state.auth.token);
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
 
     useEffect(() => {
         setLoading(true);
-        getExperiences(fin_kod || "")
+        getAreas(fin_kod || "")
             .then((res) => {
                 if (res && Array.isArray(res)) {
-                    setWorks(res);
+                    setAreas(res);
                 } else {
-                    setWorks([]);
+                    setAreas([]);
                 }
             })
             .finally(() => {
@@ -36,14 +33,11 @@ export default function MyWorks() {
     const handleWorkCreate = async () => {
         try {
             setLoading(true);
-            const experiencePayload: ExperiencePayload = {
+            const areaPayload: AreaPayload = {
                 fin_kod: fin_kod || "",
-                university: workPlace,
-                title: duty,
-                start_date: startDate ? startDate : 0,
-                end_date: endDate
+                research_area: area
             }
-            const result = await createExperience(experiencePayload);
+            const result = await addArea(areaPayload);
 
             closeModal();
             setLoading(false);
@@ -52,13 +46,19 @@ export default function MyWorks() {
                 Swal.fire({
                     icon: "success",
                     title: "Uğurla əlavə olundu",
-                    text: "İş yeri uğurla əlavə edildi!"
+                    text: "Research Area added successfully!"
+                });
+            } else if (result === "NOT_FOUND") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Xəta",
+                    text: "Fin code is not valid."
                 });
             } else {
                 Swal.fire({
                     icon: "error",
                     title: "Xəta",
-                    text: "Server xətası"
+                    text: "Server error"
                 });
             }
         } catch (err) {
@@ -67,11 +67,10 @@ export default function MyWorks() {
             Swal.fire({
                 icon: "error",
                 title: "Xəta",
-                text: "Server xətası"
+                text: "Server error"
             });
         }
     }
-    console.log(works);
     return (
         <>
             <div>
@@ -84,25 +83,19 @@ export default function MyWorks() {
                             <div className="h-5 bg-gray-300 dark:bg-gray-700 rounded w-3/4"></div>
                         </div>
                     ))
-                ) : works.length === 0 ? (
+                ) : areas.length === 0 ? (
                     <div className="flex justify-center items-center">
                         <div className="bg-yellow-200 text-yellow-800 w-[110px] flex justify-center items-center rounded-[20px] px-[5px]">Mövcud deyil</div>
                     </div>
                 ) : (
-                    works.map((work, index) => {
+                    areas.map((area, index) => {
                         return (
                             <div
                                 key={index}
                                 className="border border-gray-300 dark:border-gray-700 rounded-lg p-4 mb-3 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow"
                             >
                                 <p className="text-gray-800 dark:text-gray-100 font-medium">
-                                    Müəssisə: {work.university}
-                                </p>
-                                <p className="text-gray-800 dark:text-gray-100 font-medium">
-                                    Vəzifə: {work.title}
-                                </p>
-                                 <p className="text-gray-800 dark:text-gray-100 font-medium">
-                                    {work.start_date} - {work.end_date}
+                                   {area.area} 
                                 </p>
                             </div>
                         )
@@ -110,7 +103,7 @@ export default function MyWorks() {
                 )}
                 <div className="flex justify-end items-end">
                     <Button onClick={openModal}>
-                        Yeni iş yeri
+                        Yeni ixtisas sahəsi
                     </Button>
                 </div>
             </div>
@@ -125,56 +118,20 @@ export default function MyWorks() {
                             Yeni iş yeri
                         </h5>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                            Yeni iş yeri əlavə etmək üçün müəssisəni və vəzifəni daxil edib yadda saxlayın!
+                            Yeni ixtisas sahəsi əlavə etmək üçün sahə adını daxil edib yadda saxlayın!
                         </p>
                     </div>
                     <div className="mt-8">
                         <div>
                             <div className="mb-[20px]">
                                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Müəssisə adı <span className="text-red-500">*</span>
+                                    İxtisas sahəsi <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     id="event-title"
                                     type="text"
-                                    value={workPlace}
-                                    onChange={(e) => setWorkPlace(e.target.value)}
-                                    className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
-                                />
-                            </div>
-                            <div className="mb-[20px]">
-                                <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Vəzifə <span className="text-red-500">*</span>
-                                </label>
-                                <input
-                                    id="event-title"
-                                    type="text"
-                                    value={duty}
-                                    onChange={(e) => setDuty(e.target.value)}
-                                    className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
-                                />
-                            </div>
-                            <div className="mb-[20px]">
-                                <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Başlanğıc tarixi <span className="text-red-500">*</span>
-                                </label>
-                                <input
-                                    id="event-title"
-                                    type="text"
-                                    value={startDate}
-                                    onChange={(e) => setStartDate(+e.target.value)}
-                                    className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
-                                />
-                            </div>
-                            <div className="mb-[20px]">
-                                <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Son tarixi (Son tarixi boş qoyaraq işin davam etidiyini bildirirsiz!)
-                                </label>
-                                <input
-                                    id="event-title"
-                                    type="text"
-                                    value={endDate}
-                                    onChange={(e) => setEndDate(+e.target.value)}
+                                    value={area}
+                                    onChange={(e) => setArea(e.target.value)}
                                     className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                                 />
                             </div>

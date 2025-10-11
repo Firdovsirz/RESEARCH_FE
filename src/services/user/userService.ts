@@ -24,6 +24,7 @@ export interface UserProfile {
     scientific_degree_name: string;
     scientific_name: string;
     bio: string;
+    image: string;
     created_at: string;
 }
 
