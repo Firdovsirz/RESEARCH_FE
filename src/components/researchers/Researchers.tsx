@@ -8,15 +8,16 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { getAllUsers, UserProfile } from "../../services/user/userService";
 
 export default function Researchers() {
-    const [users, setUsers] = useState<UserProfile[]>([]);
     const [start, setStart] = useState(0);
-    const [end, setEnd] = useState(5);
-    const [loading, setLoading] = useState(false)
+    const [end, setEnd] = useState(10);
+    const [loading, setLoading] = useState(false);
+    const [users, setUsers] = useState<UserProfile[]>([]);
     const [userLength, setUserLength] = useState<number>();
+    const [search, setSearch] = useState<string>("");
 
     useEffect(() => {
         setLoading(true);
-        getAllUsers(start, end)
+        getAllUsers(start, end, search)
             .then((res) => {
                 if (typeof res === "object") {
                     setUsers(res.users);
@@ -28,19 +29,37 @@ export default function Researchers() {
             })
             .finally(() => setLoading(false));
     }, []);
+    useEffect(() => {
+        setLoading(true);
+        const handler = setTimeout(() => {
+            getAllUsers(start, end, search)
+                .then((res) => {
+                    if (typeof res === "object") {
+                        setUsers(res.users);
+                        setUserLength(res.total);
+                    } else {
+                        setUsers([]);
+                        setUserLength(0);
+                    }
+                })
+                .finally(() => setLoading(false));
+        }, 400);
+        return () => clearTimeout(handler);
+    }, [search]);
 
     console.log(users);
 
     return (
         <>
-            <PublicHeader />
-            <div className='flex justify-between items-center px-[40px]'>
+            <PublicHeader onSearch={setSearch} />
+            <div className="flex flex-wrap gap-6 px-[40px] justify-start items-stretch">
                 {loading
-                    ? Array.from({ length: 3 }).map((_, index) => (
+                    ? Array.from({ length: 6 }).map((_, index) => (
                         <div
                             key={index}
-                            style={{ width: "calc((100% / 3) - 20px)", borderRadius: 20 }}
-                            className='flex flex-col justify-between items-center p-4 bg-gray-100 shadow-md rounded-lg hover:shadow-lg transition-shadow duration-300'
+                            className="flex flex-col justify-between items-center p-4 bg-gray-100 shadow-md rounded-lg hover:shadow-lg transition-shadow duration-300
+                                w-full sm:w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] max-w-full"
+                            style={{ borderRadius: 20 }}
                         >
                             <div className='flex justify-between items-start w-full mb-4'>
                                 <div className='flex flex-col items-center'>
@@ -55,7 +74,7 @@ export default function Researchers() {
                                 <div className="flex justify-between items-center mb-[20px]">
                                     <div>
                                         <div className='flex justify-start items-center mb-1'>
-                                            <CalendarMonthIcon className='mr-[10px] text-gray-500' /> 
+                                            <CalendarMonthIcon className='mr-[10px] text-gray-500' />
                                             <Skeleton variant="text" width={80} height={15} />
                                         </div>
                                         <Skeleton variant="text" width={100} height={15} />
@@ -68,7 +87,7 @@ export default function Researchers() {
                                 </div>
                                 <div>
                                     <div className="flex justify-start items-center mb-1">
-                                        <EmailIcon className="mr-[10px] text-gray-500" /> 
+                                        <EmailIcon className="mr-[10px] text-gray-500" />
                                         <Skeleton variant="text" width={60} height={15} />
                                     </div>
                                     <Skeleton variant="text" width={140} height={15} />
@@ -79,8 +98,8 @@ export default function Researchers() {
                     : users.map((user, index) => (
                         <div
                             key={index}
-                            style={{ backgroundColor: "rgb(244, 245, 245)", padding: "20px", borderRadius: 20, width: "calc(100% / 3 - 20px)" }}
-                            className='hover:shadow-lg transition-shadow duration-300'
+                            className="hover:shadow-lg transition-shadow duration-300 bg-[#f4f5f5] p-5 rounded-[20px]
+                                w-full sm:w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] max-w-full flex flex-col"
                         >
                             <div className='flex justify-between items-start mb-[20px]'>
                                 <div>
@@ -129,8 +148,6 @@ export default function Researchers() {
                                                 </a>
                                             )}
                                         </div>
-                                    </div>
-                                    <div className="flex justify-between items-center">
                                         <div
                                             style={{
                                                 border: "1px solid rgba(0,0,0,0.2)",

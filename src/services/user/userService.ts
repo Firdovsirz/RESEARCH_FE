@@ -68,9 +68,9 @@ export const getUserProfile = async (fin_kod: string, token: string) => {
     }
 }
 
-export const getAllUsers = async (start?: number, end?: number) => {
+export const getAllUsers = async (start?: number, end?: number, search?: string) => {
     try {
-        const response = await apiClient.get(`/api/user/all?start=${start}&end=${end}&lang=${lang_code}`);
+        const response = await apiClient.get(`/api/user/all?search=${search}&start=${start}&end=${end}&lang=${lang_code}`);
 
         if (response.data.status_code === 200) {
             return {

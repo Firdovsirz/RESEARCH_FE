@@ -96,6 +96,13 @@ export default function ResearcherLayout({ children, user, heading }: Researcher
                             </Link>
                         </span>
                     </li>
+                    <li className="group font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-200 cursor-pointer border-b border-gray-300 p-5">
+                        <span className="inline-block transform transition-transform duration-200 group-hover:translate-x-3">
+                            <Link to={"/researcher-details/cv"} state={{ user }}>
+                                CV
+                            </Link>
+                        </span>
+                    </li>
                     <li className="group font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-200 cursor-pointer p-5">
                         <span className="inline-block transform transition-transform duration-200 group-hover:translate-x-3">
                             <Link to={"/researcher-details/contact"} state={{ user }}>

@@ -21,10 +21,11 @@ import NewWorkDetailsPage from "./pages/NewWorkDetailsPage/NewWorkDetailsPage";
 import UserCredentialsPage from "./pages/UserCredentialsPage/UserCredentialsPage";
 import LanguageDetailsPage from "./pages/LanguageDetailsPage/LanguageDetailsPage";
 import ResearcherDetailsPage from "./pages/ResearcherDetailsPage/ResearcherDetailsPage";
+import ResearchDetailsCvPage from "./pages/ResearchDetailsCvPage/ResearchDetailscvPage";
 import NewScientificDetailsPage from "./pages/NewScientficDetailsPage/NewScientificDetailsPage";
 import ResearcherDetailsAreasPage from "./pages/ResearcherDetailsAreasPage/ResearcherDetailsAreasPage";
-import ResearcherDetailsEducation from "./components/ResearcherDetailsEducation/ResearcherDetailsEducation";
 import ResearcherDetailsContactPage from "./pages/ResearcherDetailsContactPage/ResearcherDetailsContactPage";
+import ResearcherDetailsEducationPage from "./pages/ResearcherDetailsEducationPage/ResearcherDetailsEducationPage";
 import ResearcherDetailsExperiencePage from "./pages/ResearcherDetailsExperiencePage/ResearcherDetailsExperiencePage";
 // import MyInternationalCoorperationsPage from "./pages/MyInternationalCoorperationsPage/MyInternationalCoorperationsPage";
 
@@ -89,10 +90,11 @@ export default function App() {
           {/* Public Layout */}
           <Route path="/" element={<ResearchersPage />} />
           <Route path="/researcher-details" element={<ResearcherDetailsPage />} />
-          <Route path="/researcher-details/education" element={<ResearcherDetailsEducation />} />
+          <Route path="/researcher-details/education" element={<ResearcherDetailsEducationPage />} />
           <Route path="/researcher-details/areas" element={<ResearcherDetailsAreasPage />} />
           <Route path="/researcher-details/experience" element={<ResearcherDetailsExperiencePage />} />
           <Route path="/researcher-details/contact" element={<ResearcherDetailsContactPage />} />
+          <Route path="/researcher-details/cv" element={<ResearchDetailsCvPage />} />
 
           {/* Fallback Route */}
           <Route path="*" element={<NotFound />} />

@@ -9,12 +9,9 @@ export interface CvPayload {
 export const addCv = async (payload: CvPayload | FormData) => {
   try {
     let data: FormData;
-
-    // If payload is already FormData, use it directly
     if (payload instanceof FormData) {
       data = payload;
     } else {
-      // Otherwise, convert CvPayload to FormData
       data = new FormData();
       data.append("fin_kod", payload.fin_kod);
       data.append("cv", payload.cv);

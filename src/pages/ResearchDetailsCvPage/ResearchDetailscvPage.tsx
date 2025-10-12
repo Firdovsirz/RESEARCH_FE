@@ -1,9 +1,9 @@
 import { useLocation } from "react-router";
 import PageMeta from "../../components/common/PageMeta";
 import ResearcherLayout from "../../layout/ResearcherLayout";
-import ResearcherDetailsExperience from "../../components/ResearcherDetailsExperience/ResearcherDetailsExperience";
+import ResearchDetailsCv from "../../components/ResearcherDetailsCv/ResearchDetailsCv";
 
-export default function ResearcherDetailsExperiencePage() {
+export default function ResearchDetailsCvPage() {
     const location = useLocation();
     const { user } = location.state || {};
     return (
@@ -12,8 +12,8 @@ export default function ResearcherDetailsExperiencePage() {
                 title="AzTU Tədqiqatçılar bazası"
                 description="AzTU Tədqiqatçılar bazası AzTU olan tədqiqatçılar və onlar haqqında məlumatları özündə saxlayır."
             />
-            <ResearcherLayout user={user} heading="Academic Experience">
-                <ResearcherDetailsExperience user={user} />
+            <ResearcherLayout user={user} heading="Research Areas">
+                <ResearchDetailsCv user={user} />
             </ResearcherLayout>
         </>
     );

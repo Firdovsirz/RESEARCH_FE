@@ -1,6 +1,9 @@
+import { useState, useEffect } from 'react';
 import EmailIcon from '@mui/icons-material/Email';
+import LanguageIcon from '@mui/icons-material/Language';
 import { UserProfile } from "../../services/user/userService";
-import { useState } from 'react';
+import { Language } from '../../services/language/languageService';
+import { getLanguageByFinCode } from '../../services/language/languageService';
 
 interface ResearchAreasProps {
     user: UserProfile
@@ -8,6 +11,22 @@ interface ResearchAreasProps {
 
 export default function ResearcherDetailsContact({ user }: ResearchAreasProps) {
     const [loading, setLoading] = useState(false);
+    const [languages, setLanguages] = useState<Language[]>([]);
+
+    useEffect(() => {
+        setLoading(true);
+        getLanguageByFinCode(user?.fin_kod)
+            .then((res) => {
+                if (res && Array.isArray(res)) {
+                    setLanguages(res);
+                } else {
+                    setLanguages([]);
+                }
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }, [user?.fin_kod]);
 
     return (
         <div className="flex flex-col items-start">
@@ -31,8 +50,22 @@ export default function ResearcherDetailsContact({ user }: ResearchAreasProps) {
                 </div>
                 <div className="border-b-2 border-gray-300 px-3 w-full py-[20px]">
                     <p className="flex justify-start items-center text-gray-500 text-[16px]">
-                        <EmailIcon className='mr-[10px]'/> Email: <span className="font-bold text-[#000]">{user?.email}</span>
+                        <EmailIcon className='mr-[10px]' /> Email: <span className="font-bold text-[#000]">{user?.email}</span>
                     </p>
+                </div>
+                <div className="border-b-2 border-gray-300 px-3 w-full py-[20px]">
+                    <p className="flex justify-start items-center text-gray-500 text-[16px]">
+                        <LanguageIcon className='mr-[10px]' /> Languages
+                    </p>
+                    <ul className="list-disc pl-5 ml-[30px]">
+                        {languages.map((language, index) => {
+                            return (
+                                <li key={index}>
+                                    {language.language_name}
+                                </li>
+                            )
+                        })}
+                    </ul>
                 </div>
                 <div className="border-b-2 border-gray-300 px-3 w-full py-[20px]">
                     <div className="flex justify-start mb-2">

@@ -51,7 +51,7 @@ export default function LanguageDetails() {
 
     useEffect(() => {
         setLoading(true);
-        getLanguageByFinCode(fin_kod || "", token ? token : "")
+        getLanguageByFinCode(fin_kod || "")
             .then((res) => {
                 if (res && Array.isArray(res)) {
                     setLanguages(res);
