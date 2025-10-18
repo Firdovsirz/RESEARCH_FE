@@ -27,12 +27,18 @@ export default function PublicHeader({ onSearch }: PublicHeaderProps) {
                 className="px-[40px] py-[10px] w-[60%] flex flex-col justify-center items-center bg-blue-100/50 backdrop-blur-md rounded-[40px] transition-all duration-500 ease-in-out"
             >
                 <div className="w-full flex justify-between items-center h-[50px]">
+                    <Link to={"/"}>
                     <img
                         src="/aztu-logo.webp"
                         alt="Azerbaijan Technical University"
                         style={{ width: "100px", height: "50px" }}
                     />
-                    <h1 className="transition-all duration-500 ease-in-out">AzTU Researchers</h1>
+                    </Link>
+                    <h1 className="transition-all duration-500 ease-in-out">
+                        <Link to={"/"}>
+                        AzTU Researchers
+                        </Link>
+                    </h1>
                     <div className="flex items-center gap-2">
                         <button
                             onClick={() => setSearchOpen(!searchOpen)}

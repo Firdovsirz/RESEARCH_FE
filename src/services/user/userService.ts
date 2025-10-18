@@ -18,9 +18,9 @@ export interface UserProfile {
     email: string;
     birth_date: string;
     fin_kod: string;
-    scopus: string;
-    web_of_science: string;
-    google_scholar: string;
+    scopus_url: string;
+    webofscience_url: string;
+    google_scholar_url: string;
     scientific_degree_name: string;
     scientific_name: string;
     bio: string;

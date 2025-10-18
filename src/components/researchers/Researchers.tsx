@@ -143,7 +143,7 @@ export default function Researchers() {
                                             {loading ? (
                                                 <div className="animate-pulse bg-gray-300 dark:bg-gray-700 rounded-full w-15 h-15"></div>
                                             ) : (
-                                                <a href={user?.google_scholar} target="_blank" rel="noreferrer">
+                                                <a href={user?.google_scholar_url} target="_blank" rel="noreferrer">
                                                     <img src="/linkedin-logo.webp" alt="scopus" className="rounded-full w-9 h-9" />
                                                 </a>
                                             )}
@@ -165,7 +165,7 @@ export default function Researchers() {
                                             {loading ? (
                                                 <div className="animate-pulse bg-gray-300 dark:bg-gray-700 rounded-full w-15 h-15"></div>
                                             ) : (
-                                                <a href={user?.google_scholar} target="_blank" rel="noreferrer">
+                                                <a href={user?.google_scholar_url} target="_blank" rel="noreferrer">
                                                     <img src="/google-scholar-logo.webp" alt="scopus" className="rounded-full w-9 h-9" />
                                                 </a>
                                             )}
@@ -187,7 +187,7 @@ export default function Researchers() {
                                             {loading ? (
                                                 <div className="animate-pulse bg-gray-300 dark:bg-gray-700 rounded-full w-15 h-15"></div>
                                             ) : (
-                                                <a href={user?.scopus} target="_blank" rel="noreferrer">
+                                                <a href={user?.scopus_url} target="_blank" rel="noreferrer">
                                                     <img src="/scopus-logo.webp" alt="scopus" className="rounded-full w-9 h-9" />
                                                 </a>
                                             )}
@@ -208,7 +208,7 @@ export default function Researchers() {
                                             {loading ? (
                                                 <div className="animate-pulse bg-gray-300 dark:bg-gray-700 rounded-full w-15 h-15"></div>
                                             ) : (
-                                                <a href={user?.web_of_science} target="_blank" rel="noreferrer">
+                                                <a href={user?.webofscience_url} target="_blank" rel="noreferrer">
                                                     <img src="/web-of-science-logo.webp" alt="scopus" className="rounded-full w-9 h-9" />
                                                 </a>
                                             )}
