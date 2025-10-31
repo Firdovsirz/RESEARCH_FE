@@ -5,18 +5,24 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { RootState } from "../../redux/store";
 import { useModal } from "../../hooks/useModal";
-import { addEducation, Education, EducationPayload, getEducations } from "../../services/education/educationService";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { addEducation, updateEducation, deleteEducation, Education, EducationPayload, getEducations } from "../../services/education/educationService";
 
 export default function MyEducations() {
     const [duty, setDuty] = useState("");
     const [loading, setLoading] = useState(false);
     const [workPlace, setWorkPlace] = useState("");
-    const [endDate, setEndDate]= useState<number>();
-    const [startDate, setStartDate]= useState<number>();
+    const [endDate, setEndDate] = useState<number>();
+    const [startDate, setStartDate] = useState<number>();
     const { isOpen, openModal, closeModal } = useModal();
     const [educations, setEducations] = useState<Education[]>([]);
     const token = useSelector((state: RootState) => state.auth.token);
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
+
+    const [editMode, setEditMode] = useState(false);
+    const [editCode, setEditCode] = useState<string>("");
+    const [selectedEducation, setSelectedEducation] = useState<Education | null>(null);
 
     useEffect(() => {
         setLoading(true);
@@ -54,6 +60,12 @@ export default function MyEducations() {
                     title: "Uğurla əlavə olundu",
                     text: "Yeni təhsil uğurla əlavə edildi!"
                 });
+                const updatedEducations = await getEducations(fin_kod || "");
+                setEducations(updatedEducations || []);
+                setDuty("");
+                setWorkPlace("");
+                setStartDate(undefined);
+                setEndDate(undefined);
             } else {
                 Swal.fire({
                     icon: "error",
@@ -71,8 +83,102 @@ export default function MyEducations() {
             });
         }
     }
+
+    console.log(editCode);
+
+    const handleEducationEdit = async () => {
+        try {
+            setLoading(true);
+            const educationPayload: EducationPayload = {
+                fin_kod: fin_kod || "",
+                university: workPlace,
+                title: duty,
+                start_date: startDate ? startDate : 0,
+                end_date: endDate
+            }
+            const result = await updateEducation(editCode, educationPayload);
+
+            closeModal();
+            setLoading(false);
+
+            if (result === "SUCCESS") {
+                Swal.fire({
+                    icon: "success",
+                    title: "Uğurla yeniləndi",
+                    text: "Təhsil məlumatları uğurla yeniləndi!"
+                });
+                const updatedEducations = await getEducations(fin_kod || "");
+                setEducations(updatedEducations || []);
+                setDuty("");
+                setWorkPlace("");
+                setStartDate(undefined);
+                setEndDate(undefined);
+                setEditMode(false);
+                setEditCode("");
+                setSelectedEducation(null);
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Xəta",
+                    text: "Server xətası"
+                });
+            }
+        } catch (err) {
+            closeModal();
+            setLoading(false);
+            Swal.fire({
+                icon: "error",
+                title: "Xəta",
+                text: "Server xətası"
+            });
+        }
+    }
+
+    const handleDeleteEducation = (edu_code: string) => {
+        Swal.fire({
+            title: 'Silmək istədiyinizə əminsiniz?',
+            text: "Bu əməliyyat geri qaytarıla bilməz!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Bəli, sil',
+            cancelButtonText: 'İmtina'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                setLoading(true);
+                try {
+                    const res = await deleteEducation(fin_kod || "", edu_code);
+                    setLoading(false);
+                    if (res === "SUCCESS") {
+                        Swal.fire(
+                            'Silindi!',
+                            'Təhsil məlumatları uğurla silindi.',
+                            'success'
+                        );
+                        const updatedEducations = await getEducations(fin_kod || "");
+                        setEducations(updatedEducations || []);
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Xəta",
+                            text: "Server xətası"
+                        });
+                    }
+                } catch (error) {
+                    setLoading(false);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Xəta",
+                        text: "Server xətası"
+                    });
+                }
+            }
+        });
+    }
+
     console.log(educations);
-    
+
     return (
         <>
             <div>
@@ -94,23 +200,56 @@ export default function MyEducations() {
                         return (
                             <div
                                 key={index}
-                                className="border border-gray-300 dark:border-gray-700 rounded-lg p-4 mb-3 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow"
-                            >
-                                <p className="text-gray-800 dark:text-gray-100 font-medium">
-                                    Müəssisə: {education.university}
-                                </p>
-                                <p className="text-gray-800 dark:text-gray-100 font-medium">
-                                    Dərəcə: {education.title}
-                                </p>
-                                 <p className="text-gray-800 dark:text-gray-100 font-medium">
-                                    {education.start_date} - {education.end_date ? education.start_date : "present"}
-                                </p>
+                                className="border border-gray-300 dark:border-gray-700 rounded-lg p-4 mb-3 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow flex justify-between items-center">
+                                <div>
+                                    <p className="text-gray-800 dark:text-gray-100 font-medium">
+                                        Müəssisə: {education.university}
+                                    </p>
+                                    <p className="text-gray-800 dark:text-gray-100 font-medium">
+                                        Dərəcə: {education.title}
+                                    </p>
+                                    <p className="text-gray-800 dark:text-gray-100 font-medium">
+                                        {education.start_date} - {education.end_date ? education.end_date : "present"}
+                                    </p>
+                                </div>
+                                <div className="flex">
+                                    <div
+                                        className="bg-blue-500 w-[40px] h-[40px] flex justify-center items-center rounded-[10px] mr-[10px] cursor-pointer"
+                                        onClick={() => {
+                                            openModal();
+                                            setEditMode(true);
+                                            setEditCode(education.edu_code);
+                                            setDuty(education.title);
+                                            setWorkPlace(education.university);
+                                            setStartDate(education.start_date);
+                                            setEndDate(education.end_date);
+                                            setSelectedEducation(education);
+                                        }}
+                                    >
+                                        <EditIcon className="text-white" />
+                                    </div>
+                                    <div
+                                        className="bg-red-500 w-[40px] h-[40px] flex justify-center items-center rounded-[10px] cursor-pointer"
+                                        onClick={() => handleDeleteEducation(education.edu_code)}
+                                    >
+                                        <DeleteIcon className="text-white" />
+                                    </div>
+                                </div>
                             </div>
                         )
                     })
                 )}
                 <div className="flex justify-end items-end">
-                    <Button onClick={openModal}>
+                    <Button onClick={() => {
+                        openModal();
+                        setEditMode(false);
+                        setDuty("");
+                        setWorkPlace("");
+                        setStartDate(undefined);
+                        setEndDate(undefined);
+                        setSelectedEducation(null);
+                        setEditCode("");
+                    }}>
                         Yeni təhsil
                     </Button>
                 </div>
@@ -190,12 +329,14 @@ export default function MyEducations() {
                             Bağla
                         </button>
                         <button
-                            onClick={handleEducationCreate}
+                            onClick={editMode ? handleEducationEdit : handleEducationCreate}
                             type="button"
                             disabled={loading}
                             className="btn btn-success btn-update-event flex w-full justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 sm:w-auto"
                         >
-                            {loading ? "Yadda saxlanılır" : "Yadda saxla"}
+                            {loading
+                                ? (editMode ? "Yenilənir" : "Yadda saxlanılır")
+                                : (editMode ? "Yadda saxla" : "Yadda saxla")}
                         </button>
                     </div>
                 </div>

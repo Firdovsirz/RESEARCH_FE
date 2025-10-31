@@ -34,15 +34,21 @@ export default function SignInForm() {
         title: "Daxil olmaq mümkün olmadı",
         text: "İstifadəçi məlumatları yanlışdır.",
       });
-    } else if (response === "error") {
+    } else if (response === "ERROR") {
       Swal.fire({
         icon: "error",
         title: "Xəta baş verdi",
         text: "Zəhmət olmasa bir az sonra yenidən cəhd edin.",
       });
-    } else {
-      dispatch(loginSuccess(response.data));
+    } else if (typeof response === "object") {
+      dispatch(loginSuccess(response));
       navigate("/home");
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Xəta baş verdi",
+        text: "Zəhmət olmasa bir az sonra yenidən cəhd edin.",
+      });
     }
   };
 

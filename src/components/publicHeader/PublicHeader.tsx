@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import Button from "../ui/button/Button";
 import SearchIcon from '@mui/icons-material/Search';
@@ -6,11 +6,13 @@ import { motion, AnimatePresence } from "framer-motion";
 
 interface PublicHeaderProps {
     onSearch?: (value: string) => void;
+    toggleMenu?: () => void;
 }
 
-export default function PublicHeader({ onSearch }: PublicHeaderProps) {
+export default function PublicHeader({ onSearch, toggleMenu }: PublicHeaderProps) {
     const [searchOpen, setSearchOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
+    const location = useLocation();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -24,31 +26,53 @@ export default function PublicHeader({ onSearch }: PublicHeaderProps) {
                 }`}
         >
             <div
-                className="px-[40px] py-[10px] w-[60%] flex flex-col justify-center items-center bg-blue-100/50 backdrop-blur-md rounded-[40px] transition-all duration-500 ease-in-out"
+                className="px-4 sm:px-[40px] py-2 sm:py-[10px] w-full sm:w-[60%] flex flex-col justify-center items-center bg-blue-100/50 backdrop-blur-md rounded-[40px] transition-all duration-500 ease-in-out"
             >
-                <div className="w-full flex justify-between items-center h-[50px]">
-                    <Link to={"/"}>
-                    <img
-                        src="/aztu-logo.webp"
-                        alt="Azerbaijan Technical University"
-                        style={{ width: "100px", height: "50px" }}
-                    />
+                <div className="w-full flex justify-between items-center h-[50px] gap-2 sm:gap-4">
+                    <Link to={"/"} className="flex-shrink-0">
+                        <img
+                            src="/aztu-logo.webp"
+                            alt="Azerbaijan Technical University"
+                            className="w-[80px] sm:w-[100px] h-[40px] sm:h-[50px]"
+                        />
                     </Link>
-                    <h1 className="transition-all duration-500 ease-in-out">
+                    {/* <h1 className="text-lg sm:text-xl font-semibold transition-all duration-500 ease-in-out flex-grow text-center">
                         <Link to={"/"}>
-                        AzTU Researchers
+                            AzTU Researchers
                         </Link>
-                    </h1>
-                    <div className="flex items-center gap-2">
+                    </h1> */}
+                    <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
                         <button
                             onClick={() => setSearchOpen(!searchOpen)}
                             className="p-2 rounded-full hover:bg-blue-200 transition-colors duration-300 ease-in-out"
+                            aria-label="Toggle search"
                         >
-                            <SearchIcon className="transition-transform duration-300 ease-in-out" />
+                            <SearchIcon className="transition-transform duration-300 ease-in-out" fontSize="medium" />
                         </button>
-                        <Button>
-                            <Link to={"/signin"}>Login</Link>
-                        </Button>
+                        {location.pathname !== "/" ? (
+                            <button
+                                onClick={toggleMenu}
+                                className="p-2 rounded-full hover:bg-blue-200 transition-colors duration-300 ease-in-out block sm:hidden"
+                                aria-label="Toggle menu"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-6 w-6"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth={2}
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                            </button>
+                        ) : (
+                            <div className="block">
+                                <Button>
+                                    <Link to={"/signin"}>Login</Link>
+                                </Button>
+                            </div>
+                        )}
                     </div>
                 </div>
                 <AnimatePresence>

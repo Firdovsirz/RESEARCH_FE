@@ -15,4 +15,7 @@ export default defineConfig({
       },
     }),
   ],
+  optimizeDeps: {
+    include: ["react-canvas-nest"],
+  },
 });

@@ -10,9 +10,9 @@ export default function MyArticlesPage() {
                 title="AzTU Tədqiqatçılar bazası"
                 description="AzTU Tədqiqatçılar bazası AzTU olan tədqiqatçılar və onlar haqqında məlumatları özündə saxlayır."
             />
-            <PageBreadcrumb pageTitle="Yeni elmi məlumatlar" />
+            <PageBreadcrumb pageTitle="My articles" />
             <div className="space-y-6">
-                <ComponentCard title="Yeni elmi məlumatlar">
+                <ComponentCard title="My articleService">
                     <MyArticles />
                 </ComponentCard>
             </div>

@@ -61,15 +61,15 @@ const DropzoneComponent: React.FC<DropzoneComponentProps> = ({ onFileSelect }) =
 
             {/* Text Content */}
             <h4 className="mb-3 font-semibold text-gray-800 text-theme-xl dark:text-white/90">
-              {isDragActive ? "Faylı buraxın" : "Faylı sürüşdürün və buraxın"}
+              {isDragActive ? "Drop file" : "Drag and drop file"}
             </h4>
 
             <span className=" text-center mb-5 block w-full max-w-[290px] text-sm text-gray-700 dark:text-gray-400">
-              Cv yükləmək üçün CV-ni sıxın və buraxın və yaxud klikləyin
+              To upload cv drag and drop the file or search it from your files.
             </span>
 
             <span className="font-medium underline text-theme-sm text-brand-500">
-              Fayllarda axtarış edin
+              Search from files
             </span>
           </div>
         </form>

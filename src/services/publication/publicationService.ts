@@ -60,3 +60,49 @@ export const createPublication = async (publicationPayload: PublicationPayload, 
         return "ERROR";
     }
 };
+
+export const deletePublication = async (publicationCode: string, token: string) => {
+    try {
+        const response = await apiClient.delete(`/api/publication/${publicationCode}/delete`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 200) {
+            return "SUCCESS";
+        } else {
+            return "ERROR";
+        }
+    } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+            return "NOT_FOUND";
+        } else {
+            return "ERROR";
+        }
+    }
+};
+
+export const updatePublication = async (publicationCode: string, publicationPayload: PublicationPayload, token: string) => {
+    try {
+        const response = await apiClient.put(`/api/publication/${publicationCode}/update`, publicationPayload, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 200) {
+            return "SUCCESS";
+        }
+    } catch (error: any) {
+        if (error.response) {
+            if (error.response.status === 404) {
+                return "NOT_FOUND";
+            }
+            if (error.response.status === 409) {
+                return "CONFLICT";
+            }
+        }
+        return "ERROR";
+    }
+};

@@ -9,6 +9,7 @@ export interface ArticlePayload {
 
 export interface Article {
     article_field: string;
+    article_code: string;
 }
 
 export const getArticleByFinKod = async (finKod: string) => {
@@ -37,6 +38,49 @@ export const createArticle = async (aritclePayload: ArticlePayload, token: strin
         });
 
         if (response.data.status_code === 201) {
+            return "SUCCESS";
+        }
+    } catch (error: any) {
+        if (error.response) {
+            if (error.response.status === 404) {
+                return "NOT_FOUND";
+            }
+            if (error.response.status === 409) {
+                return "CONFLICT";
+            }
+        }
+        return "ERROR";
+    }
+};
+
+export const deleteArticle = async (articleCode: string, token: string) => {
+    try {
+        const response = await apiClient.delete(`/api/article/${articleCode}/delete`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 200) {
+            return "SUCCESS";
+        }
+    } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+            return "NOT FOUND";
+        }
+        return "ERROR";
+    }
+};
+
+export const updateArticle = async (articleCode: string, articlePayload: ArticlePayload, token: string) => {
+    try {
+        const response = await apiClient.put(`/api/article/${articleCode}/update`, articlePayload, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        if (response.data.status_code === 200) {
             return "SUCCESS";
         }
     } catch (error: any) {

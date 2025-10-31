@@ -5,7 +5,6 @@ export interface CvPayload {
   cv: File;
 }
 
-// cvService.ts
 export const addCv = async (payload: CvPayload | FormData) => {
   try {
     let data: FormData;
@@ -51,3 +50,24 @@ export const getCvByFinCode = async (fin_kod: string, token: string) => {
         }
     }
 }
+
+export const deleteCv = async (fin_kod: string, token: string) => {
+    try {
+        const response = await apiClient.delete(`/api/cv/${fin_kod}/delete`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        if (response.data.status_code === 200) {
+            return "SUCCESS";
+        }
+    } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+            return "NOT_FOUND";
+        } else {
+            console.error("Error deleting CV:", error);
+            return "ERROR";
+        }
+    }
+};

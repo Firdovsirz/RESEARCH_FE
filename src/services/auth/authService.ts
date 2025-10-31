@@ -66,13 +66,14 @@ export const signin = async (credentials: Credentials) => {
         const response = await apiClient.post("/auth/signin", credentials);
 
         if (response.data.status_code === 200) {
-            return response.data;
-        } else if (response.data.status_code === 401) {
-            return "UNAUTHORIZED";
+            return response.data.data;
         } else {
             return "UNAUTHORIZED";
         }
-    } catch (err) {
-        return "error";
+    } catch (err: any) {
+        if (err.response?.status === 401) {
+            return "UNAUTHORIZED";
+        }
+        return "ERROR";
     };
 };

@@ -22,6 +22,7 @@ export interface Experience {
     end_date: number;
     title: string;
     university: string;
+    exp_code: string;
 };
     
 export const addWork = async (workPayload: WorkPayload, token: string) => {
@@ -81,7 +82,7 @@ export const createExperience = async (experiencePayload: ExperiencePayload) => 
         } else {
             return "ERROR";
         }
-    } catch (err) {
+    } catch (error: any) {
         return "ERROR";
     }
 }
@@ -97,7 +98,43 @@ export const getExperiences = async (fin_kod: string) => {
         } else {
             return "ERROR";
         }
-    } catch (err) {
-        return "ERROR";
+    } catch (error: any) {
+            return "ERROR";
+    }
+}
+
+export const updateExperience = async (exp_code: string, experiencePayload: ExperiencePayload) => {
+    try {
+        const response = await apiClient.put(`/api/experience/${exp_code}/update`, experiencePayload);
+
+        if (response.data.status_code === 200) {
+            return "SUCCESS";
+        } else {
+            return "ERROR";
+        }
+    } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+            return "NOT_FOUND";
+        } else {
+            return "ERROR";
+        }
+    }
+}
+
+export const deleteExperience = async (id: string) => {
+    try {
+        const response = await apiClient.delete(`/api/experience/${id}/delete`);
+
+        if (response.data.status_code === 200) {
+            return "SUCCESS";
+        } else {
+            return "ERROR";
+        }
+    } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+            return "NOT_FOUND";
+        } else {
+            return "ERROR";
+        }
     }
 }

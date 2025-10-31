@@ -29,7 +29,7 @@ type NavItem = {
 const navItems: NavItem[] = [
   {
     icon: <HomeFilledIcon />,
-    name: "Əsas",
+    name: "Home",
     path: "/"
   },
   {
@@ -39,32 +39,32 @@ const navItems: NavItem[] = [
   },
   {
     icon: <PersonIcon />,
-    name: "Profil",
+    name: "Profile",
     path: "/user-credentials",
   },
   {
     icon: <PeopleIcon />,
-    name: "İxtisas sahələrim",
+    name: "Research areas",
     path: "/research-areas",
   },
   {
     icon: <WorkIcon />,
-    name: "İş yeri məlumatlarım",
+    name: "Job details",
     path: "/my-work-places",
   },
   {
     icon: <SchoolIcon />,
-    name: "Təhsil məlumatlarım",
+    name: "Education details",
     path: "/my-educations",
   },
   {
     icon: <MenuBookIcon />,
-    name: "Məqalələrim",
+    name: "My articles",
     path: "/my-articles",
   },
   {
     icon: <BorderColorIcon />,
-    name: "Nəşrlərim",
+    name: "My publications",
     path: "/my-publications",
   },
   // {
@@ -74,17 +74,17 @@ const navItems: NavItem[] = [
   // },
   {
     icon: <LinkIcon />,
-    name: "Linklərim",
+    name: "My Urls",
     path: "/my-urls",
   },
   {
     icon: <TranslateIcon />,
-    name: "Dil məlumatlarım",
+    name: "Language details",
     path: "/language-details",
   },
   {
     icon: <AttachFileIcon />,
-    name: "Cv",
+    name: "Resume",
     path: "/cv",
   }
 ];
@@ -331,14 +331,14 @@ const AppSidebar: React.FC = () => {
                   }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Menyu"
+                  "Menu"
                 ) : (
                   <HorizontaLDots className="size-6" />
                 )}
               </h2>
               {renderMenuItems(navItems, "main")}
             </div>
-            <div className="">
+            {/* <div className="">
               <h2
                 className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered
                   ? "lg:justify-center"
@@ -352,7 +352,7 @@ const AppSidebar: React.FC = () => {
                 )}
               </h2>
               {renderMenuItems(othersItems, "others")}
-            </div>
+            </div> */}
           </div>
         </nav>
       </div>

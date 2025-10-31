@@ -8,9 +8,11 @@ export interface LanguagePaylaod {
 }
 
 export interface Language {
+    id: number;
     language_short_name: string;
     language_name: string;
     language_level: string;
+    lang_serial: string;
 }
 
 export const addLanguage = async (languagePayload: LanguagePaylaod, token: string) => {
@@ -56,6 +58,29 @@ export const getLanguageByFinCode = async (fin_kod: string) => {
             return "NOT_FOUND";
         } else {
             console.error("Error fetching language:", error);
+            return "ERROR";
+        }
+    }
+};
+
+
+
+export const deleteLanguage = async (lang_serial: string, token: string) => {
+    try {
+        const response = await apiClient.delete(`/api/language/${lang_serial}/delete`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        if (response.data.status_code === 200) {
+            return "SUCCESS";
+        }
+    } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+            return "NOT_FOUND";
+        } else {
+            console.error("Error deleting language:", error);
             return "ERROR";
         }
     }

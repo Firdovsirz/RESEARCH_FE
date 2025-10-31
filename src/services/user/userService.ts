@@ -1,14 +1,28 @@
 import apiClient from "../../util/apiClient";
 
-const lang_code = "az";
+const lang_code = "en";
 
 export interface UserPayload {
     fin_kod: string;
     scientific_degree_name: string;
     scientific_name: string;
     bio: string;
-    scopus_url: string;
     profile_image: string;
+}
+
+export interface UpdatePayload {
+    name?: string;
+    surname?: string;
+    father_name?: string;
+    email?: string;
+    birth_date?: string;
+    scopus_url?: string;
+    webofscience_url?: string;
+    google_scholar_url?: string;
+    scientific_degree_name?: string;
+    scientific_name?: string;
+    bio?: string;
+    image?: string;
 }
 
 export interface UserProfile {
@@ -84,5 +98,26 @@ export const getAllUsers = async (start?: number, end?: number, search?: string)
         }
     } catch (err) {
         return "ERROR"
+    }
+}
+
+export const updateUserProfile = async (fin_kod: string, userPayload: Partial<UserPayload>, token: string) => {
+    try {
+        const response = await apiClient.patch(`/api/user/${fin_kod}/update`, userPayload, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        if (response.data.status_code === 200) {
+            return "SUCCESS";
+        }
+    } catch (error: any) {
+        if (error.response?.status === 404) {
+            return "NOT_FOUND";
+        } else if (error.response?.status === 409) {
+            return "CONFLICT";
+        }
+        return "ERROR";
     }
 }

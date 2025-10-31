@@ -1,7 +1,7 @@
 import PageMeta from "../../components/common/PageMeta";
 import ComponentCard from "../../components/common/ComponentCard"
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
-import UserCredentials from "../../userCredentials/UserCredentials";
+import UserCredentials from "../../components/userCredentials/UserCredentials";
 
 export default function UserCredentialsPage() {
     return (

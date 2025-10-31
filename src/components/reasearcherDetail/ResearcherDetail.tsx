@@ -72,126 +72,123 @@ useEffect(() => {
 
     return (
         <ResearcherLayout user={user} heading="General Information">
-            <div className="flex flex-col items-start">
-                <div className="flex justify-start items-center mb-[10px]">
-                    <p>
+            <div className="flex flex-col items-start px-2 sm:px-4 md:px-6 w-full">
+                <div className="flex flex-wrap justify-start items-center mb-[10px] w-full">
+                    <p className="text-base sm:text-[18px] md:text-[20px]">
                         <span className="font-bold mr-[10px]">
                             Instutional Areas:
                         </span>
                         Azerbaijan Technical University | Teacher
                     </p>
                 </div>
-                <div className="flex justify-start items-center mb-[60px]">
-                    <p>
+                <div className="flex flex-wrap justify-start items-center mb-[40px] sm:mb-[60px] w-full">
+                    <p className="text-base sm:text-[18px] md:text-[20px]">
                         <span className="font-bold mr-[10px]">
                             Research Areas:
                         </span>
                         Agricultural Engineering, Agriculture Dairy & Animal Science, Water Resources, Agriculture Multidisciplinary, Agronomy, Horticulture, Plant Sciences, Environment/Ecology, Agricultural Sciences, Plant & Animal Science, Environmental Sciences, Agriculture & Environment Sciences (Age)
                     </p>
                 </div>
-                <h2 className="text-gray-500 text-[20px] mb-[10px]">
+                <h2 className="text-gray-500 text-base sm:text-[18px] md:text-[20px] mb-[10px]">
                     Metrics
                 </h2>
-                <div className="flex justify-between items-center w-full mb-[30px]">
-                    <div className="border-l-4 border-gray-300 px-3 w-1/4">
-                        <h2 className="text-gray-500 text-[20px] mb-[10px]">
+                <div className="flex flex-wrap gap-4 w-full">
+                    {/* Publication */}
+                    <div className="border-l-4 border-gray-300 px-3 w-full sm:w-[48%] md:w-[32%] lg:w-[23%] mb-4 sm:mb-6">
+                        <h2 className="text-gray-500 text-base sm:text-[18px] md:text-[20px] mb-[10px]">
                             Publication
                         </h2>
-                        <p className="text-gray-500 text-[20px]">
+                        <p className="text-gray-500 text-base sm:text-[18px] md:text-[20px]">
                             {counts.publication}
                         </p>
                     </div>
-                    <div className="border-l-4 border-gray-300 px-3 w-1/4">
-                        <h2 className="text-gray-500 text-[20px] mb-[10px]">
+                    {/* Publication (WoS) */}
+                    <div className="border-l-4 border-gray-300 px-3 w-full sm:w-[48%] md:w-[32%] lg:w-[23%] mb-4 sm:mb-6">
+                        <h2 className="text-gray-500 text-base sm:text-[18px] md:text-[20px] mb-[10px]">
                             Publication (WoS)
                         </h2>
-                        <p className="text-gray-500 text-[20px]">
+                        <p className="text-gray-500 text-base sm:text-[18px] md:text-[20px]">
                             {counts.publicationWos}
                         </p>
                     </div>
-                    <div className="border-l-4 border-gray-300 px-3 w-1/4">
-                        <h2 className="text-gray-500 text-[20px] mb-[10px]">
+                    {/* Publication (Scopus) */}
+                    <div className="border-l-4 border-gray-300 px-3 w-full sm:w-[48%] md:w-[32%] lg:w-[23%] mb-4 sm:mb-6">
+                        <h2 className="text-gray-500 text-base sm:text-[18px] md:text-[20px] mb-[10px]">
                             Publication (Scopus)
                         </h2>
-                        <p className="text-gray-500 text-[20px]">
+                        <p className="text-gray-500 text-base sm:text-[18px] md:text-[20px]">
                             {counts.publicationScopus}
                         </p>
                     </div>
-                    <div className="border-l-4 border-gray-300 px-3 w-1/4">
-                        <h2 className="text-gray-500 text-[20px] mb-[10px]">
+                    {/* Citation (Scopus) */}
+                    <div className="border-l-4 border-gray-300 px-3 w-full sm:w-[48%] md:w-[32%] lg:w-[23%] mb-4 sm:mb-6">
+                        <h2 className="text-gray-500 text-base sm:text-[18px] md:text-[20px] mb-[10px]">
                             Citation (Scopus)
                         </h2>
-                        <p className="text-gray-500 text-[20px]">
+                        <p className="text-gray-500 text-base sm:text-[18px] md:text-[20px]">
                             {counts.citationScopus}
                         </p>
                     </div>
-                </div>
-
-                {/* 2nd line */}
-                <div className="flex justify-between items-center w-full mb-[30px]">
-                    <div className="border-l-4 border-gray-300 px-3 w-1/4">
-                        <h2 className="text-gray-500 text-[20px] mb-[10px]">
+                    {/* H-Index (WoS) */}
+                    <div className="border-l-4 border-gray-300 px-3 w-full sm:w-[48%] md:w-[32%] lg:w-[23%] mb-4 sm:mb-6">
+                        <h2 className="text-gray-500 text-base sm:text-[18px] md:text-[20px] mb-[10px]">
                             H-Index (WoS)
                         </h2>
-                        <p className="text-gray-500 text-[20px]">
+                        <p className="text-gray-500 text-base sm:text-[18px] md:text-[20px]">
                             {counts.hIndexWos}
                         </p>
                     </div>
-                    <div className="border-l-4 border-gray-300 px-3 w-1/4">
-                        <h2 className="text-gray-500 text-[20px] mb-[10px]">
-                            Citation (Scopus)
+                    {/* Citation (Scholar) */}
+                    <div className="border-l-4 border-gray-300 px-3 w-full sm:w-[48%] md:w-[32%] lg:w-[23%] mb-4 sm:mb-6">
+                        <h2 className="text-gray-500 text-base sm:text-[18px] md:text-[20px] mb-[10px]">
+                            Citation (Scholar)
                         </h2>
-                        <p className="text-gray-500 text-[20px]">
+                        <p className="text-gray-500 text-base sm:text-[18px] md:text-[20px]">
                             {counts.citationScholar}
                         </p>
                     </div>
-                    <div className="border-l-4 border-gray-300 px-3 w-1/4">
-                        <h2 className="text-gray-500 text-[20px] mb-[10px]">
+                    {/* H-Index (Scopus) */}
+                    <div className="border-l-4 border-gray-300 px-3 w-full sm:w-[48%] md:w-[32%] lg:w-[23%] mb-4 sm:mb-6">
+                        <h2 className="text-gray-500 text-base sm:text-[18px] md:text-[20px] mb-[10px]">
                             H-Index (Scopus)
                         </h2>
-                        <p className="text-gray-500 text-[20px]">
+                        <p className="text-gray-500 text-base sm:text-[18px] md:text-[20px]">
                             {counts.hIndexScopus}
                         </p>
                     </div>
-                    <div className="border-l-4 border-gray-300 px-3 w-1/4">
-                        <h2 className="text-gray-500 text-[20px] mb-[10px]">
-                            Citation (Scholar)
-                        </h2>
-                        <p className="text-gray-500 text-[20px]">
-                            {counts.citationScholar}
-                        </p>
-                    </div>
-                </div>
-                <div className="flex justify-between items-center w-full">
-                    <div className="border-l-4 border-gray-300 px-3 w-1/4">
-                        <h2 className="text-gray-500 text-[20px] mb-[10px]">
+                    {/* H-Index (Scholar) */}
+                    <div className="border-l-4 border-gray-300 px-3 w-full sm:w-[48%] md:w-[32%] lg:w-[23%] mb-4 sm:mb-6">
+                        <h2 className="text-gray-500 text-base sm:text-[18px] md:text-[20px] mb-[10px]">
                             H-Index (Scholar)
                         </h2>
-                        <p className="text-gray-500 text-[20px]">
+                        <p className="text-gray-500 text-base sm:text-[18px] md:text-[20px]">
                             {counts.hIndexScholar}
                         </p>
                     </div>
-                    <div className="border-l-4 border-gray-300 px-3 w-1/4">
-                        <h2 className="text-gray-500 text-[20px] mb-[10px]">
+                    {/* Project */}
+                    <div className="border-l-4 border-gray-300 px-3 w-full sm:w-[48%] md:w-[32%] lg:w-[23%] mb-4 sm:mb-6">
+                        <h2 className="text-gray-500 text-base sm:text-[18px] md:text-[20px] mb-[10px]">
                             Project
                         </h2>
-                        <p className="text-gray-500 text-[20px]">
+                        <p className="text-gray-500 text-base sm:text-[18px] md:text-[20px]">
                             {counts.project}
                         </p>
                     </div>
-                    <div className="border-l-4 border-gray-300 px-3 w-1/4">
-                        <h2 className="text-gray-500 text-[20px] mb-[10px]">
+                    {/* Thesis Advisory */}
+                    <div className="border-l-4 border-gray-300 px-3 w-full sm:w-[48%] md:w-[32%] lg:w-[23%] mb-4 sm:mb-6">
+                        <h2 className="text-gray-500 text-base sm:text-[18px] md:text-[20px] mb-[10px]">
                             Thesis Advisory
                         </h2>
-                        <p className="text-gray-500 text-[20px]">
+                        <p className="text-gray-500 text-base sm:text-[18px] md:text-[20px]">
                             {counts.thesis}
                         </p>
                     </div>
-                    <div className="border-l-4 border-gray-300 px-3 w-1/4">
-                        <h2 className="text-gray-500 text-[20px] mb-[10px]">
+                    {/* Open Access */}
+                    <div className="border-l-4 border-gray-300 px-3 w-full sm:w-[48%] md:w-[32%] lg:w-[23%] mb-4 sm:mb-6">
+                        <h2 className="text-gray-500 text-base sm:text-[18px] md:text-[20px] mb-[10px]">
                             Open Access
                         </h2>
-                        <p className="text-gray-500 text-[20px]">
+                        <p className="text-gray-500 text-base sm:text-[18px] md:text-[20px]">
                             {counts.openAccess}
                         </p>
                     </div>

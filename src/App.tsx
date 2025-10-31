@@ -27,6 +27,7 @@ import ResearcherDetailsAreasPage from "./pages/ResearcherDetailsAreasPage/Resea
 import ResearcherDetailsContactPage from "./pages/ResearcherDetailsContactPage/ResearcherDetailsContactPage";
 import ResearcherDetailsEducationPage from "./pages/ResearcherDetailsEducationPage/ResearcherDetailsEducationPage";
 import ResearcherDetailsExperiencePage from "./pages/ResearcherDetailsExperiencePage/ResearcherDetailsExperiencePage";
+import FormElements from "./pages/Forms/FormElements";
 // import MyInternationalCoorperationsPage from "./pages/MyInternationalCoorperationsPage/MyInternationalCoorperationsPage";
 
 export default function App() {
@@ -95,6 +96,10 @@ export default function App() {
           <Route path="/researcher-details/experience" element={<ResearcherDetailsExperiencePage />} />
           <Route path="/researcher-details/contact" element={<ResearcherDetailsContactPage />} />
           <Route path="/researcher-details/cv" element={<ResearchDetailsCvPage />} />
+
+          {/*  */}
+          <Route path="/form-elements" element={<FormElements />} />
+
 
           {/* Fallback Route */}
           <Route path="*" element={<NotFound />} />
