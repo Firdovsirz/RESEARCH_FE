@@ -7,12 +7,12 @@ export default function MyArticlesPage() {
     return (
         <>
             <PageMeta
-                title="AzTU Tədqiqatçılar bazası"
-                description="AzTU Tədqiqatçılar bazası AzTU olan tədqiqatçılar və onlar haqqında məlumatları özündə saxlayır."
+                title="AzTU Researchers Dashboard"
+                description="Azerbaijan Technical University researchers Dashboard"
             />
             <PageBreadcrumb pageTitle="My articles" />
             <div className="space-y-6">
-                <ComponentCard title="My articleService">
+                <ComponentCard title="My articles">
                     <MyArticles />
                 </ComponentCard>
             </div>

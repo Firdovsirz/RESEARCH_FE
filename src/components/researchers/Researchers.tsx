@@ -126,14 +126,16 @@ export default function Researchers() {
                                 "
                             >
                                 <div className="flex justify-between items-start mb-5">
-                                    <div className="flex flex-col items-start">
+                                    <div className="flex flex-col items-center justify-center w-full">
                                         <img
-                                            src="/profile-image.webp"
+                                            src={user.image ? user.image : "profile-image.webp"}
                                             alt=""
-                                            className="w-[70px] h-[70px] rounded-full border-2 border-white max-w-full object-cover mb-2"
+                                            className="w-[70px] h-[70px] rounded-full border-2 border-white object-center object-contain mb-2"
                                         />
-                                        <h2 className="text-base sm:text-lg md:text-xl font-semibold">{user.name} {user.surname}</h2>
-                                        <p className="text-gray-500 text-sm sm:text-base">
+                                        <h2 className="text-base sm:text-lg md:text-xl font-semibold text-center">
+                                            {user.name} {user.surname}
+                                        </h2>
+                                        <p className="text-gray-500 text-sm sm:text-base text-center">
                                             {user.scientific_name} | {user.scientific_degree_name}
                                         </p>
                                     </div>

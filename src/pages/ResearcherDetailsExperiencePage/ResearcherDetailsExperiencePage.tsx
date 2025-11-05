@@ -9,8 +9,8 @@ export default function ResearcherDetailsExperiencePage() {
     return (
         <>
             <PageMeta
-                title="AzTU Tədqiqatçılar bazası"
-                description="AzTU Tədqiqatçılar bazası AzTU olan tədqiqatçılar və onlar haqqında məlumatları özündə saxlayır."
+                title="AzTU Researchers Dashboard"
+                description="Azerbaijan Technical University researchers Dashboard"
             />
             <ResearcherLayout user={user} heading="Academic Experience">
                 <ResearcherDetailsExperience user={user} />

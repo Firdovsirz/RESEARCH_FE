@@ -7,12 +7,12 @@ export default function MyInternationalCoorperationsPage() {
     return (
         <>
             <PageMeta
-                title="AzTU Tədqiqatçılar bazası"
-                description="AzTU Tədqiqatçılar bazası AzTU olan tədqiqatçılar və onlar haqqında məlumatları özündə saxlayır."
+                title="AzTU Researchers Dashboard"
+                description="Azerbaijan Technical University researchers Dashboard"
             />
-            <PageBreadcrumb pageTitle="Beynəlxalq əlaqələrim" />
+            <PageBreadcrumb pageTitle="International coorperations" />
             <div className="space-y-6">
-                <ComponentCard title="Beynəlxalq əlaqələrim">
+                <ComponentCard title="International coorperations">
                     <MyInternationalCoorperations />
                 </ComponentCard>
             </div>

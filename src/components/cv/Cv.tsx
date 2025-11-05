@@ -1,17 +1,17 @@
 import Swal from "sweetalert2";
 import Button from "../ui/button/Button";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { RootState } from "../../redux/store";
 import DeleteIcon from '@mui/icons-material/Delete';
+import '@react-pdf-viewer/core/lib/styles/index.css';
 import DownloadIcon from '@mui/icons-material/Download';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import { Worker, Viewer } from '@react-pdf-viewer/core';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import DropzoneComponent from "../form/form-elements/DropZone";
 import { getCvByFinCode, addCv, deleteCv } from "../../services/cv/cvService";
 
 export default function Cv() {
-    const navigate = useNavigate();
     const [cv, setCv] = useState("");
     const [loading, setLoading] = useState(false);
     const [cvFile, setCvFile] = useState<File | null>(null);
@@ -40,30 +40,30 @@ export default function Cv() {
             if (result === "SUCCESS") {
                 Swal.fire({
                     icon: "success",
-                    title: "Uğurla əlavə olundu",
-                    text: "CV uğurla əlavə edildi!"
+                    title: "Added",
+                    text: "CV added successfully."
                 }).then(() => {
                     window.location.reload();
                 });
             } else if (result === "NOT FOUND") {
                 Swal.fire({
                     icon: "error",
-                    title: "Xəta",
-                    text: "İstifadəçi tapılmadı!"
+                    title: "Error",
+                    text: "User not found."
                 });
             } else {
                 Swal.fire({
                     icon: "error",
-                    title: "Xəta",
-                    text: "Server xətası"
+                    title: "Error",
+                    text: "Unexpected error occured. Please try again later."
                 });
             }
         } catch (err) {
             setLoading(false);
             Swal.fire({
                 icon: "error",
-                title: "Xəta",
-                text: "Server xətası"
+                title: "Error",
+                text: "Unexpected error occured. Please try again later."
             });
         }
     }
@@ -71,11 +71,12 @@ export default function Cv() {
 
     const handleCvDelete = async () => {
         const confirmResult = await Swal.fire({
-            title: "CV-ni silmək istədiyinizə əminsiniz?",
+            title: "Are you sure to delete?",
+            text: "This action can not be recovered",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "Bəli, sil",
-            cancelButtonText: "Ləğv et"
+            confirmButtonText: "Yes, delete",
+            cancelButtonText: "Cancel"
         });
 
         if (confirmResult.isConfirmed) {
@@ -87,24 +88,27 @@ export default function Cv() {
                 if (result === "SUCCESS") {
                     Swal.fire({
                         icon: "success",
-                        title: "CV uğurla silindi!"
+                        title: "Deleted",
+                        text: "Resume deleted successfully.!"
                     }).then(() => window.location.reload());
                 } else if (result === "NOT_FOUND") {
                     Swal.fire({
                         icon: "error",
-                        title: "CV tapılmadı"
+                        title: "Resume not found."
                     });
                 } else {
                     Swal.fire({
                         icon: "error",
-                        title: "Xəta baş verdi"
+                        title: "Error",
+                        text: "Unexpected error occured. Please try again later."
                     });
                 }
             } catch (err) {
                 setLoading(false);
                 Swal.fire({
                     icon: "error",
-                    title: "Xəta baş verdi"
+                    title: "Error",
+                    text: "Unexpected error occured. Please try again later."
                 });
             }
         }
@@ -122,24 +126,16 @@ export default function Cv() {
                         </div>
                     ))
                 ) : cv === "NOT FOUND" ? (
-                    <div className="flex flex-col justify-center items-center gap-4">
+                    <div className="flex flex-col justify-center items-center gap-4 w-full">
                         <DropzoneComponent onFileSelect={setCvFile} />
-                        <Button onClick={handleWorkCreate} disabled={loading}>
+                        <Button onClick={handleWorkCreate} disabled={loading || !cvFile}>
                             {loading ? "Saving..." : "Save"}
                         </Button>
                     </div>
                 ) : (
-                    <div
-                        className="flex justify-between items-center border border-gray-300 dark:border-gray-700 rounded-lg p-4 mb-3 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                        <p className="text-gray-800 dark:text-gray-100 font-medium">
-                            {(cv.split("/").pop() || cv)}
-                        </p>
-                        <div className="flex items-center">
-                            <div onClick={() => navigate("/cv-view", { state: { cv } })} className="bg-blue-500 text-white p-2 rounded-[5px] inline-flex items-center justify-center mr-[10px]">
-                                <VisibilityIcon />
-                            </div>
-                            <div className="bg-yellow-500 text-white p-2 rounded-[5px] inline-flex items-center justify-center">
+                    <>
+                        <div className="flex items-center mb-[20px]">
+                            <div className="bg-yellow-500 text-white p-2 rounded-[5px] inline-flex items-center justify-center cursor-pointer">
                                 <DownloadIcon />
                             </div>
                             <div
@@ -150,7 +146,24 @@ export default function Cv() {
                                 <DeleteIcon className="text-white" />
                             </div>
                         </div>
-                    </div>
+                        <div
+                            className="flex justify-between items-center border border-gray-300 dark:border-gray-700 rounded-lg p-4 mb-3 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow"
+                        >
+                            <div
+                                style={{
+                                    width: "100%",
+                                    height: "80vh",
+                                    margin: "20px auto",
+                                    borderRadius: "8px",
+                                    overflow: "hidden",
+                                }}
+                            >
+                                <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
+                                    <Viewer fileUrl={`http://localhost:8000/${cv}`} />
+                                </Worker>
+                            </div >
+                        </div>
+                    </>
                 )}
             </div>
         </>

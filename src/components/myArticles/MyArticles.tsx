@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+import Label from "../form/Label";
 import { Modal } from "../ui/modal";
 import Button from "../ui/button/Button";
 import { useSelector } from "react-redux";
@@ -31,11 +32,20 @@ export default function MyArticles() {
   }, [fin_kod]);
 
   const handleArticleCreateOrUpdate = async () => {
+    if (newField.length === 0) {
+      closeModal();
+      Swal.fire({
+        icon: "warning",
+        title: "Warning",
+        text: "Article name should be filled!"
+      });
+      return;
+    }
     try {
       setLoading(true);
 
       let result;
-        result = await createArticle({ fin_kod: fin_kod || "", article_field: newField }, token || "");
+      result = await createArticle({ fin_kod: fin_kod || "", article_field: newField }, token || "");
 
       closeModal();
       setLoading(false);
@@ -46,18 +56,18 @@ export default function MyArticles() {
       if (result === "SUCCESS") {
         Swal.fire({
           icon: "success",
-          title: editArticleId ? "Uğurla dəyişdirildi" : "Uğurla əlavə olundu",
-          text: editArticleId ? "Məqalə sahəsi uğurla dəyişdirildi!" : "Məqalə sahəsi uğurla əlavə edildi!"
+          title: editArticleId ? "Updated successfully" : "Added successfully",
+          text: editArticleId ? "Article edited successfully!" : "Article added successfully!"
         });
       } else if (result === "NOT_FOUND") {
-        Swal.fire({ icon: "error", title: "Xəta", text: "İstifadəçi tapılmadı!" });
+        Swal.fire({ icon: "error", title: "Error", text: "User not found!" });
       } else {
-        Swal.fire({ icon: "error", title: "Xəta", text: "Server xətası" });
+        Swal.fire({ icon: "error", title: "Error", text: "Unexpected error. Please try again later." });
       }
     } catch (err) {
       closeModal();
       setLoading(false);
-      Swal.fire({ icon: "error", title: "Xəta", text: "Server xətası" });
+      Swal.fire({ icon: "error", title: "Error", text: "Unexpected error. Please try again later." });
     }
   }
 
@@ -77,20 +87,20 @@ export default function MyArticles() {
       if (result === "SUCCESS") {
         Swal.fire({
           icon: "success",
-          title: "Uğurla dəyişdirildi",
-          text: "Məqalə sahəsi uğurla dəyişdirildi!"
+          title: "Successfully updated1",
+          text: "Article updated successfully!"
         });
       } else if (result === "NOT_FOUND") {
-        Swal.fire({ icon: "error", title: "Xəta", text: "İstifadəçi tapılmadı!" });
+        Swal.fire({ icon: "error", title: "Error", text: "User not found!" });
       } else if (result === "CONFLICT") {
-        Swal.fire({ icon: "error", title: "Xəta", text: "Məqalə sahəsi artıq mövcuddur!" });
+        Swal.fire({ icon: "error", title: "Error", text: "Article already exists!" });
       } else {
-        Swal.fire({ icon: "error", title: "Xəta", text: "Server xətası" });
+        Swal.fire({ icon: "error", title: "Error", text: "Unexpected error. Please try again later." });
       }
     } catch (err) {
       closeModal();
       setLoading(false);
-      Swal.fire({ icon: "error", title: "Xəta", text: "Server xətası" });
+      Swal.fire({ icon: "error", title: "Error", text: "Unexpected error. Please try again later." });
     }
   }
 
@@ -103,7 +113,8 @@ export default function MyArticles() {
   const handleDeleteClick = async (articleId: string) => {
     const confirmed = await Swal.fire({
       icon: "warning",
-      title: "Silmək istədiyinizə əminsiniz?",
+      title: "Are you sure to delete?",
+      text: "This action can not be recovered.",
       showCancelButton: true,
       confirmButtonText: "Bəli",
       cancelButtonText: "Xeyr"
@@ -116,9 +127,9 @@ export default function MyArticles() {
       fetchArticles();
 
       if (result === "SUCCESS") {
-        Swal.fire({ icon: "success", title: "Uğurla silindi", text: "Məqalə sahəsi uğurla silindi!" });
+        Swal.fire({ icon: "success", title: "Deleted successfully.", text: "Article deleted successfully!" });
       } else {
-        Swal.fire({ icon: "error", title: "Xəta", text: "Server xətası" });
+        Swal.fire({ icon: "error", title: "Error", text: "Unexpected error. Please try again later." });
       }
     }
   }
@@ -134,7 +145,7 @@ export default function MyArticles() {
           ))
         ) : articles.length === 0 ? (
           <div className="flex justify-center items-center">
-            <div className="bg-yellow-200 text-yellow-800 w-[110px] flex justify-center items-center rounded-[20px] px-[5px]">Mövcud deyil</div>
+            <div className="bg-yellow-200 text-yellow-800 w-[110px] flex justify-center items-center rounded-[20px] px-[5px]">No articles found</div>
           </div>
         ) : (
           articles.map((article) => (
@@ -159,7 +170,7 @@ export default function MyArticles() {
         )}
         <div className="flex justify-end items-end mt-4">
           <Button onClick={() => { setEditArticleId(null); setNewField(""); openModal(); }}>
-            Yeni sahə
+            New article
           </Button>
         </div>
       </div>
@@ -167,20 +178,22 @@ export default function MyArticles() {
       <Modal isOpen={isOpen} onClose={closeModal} className="max-w-[700px] p-6 lg:p-10">
         <div className="flex flex-col px-2 overflow-y-auto custom-scrollbar">
           <h5 className="mb-2 font-semibold text-gray-800 modal-title text-theme-xl dark:text-white/90 lg:text-2xl">
-            {editArticleId ? "Məqaləni dəyişdir" : "Yeni məqalə sahəsi"}
+            {editArticleId ? "Update article" : "New article"}
           </h5>
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
-            {editArticleId ? "Mövcud məqalə sahəsini dəyişdirin." : "Yeni məqalə sahəsi yaratmaq üçün sahə adını daxil edin və yadda saxlayın!"}
+            {editArticleId ? "Update existing article" : "For adding new article fill article name and save!"}
           </p>
+          <Label>Article</Label>
           <input
             type="text"
             value={newField}
+            placeholder="Article name"
             onChange={(e) => setNewField(e.target.value)}
             className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
           />
           <div className="flex items-center gap-3 mt-6 sm:justify-end">
             <button onClick={closeModal} className="flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] sm:w-auto">
-              Bağla
+              Close
             </button>
             <button
               onClick={editArticleId ? handleArticleUpdate : handleArticleCreateOrUpdate}

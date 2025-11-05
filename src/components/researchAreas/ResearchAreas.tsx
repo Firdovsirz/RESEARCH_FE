@@ -50,6 +50,16 @@ export default function ResearchAreas() {
     };
 
     const handleWorkCreate = async () => {
+        if (!area.trim()) {
+            closeModal();
+            Swal.fire({
+                icon: "warning",
+                title: "Warning",
+                text: "Field cannot be empty!"
+            });
+            return;
+        }
+
         try {
             setLoading(true);
             const areaPayload: AreaPayload = {
@@ -65,21 +75,21 @@ export default function ResearchAreas() {
             if (result === "SUCCESS") {
                 Swal.fire({
                     icon: "success",
-                    title: "Uğurla əlavə olundu",
-                    text: "Research Area added successfully!"
+                    title: "Successfully added",
+                    text: "Research area added successfully!"
                 });
                 refreshAreas();
             } else if (result === "NOT_FOUND") {
                 Swal.fire({
                     icon: "error",
-                    title: "Xəta",
+                    title: "Error",
                     text: "Fin code is not valid."
                 });
             } else {
                 Swal.fire({
                     icon: "error",
-                    title: "Xəta",
-                    text: "Server error"
+                    title: "Error",
+                    text: "Unexpected error. Try again later."
                 });
             }
         } catch (err) {
@@ -87,11 +97,11 @@ export default function ResearchAreas() {
             setLoading(false);
             Swal.fire({
                 icon: "error",
-                title: "Xəta",
-                text: "Server error"
+                title: "Error",
+                text: "Unexpected error. Try again later."
             });
         }
-    }
+    };
 
     const handleEditClick = (areaToEdit: ResearchArea) => {
         setSelectedArea(areaToEdit);
@@ -119,21 +129,21 @@ export default function ResearchAreas() {
             if (result === "SUCCESS") {
                 Swal.fire({
                     icon: "success",
-                    title: "Uğurla yeniləndi",
-                    text: "Research Area updated successfully!"
+                    title: "Successfully updated",
+                    text: "Research area updated successfully!"
                 });
                 refreshAreas();
             } else if (result === "NOT_FOUND") {
                 Swal.fire({
                     icon: "error",
-                    title: "Xəta",
+                    title: "Error",
                     text: "Fin code is not valid."
                 });
             } else {
                 Swal.fire({
                     icon: "error",
-                    title: "Xəta",
-                    text: "Server error"
+                    title: "Error",
+                    text: "Unexpected error. Try again later."
                 });
             }
         } catch (err) {
@@ -141,22 +151,22 @@ export default function ResearchAreas() {
             setLoading(false);
             Swal.fire({
                 icon: "error",
-                title: "Xəta",
-                text: "Server error"
+                title: "Error",
+                text: "Unexpected error. Try again later."
             });
         }
     };
 
     const handleDeleteClick = (fin_kod: string, area_code: string, area: string) => {
         Swal.fire({
-            title: 'Silmək istədiyinizə əminsiniz?',
-            text: `“${area}” ixtisas sahəsi silinəcək!`,
+            title: 'Are you sure to delete?',
+            text: `“${area}” reasearch area will be deleted!`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Bəli, sil',
-            cancelButtonText: 'İmtina'
+            confirmButtonText: 'Yes, delete',
+            cancelButtonText: 'Cancel'
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
@@ -165,23 +175,23 @@ export default function ResearchAreas() {
                     setLoading(false);
                     if (res === "SUCCESS") {
                         Swal.fire(
-                            'Silindi!',
-                            'İxtisas sahəsi uğurla silindi.',
+                            'Deleted!',
+                            'Research area deleted successfully.',
                             'success'
                         );
                         refreshAreas();
                     } else {
                         Swal.fire(
-                            'Xəta',
-                            'Silinmə zamanı xəta baş verdi.',
+                            'Error',
+                            'Unexpected error. Try again later.',
                             'error'
                         );
                     }
                 } catch {
                     setLoading(false);
                     Swal.fire(
-                        'Xəta',
-                        'Silinmə zamanı xəta baş verdi.',
+                        'Error',
+                        'Unexpected error. Try again later.',
                         'error'
                     );
                 }
@@ -203,7 +213,7 @@ export default function ResearchAreas() {
                     ))
                 ) : areas.length === 0 ? (
                     <div className="flex justify-center items-center">
-                        <div className="bg-yellow-200 text-yellow-800 w-[110px] flex justify-center items-center rounded-[20px] px-[5px]">Mövcud deyil</div>
+                        <div className="bg-yellow-200 text-yellow-800 flex justify-center items-center rounded-[40px] px-[20px] py-[10px]">No research area found</div>
                     </div>
                 ) : (
                     areas.map((areaItem, index) => {
@@ -235,7 +245,7 @@ export default function ResearchAreas() {
                 )}
                 <div className="flex justify-end items-end">
                     <Button onClick={() => { setArea(""); openModal(); }}>
-                        Yeni ixtisas sahəsi
+                        New area
                     </Button>
                 </div>
             </div>
@@ -247,17 +257,17 @@ export default function ResearchAreas() {
                 <div className="flex flex-col px-2 overflow-y-auto custom-scrollbar">
                     <div>
                         <h5 className="mb-2 font-semibold text-gray-800 modal-title text-theme-xl dark:text-white/90 lg:text-2xl">
-                            Yeni iş yeri
+                            New research area
                         </h5>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                            Yeni ixtisas sahəsi əlavə etmək üçün sahə adını daxil edib yadda saxlayın!
+                            For adding new research erea import area name and save!
                         </p>
                     </div>
                     <div className="mt-8">
                         <div>
                             <div className="mb-[20px]">
                                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    İxtisas sahəsi <span className="text-red-500">*</span>
+                                    Reasearch area <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     id="event-title"
@@ -275,7 +285,7 @@ export default function ResearchAreas() {
                             type="button"
                             className="flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] sm:w-auto"
                         >
-                            Bağla
+                            Close
                         </button>
                         <button
                             onClick={handleWorkCreate}
@@ -283,7 +293,7 @@ export default function ResearchAreas() {
                             disabled={loading}
                             className="btn btn-success btn-update-event flex w-full justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 sm:w-auto"
                         >
-                            {loading ? "Yadda saxlanılır" : "Yadda saxla"}
+                            {loading ? "Saving..." : "Save"}
                         </button>
                     </div>
                 </div>

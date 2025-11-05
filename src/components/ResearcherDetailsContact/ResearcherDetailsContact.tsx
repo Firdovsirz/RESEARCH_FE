@@ -44,29 +44,33 @@ export default function ResearcherDetailsContact({ user }: ResearchAreasProps) {
                     <p className="text-gray-500 text-[16px]">
                         Birth Date: <span className="font-bold text-[#000]">{user?.birth_date ? new Date(user.birth_date).toLocaleDateString('en-GB') : ''}</span>
                     </p>
-                    <p className="text-gray-500 text-[16px]">
-                        Bio: <span className="font-bold text-[#000]">{user?.bio}</span>
-                    </p>
+                    {user.bio ? (
+                        <p className="text-gray-500 text-[16px]">
+                            Bio: <span className="font-bold text-[#000]">{user?.bio}</span>
+                        </p>
+                    ) : null}
                 </div>
                 <div className="border-b-2 border-gray-300 px-3 w-full py-[20px]">
                     <p className="flex justify-start items-center text-gray-500 text-[16px]">
-                        <EmailIcon className='mr-[10px]' /> Email: <span className="font-bold text-[#000]">{user?.email}</span>
+                        <EmailIcon className='mr-[10px]' /> Email:&nbsp;<span className="font-bold text-[#000]">{user?.email}</span>
                     </p>
                 </div>
-                <div className="border-b-2 border-gray-300 px-3 w-full py-[20px]">
-                    <p className="flex justify-start items-center text-gray-500 text-[16px]">
-                        <LanguageIcon className='mr-[10px]' /> Languages
-                    </p>
-                    <ul className="list-disc pl-5 ml-[30px]">
-                        {languages.map((language, index) => {
-                            return (
-                                <li key={index}>
-                                    {language.language_name}
-                                </li>
-                            )
-                        })}
-                    </ul>
-                </div>
+                {languages.length !== 0 ? (
+                    <div className="border-b-2 border-gray-300 px-3 w-full py-[20px]">
+                        <p className="flex justify-start items-center text-gray-500 text-[16px]">
+                            <LanguageIcon className='mr-[10px]' /> Languages
+                        </p>
+                        <ul className="list-disc pl-5 ml-[30px]">
+                            {languages.map((language, index) => {
+                                return (
+                                    <li key={index}>
+                                        {language.language_name}
+                                    </li>
+                                )
+                            })}
+                        </ul>
+                    </div>
+                ) : null}
                 <div className="border-b-2 border-gray-300 px-3 w-full py-[20px]">
                     <div className="flex justify-start mb-2">
                         <div
@@ -75,7 +79,7 @@ export default function ResearcherDetailsContact({ user }: ResearchAreasProps) {
                             {loading ? (
                                 <div className="animate-pulse bg-gray-300 dark:bg-gray-700 rounded-full w-15 h-15"></div>
                             ) : (
-                                <a href={user?.google_scholar} target="_blank" rel="noreferrer">
+                                <a href={user?.google_scholar_url} target="_blank" rel="noreferrer">
                                     <img src="/linkedin-logo.webp" alt="scopus" className="rounded-full w-9 h-9" />
                                 </a>
                             )}
@@ -86,7 +90,7 @@ export default function ResearcherDetailsContact({ user }: ResearchAreasProps) {
                             {loading ? (
                                 <div className="animate-pulse bg-gray-300 dark:bg-gray-700 rounded-full w-15 h-15"></div>
                             ) : (
-                                <a href={user?.google_scholar} target="_blank" rel="noreferrer">
+                                <a href={user?.google_scholar_url} target="_blank" rel="noreferrer">
                                     <img src="/google-scholar-logo.webp" alt="scopus" className="rounded-full w-9 h-9" />
                                 </a>
                             )}
@@ -97,7 +101,7 @@ export default function ResearcherDetailsContact({ user }: ResearchAreasProps) {
                             {loading ? (
                                 <div className="animate-pulse bg-gray-300 dark:bg-gray-700 rounded-full w-15 h-15"></div>
                             ) : (
-                                <a href={user?.scopus} target="_blank" rel="noreferrer">
+                                <a href={user?.scopus_url} target="_blank" rel="noreferrer">
                                     <img src="/scopus-logo.webp" alt="scopus" className="rounded-full w-9 h-9" />
                                 </a>
                             )}
@@ -108,7 +112,7 @@ export default function ResearcherDetailsContact({ user }: ResearchAreasProps) {
                             {loading ? (
                                 <div className="animate-pulse bg-gray-300 dark:bg-gray-700 rounded-full w-15 h-15"></div>
                             ) : (
-                                <a href={user?.web_of_science} target="_blank" rel="noreferrer">
+                                <a href={user?.webofscience_url} target="_blank" rel="noreferrer">
                                     <img src="/web-of-science-logo.webp" alt="scopus" className="rounded-full w-9 h-9" />
                                 </a>
                             )}

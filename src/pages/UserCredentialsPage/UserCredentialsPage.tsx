@@ -7,12 +7,12 @@ export default function UserCredentialsPage() {
     return (
         <>
             <PageMeta
-                title="AzTU Tədqiqatçılar bazası"
-                description="AzTU Tədqiqatçılar bazası AzTU olan tədqiqatçılar və onlar haqqında məlumatları özündə saxlayır."
+                title="AzTU Researchers Dashboard"
+                description="Azerbaijan Technical University researchers Dashboard"
             />
-            <PageBreadcrumb pageTitle="Profil məlumatları" />
+            <PageBreadcrumb pageTitle="Personal details" />
             <div className="space-y-6">
-                <ComponentCard title="Profil məlumatları">
+                <ComponentCard title="Personal details">
                     <UserCredentials />
                 </ComponentCard>
             </div>

@@ -13,7 +13,15 @@ export default function ResearcherDetailsEducation({ user }: ResearchAreasProps)
     useEffect(() => {
         setLoading(true);
         getEducations(user?.fin_kod)
-            .then(setEducations)
+            .then((res) => {
+                if (res === "NO CONTENT") {
+                    setEducations([]);
+                } else if (Array.isArray(res)) {
+                    setEducations(res);
+                } else {
+                    setEducations([]);
+                }
+            })
             .finally(() => {
                 setLoading(false);
             });
@@ -23,13 +31,15 @@ export default function ResearcherDetailsEducation({ user }: ResearchAreasProps)
         <div className="flex flex-col items-start">
             <h2 className="relative text-gray-500 text-[20px] mb-[10px]">
                 Educational Details
-                <div className="absolute bg-blue-500 text-white top-[-10px] right-[-22px] w-6 h-6 rounded-full flex items-center justify-center text-[14px]">
-                    {loading ? (
-                        <div className="h-3 w-3 bg-gray-200 rounded-full animate-pulse"></div>
-                    ) : (
-                        educations.length
-                    )}
-                </div>
+                {educations.length !== 0 ? (
+                    <div className="absolute bg-blue-500 text-white top-[-10px] right-[-22px] w-6 h-6 rounded-full flex items-center justify-center text-[14px]">
+                        {loading ? (
+                            <div className="h-3 w-3 bg-gray-200 rounded-full animate-pulse"></div>
+                        ) : (
+                            educations.length
+                        )}
+                    </div>
+                ) : null}
             </h2>
             <div className="flex flex-col justify-between items-center w-full">
                 {loading ? (
@@ -43,21 +53,25 @@ export default function ResearcherDetailsEducation({ user }: ResearchAreasProps)
                         ))}
                     </div>
                 ) : (
-                    educations.map((education, index) => {
-                        return (
-                            <div key={index} className="border-b-2 border-gray-300 px-3 w-full py-[20px]">
-                                <p className="text-gray-500 text-[16px]">
-                                    {education.start_date} - {education.end_date ? education.end_date : "present"}
-                                </p>
-                                <h2 className="text-[20px] mb-[10px] font-bold">
-                                    {education.title}
-                                </h2>
-                                <p className="text-gray-500 text-[15px]">
-                                    {education.university}
-                                </p>
-                            </div>
-                        );
-                    })
+                    educations.length === 0 ? (
+                        <p className="text-gray-500 text-[16px]">No educational details found</p>
+                    ) : (
+                        educations.map((education, index) => {
+                            return (
+                                <div key={index} className="border-b-2 border-gray-300 px-3 w-full py-[20px]">
+                                    <p className="text-gray-500 text-[16px]">
+                                        {education.start_date} - {education.end_date ? education.end_date : "present"}
+                                    </p>
+                                    <h2 className="text-[20px] mb-[10px] font-bold">
+                                        {education.title}
+                                    </h2>
+                                    <p className="text-gray-500 text-[15px]">
+                                        {education.university}
+                                    </p>
+                                </div>
+                            );
+                        })
+                    )
                 )}
             </div>
         </div>

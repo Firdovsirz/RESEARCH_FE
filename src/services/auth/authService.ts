@@ -25,6 +25,16 @@ export interface Credentials {
     password: string;
 }
 
+export interface PendingUser {
+    id: number;
+    name: string;
+    surname: string;
+    father_name: string;
+    email: string;
+    birth_date: string;
+    created_at: string;
+}
+
 export const signup = async (signUpPayload: SignUpPayload) => {
     try {
         const response = await apiClient.post("/auth/signup", signUpPayload);
@@ -77,3 +87,22 @@ export const signin = async (credentials: Credentials) => {
         return "ERROR";
     };
 };
+export const getPendingUsers = async (token: string) => {
+    try {
+        const response = await apiClient.get('/auth/pending-users', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        if (response.data.status_code === 200) {
+            return response.data.users;
+        } else if (response.data.status_code === 204) {
+            return "NO CONTENT";
+        } else {
+            return "ERROR";
+        }
+    } catch (err: any) {
+        return "ERROR";
+    }
+}

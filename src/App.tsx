@@ -5,6 +5,7 @@ import SignIn from "./pages/AuthPages/SignIn";
 import SignUp from "./pages/AuthPages/SignUp";
 import UserProfiles from "./pages/UserProfiles";
 import NotFound from "./pages/OtherPage/NotFound";
+import FormElements from "./pages/Forms/FormElements";
 import MyUrlsPage from "./pages/MyUrlsPage/MyUrlsPage";
 import CvViewPage from "./pages/CvViewPage/CvViewPage";
 import MyWorksPage from "./pages/MyWorksPage/MyWorksPage";
@@ -15,6 +16,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router";
 import ResearchersPage from "./pages/ResearchersPage/ResearchersPage";
 import ValidateSignUpPage from "./pages/AuthPages/ValidateSignUpPage";
 import MyEducationsPage from "./pages/MyEducationsPage/MyEducationsPage";
+import PendingUsersPage from "./pages/PendingUsersPage/PendingUsersPage";
 import ResearchAreasPage from "./pages/ResearchAreaPage/ResearchAreaPage";
 import MyPublicationsPage from "./pages/MyPulbicationsPage/MyPublicationsPage";
 import NewWorkDetailsPage from "./pages/NewWorkDetailsPage/NewWorkDetailsPage";
@@ -27,8 +29,6 @@ import ResearcherDetailsAreasPage from "./pages/ResearcherDetailsAreasPage/Resea
 import ResearcherDetailsContactPage from "./pages/ResearcherDetailsContactPage/ResearcherDetailsContactPage";
 import ResearcherDetailsEducationPage from "./pages/ResearcherDetailsEducationPage/ResearcherDetailsEducationPage";
 import ResearcherDetailsExperiencePage from "./pages/ResearcherDetailsExperiencePage/ResearcherDetailsExperiencePage";
-import FormElements from "./pages/Forms/FormElements";
-// import MyInternationalCoorperationsPage from "./pages/MyInternationalCoorperationsPage/MyInternationalCoorperationsPage";
 
 export default function App() {
   return (
@@ -39,7 +39,9 @@ export default function App() {
           <Route element={<AppLayout />}>
             <Route index path="/home" element={<Home />} />
 
+            {/* User */}
             <Route index path="/user-credentials" element={<UserCredentialsPage />} />
+            <Route index path="/approve-pending-users" element={<PendingUsersPage />} />
 
             {/* Profile */}
             <Route index path="/profile" element={<UserProfiles />} />
@@ -61,9 +63,6 @@ export default function App() {
 
             {/* Publications */}
             <Route path="/my-publications" element={<MyPublicationsPage />} />
-
-            {/* international coorperations */}
-            {/* <Route path="/my-international-coorperations" element={<MyInternationalCoorperationsPage />} /> */}
 
             {/* Researchers */}
             <Route path="/research-areas" element={<ResearchAreasPage />} />

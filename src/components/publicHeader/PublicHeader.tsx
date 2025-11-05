@@ -31,9 +31,9 @@ export default function PublicHeader({ onSearch, toggleMenu }: PublicHeaderProps
                 <div className="w-full flex justify-between items-center h-[50px] gap-2 sm:gap-4">
                     <Link to={"/"} className="flex-shrink-0">
                         <img
-                            src="/aztu-logo.webp"
+                            src="/aztu-logo.png"
                             alt="Azerbaijan Technical University"
-                            className="w-[80px] sm:w-[100px] h-[40px] sm:h-[50px]"
+                            className="w-[40px] h-[50px]"
                         />
                     </Link>
                     {/* <h1 className="text-lg sm:text-xl font-semibold transition-all duration-500 ease-in-out flex-grow text-center">

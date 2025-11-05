@@ -47,6 +47,15 @@ export default function MyWorks() {
     }
 
     const handleWorkCreate = async () => {
+        if (!workPlace.trim() || !duty.trim() || !startDate) {
+            closeModal();
+        Swal.fire({
+            icon: "warning",
+            title: "Warning",
+            text: "University, Duty, and Start date fields cannot be empty!"
+        });
+        return;
+    }
         try {
             setLoading(true);
             const experiencePayload: ExperiencePayload = {
@@ -65,11 +74,10 @@ export default function MyWorks() {
             if (result === "SUCCESS") {
                 Swal.fire({
                     icon: "success",
-                    title: editMode ? "Uğurla yeniləndi" : "Uğurla əlavə olundu",
-                    text: editMode ? "İş yeri uğurla yeniləndi!" : "İş yeri uğurla əlavə edildi!"
+                    title: editMode ? "Successfully updated" : "Added successfully",
+                    text: editMode ? "Job details updated successfully!" : "New job details added successfully!"
                 });
                 resetForm();
-                // Refresh works
                 setLoading(true);
                 getExperiences(fin_kod || "")
                     .then((res) => {
@@ -85,8 +93,8 @@ export default function MyWorks() {
             } else {
                 Swal.fire({
                     icon: "error",
-                    title: "Xəta",
-                    text: "Server xətası"
+                    title: "Error",
+                    text: "Unexpected error occured. Please try again later."
                 });
             }
         } catch (err) {
@@ -94,8 +102,8 @@ export default function MyWorks() {
             setLoading(false);
             Swal.fire({
                 icon: "error",
-                title: "Xəta",
-                text: "Server xətası"
+                title: "Error",
+                text: "Unexpected error occured. Please try again later."
             });
         }
     }
@@ -112,21 +120,21 @@ export default function MyWorks() {
 
     const handleDelete = (exp_code: string) => {
         Swal.fire({
-            title: "Əminsiniz?",
-            text: "Bu işi silmək istədiyinizə əminsiniz?",
+            title: "Are you sure to delete?",
+            text: "Are you sure to delete this job details?",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Bəli, sil!",
-            cancelButtonText: "Ləğv et"
+            confirmButtonText: "Yes, delete!",
+            cancelButtonText: "Cancel"
         }).then(async (result) => {
             if (result.isConfirmed) {
                 setLoading(true);
                 const res = await deleteExperience(exp_code);
                 setLoading(false);
                 if (res === "SUCCESS") {
-                    Swal.fire("Silindi!", "İş yeri uğurla silindi.", "success");
+                    Swal.fire("Deleted!", "Job details deleted successfully", "success");
                     // Refresh works
                     setLoading(true);
                     getExperiences(fin_kod || "")
@@ -141,7 +149,7 @@ export default function MyWorks() {
                             setLoading(false);
                         });
                 } else {
-                    Swal.fire("Xəta", "Silinmə zamanı xəta baş verdi", "error");
+                    Swal.fire("Error", "Unexpected error occured. Please try again later.", "error");
                 }
             }
         });
@@ -167,8 +175,8 @@ export default function MyWorks() {
             if (result === "SUCCESS") {
                 Swal.fire({
                     icon: "success",
-                    title: "Uğurla yeniləndi",
-                    text: "İş yeri uğurla yeniləndi!"
+                    title: "Successfully updated",
+                    text: "Job details updated successfully!"
                 });
                 resetForm();
 
@@ -187,14 +195,14 @@ export default function MyWorks() {
             } else if (result === "NOT_FOUND") {
                 Swal.fire({
                     icon: "error",
-                    title: "Tapılmadı",
-                    text: "İş yeri tapılmadı!"
+                    title: "Error",
+                    text: "Job details not found!"
                 });
             } else {
                 Swal.fire({
                     icon: "error",
-                    title: "Xəta",
-                    text: "Server xətası"
+                    title: "Error",
+                    text: "Unexpected error occured. Please try again later."
                 });
             }
         } catch (err) {
@@ -202,8 +210,8 @@ export default function MyWorks() {
             setLoading(false);
             Swal.fire({
                 icon: "error",
-                title: "Xəta",
-                text: "Server xətası"
+                title: "Error",
+                text: "Unexpected error occured. Please try again later."
             });
         }
     };
@@ -222,7 +230,7 @@ export default function MyWorks() {
                     ))
                 ) : works.length === 0 ? (
                     <div className="flex justify-center items-center">
-                        <div className="bg-yellow-200 text-yellow-800 w-[110px] flex justify-center items-center rounded-[20px] px-[5px]">Mövcud deyil</div>
+                        <div className="bg-yellow-200 text-yellow-800 flex justify-center items-center rounded-[20px] px-[20px] py-[10px]">No work found</div>
                     </div>
                 ) : (
                     works.map((work, index) => {
@@ -284,48 +292,54 @@ export default function MyWorks() {
                         <div>
                             <div className="mb-[20px]">
                                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Müəssisə adı <span className="text-red-500">*</span>
+                                    University <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     id="event-title"
                                     type="text"
                                     value={workPlace}
+                                    placeholder="Azerbaijan Technical University"
                                     onChange={(e) => setWorkPlace(e.target.value)}
                                     className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                                 />
                             </div>
                             <div className="mb-[20px]">
                                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Vəzifə <span className="text-red-500">*</span>
+                                    Duty <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     id="event-title"
                                     type="text"
                                     value={duty}
+                                    placeholder="Teacher"
                                     onChange={(e) => setDuty(e.target.value)}
                                     className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                                 />
                             </div>
                             <div className="mb-[20px]">
                                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Başlanğıc tarixi <span className="text-red-500">*</span>
+                                    Start date <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     id="event-title"
                                     type="text"
+                                    maxLength={4}
                                     value={startDate}
+                                    placeholder="2000"
                                     onChange={(e) => setStartDate(+e.target.value)}
                                     className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                                 />
                             </div>
                             <div className="mb-[20px]">
                                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Son tarixi (Son tarixi boş qoyaraq işin davam etidiyini bildirirsiz!)
+                                    End date (Leave it blank if you are working right now!)
                                 </label>
                                 <input
                                     id="event-title"
                                     type="text"
+                                    maxLength={4}
                                     value={endDate}
+                                    placeholder="2004"
                                     onChange={(e) => setEndDate(+e.target.value)}
                                     className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                                 />
@@ -338,7 +352,7 @@ export default function MyWorks() {
                             type="button"
                             className="flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] sm:w-auto"
                         >
-                            Bağla
+                            Close
                         </button>
                         <Button
                             onClick={editMode ? handleWorkEdit : handleWorkCreate}
@@ -346,8 +360,8 @@ export default function MyWorks() {
                             className="btn btn-success btn-update-event flex w-full justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 sm:w-auto"
                         >
                             {loading
-                                ? (editMode ? "Yenilənir" : "Yadda saxlanılır")
-                                : (editMode ? "Yadda saxla" : "Yadda saxla")}
+                                ? (editMode ? "Updating" : "Save")
+                                : (editMode ? "Update" : "Save")}
                         </Button>
                     </div>
                 </div>

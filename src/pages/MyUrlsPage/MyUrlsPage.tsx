@@ -7,12 +7,12 @@ export default function MyUrlsPage() {
     return (
         <>
             <PageMeta
-                title="AzTU Tədqiqatçılar bazası"
-                description="AzTU Tədqiqatçılar bazası AzTU olan tədqiqatçılar və onlar haqqında məlumatları özündə saxlayır."
+                title="AzTU Researchers Dashboard"
+                description="Azerbaijan Technical University researchers Dashboard"
             />
-            <PageBreadcrumb pageTitle="Linklərim" />
+            <PageBreadcrumb pageTitle="My Urls" />
             <div className="space-y-6">
-                <ComponentCard title="Linklərim">
+                <ComponentCard title="My Urls">
                     <MyUrls />
                 </ComponentCard>
             </div>

@@ -50,6 +50,15 @@ export default function MyPublications() {
   };
 
   const handlePublicationCreate = async () => {
+    if (publicationName.length === 0) {
+      closeModal();
+      Swal.fire({
+        icon: "warning",
+        title: "Warning",
+        text: "Publication name field can not be empty!"
+      });
+      return;
+    }
     try {
       setLoading(true);
       const publicationPayload: PublicationPayload = {
@@ -66,8 +75,8 @@ export default function MyPublications() {
       if (result === "SUCCESS") {
         Swal.fire({
           icon: "success",
-          title: "Uğurla əlavə olundu",
-          text: "Məqalə sahəsi uğurla əlavə edildi!"
+          title: "Added successfully",
+          text: "Publication added successfully!"
         });
         refreshPublications();
         setPublicationName("");
@@ -75,14 +84,14 @@ export default function MyPublications() {
       } else if (result === "NOT_FOUND") {
         Swal.fire({
           icon: "error",
-          title: "Xəta",
-          text: "İstifadəçi tapılmadı!"
+          title: "Error",
+          text: "User not found!"
         });
       } else {
         Swal.fire({
           icon: "error",
-          title: "Xəta",
-          text: "Server xətası"
+          title: "Error",
+          text: "Unexpected error occured. Please try again later."
         });
       }
     } catch (err) {
@@ -90,8 +99,8 @@ export default function MyPublications() {
       setLoading(false);
       Swal.fire({
         icon: "error",
-        title: "Xəta",
-        text: "Server xətası"
+        title: "Error",
+        text: "Unexpected error occured. Please try again later."
       });
     }
   }
@@ -114,8 +123,8 @@ export default function MyPublications() {
       if (result === "SUCCESS") {
         Swal.fire({
           icon: "success",
-          title: "Uğurla yeniləndi",
-          text: "Məqalə sahəsi uğurla yeniləndi!"
+          title: "Updated successfully",
+          text: "Publication updated successfully!"
         });
         refreshPublications();
         setPublicationName("");
@@ -123,14 +132,14 @@ export default function MyPublications() {
       } else if (result === "NOT_FOUND") {
         Swal.fire({
           icon: "error",
-          title: "Xəta",
-          text: "İstifadəçi tapılmadı!"
+          title: "Error",
+          text: "User not found!"
         });
       } else {
         Swal.fire({
           icon: "error",
-          title: "Xəta",
-          text: "Server xətası"
+          title: "Error",
+          text: "Unexpected error occured. Please try again later."
         });
       }
     } catch (err) {
@@ -139,8 +148,8 @@ export default function MyPublications() {
       setEditPublicationId(null);
       Swal.fire({
         icon: "error",
-        title: "Xəta",
-        text: "Server xətası"
+        title: "Error",
+        text: "Unexpected error occured. Please try again later."
       });
     }
   }
@@ -148,11 +157,11 @@ export default function MyPublications() {
   const handlePublicationDelete = async (publication_code: string) => {
     const confirmResult = await Swal.fire({
       icon: "warning",
-      title: "Təsdiqlə",
-      text: "Bu nəşri silmək istədiyinizə əminsiniz?",
+      title: "Are you sure to delete?",
+      text: "This action can not be recovered!",
       showCancelButton: true,
-      confirmButtonText: "Bəli, sil",
-      cancelButtonText: "Ləğv et"
+      confirmButtonText: "Yes, delete",
+      cancelButtonText: "Cancel"
     });
 
     if (confirmResult.isConfirmed) {
@@ -164,23 +173,23 @@ export default function MyPublications() {
         if (result === "SUCCESS") {
           Swal.fire({
             icon: "success",
-            title: "Uğurla silindi",
-            text: "Məqalə sahəsi uğurla silindi!"
+            title: "Deleted successfully",
+            text: "Publication deleted successfully!"
           });
           refreshPublications();
         } else {
           Swal.fire({
             icon: "error",
-            title: "Xəta",
-            text: "Silinmə zamanı xəta baş verdi"
+            title: "Error",
+            text: "Unexpected error occured. Please try again later."
           });
         }
       } catch (err) {
         setLoading(false);
         Swal.fire({
           icon: "error",
-          title: "Xəta",
-          text: "Server xətası"
+          title: "Error",
+          text: "Unexpected error occured. Please try again later."
         });
       }
     }
@@ -215,7 +224,7 @@ export default function MyPublications() {
           ))
         ) : publications.length === 0 ? (
           <div className="flex justify-center items-center">
-            <div className="bg-yellow-200 text-yellow-800 w-[110px] flex justify-center items-center rounded-[20px] px-[5px]">Mövcud deyil</div>
+            <div className="bg-yellow-200 text-yellow-800 flex justify-center items-center rounded-[20px] px-[20px] py-[10px]">No publications found</div>
           </div>
         ) : (
           publications.map((publication, index) => {
@@ -254,7 +263,7 @@ export default function MyPublications() {
             setPublicationUrl("");
             openModal();
           }}>
-            Yeni nəşr
+            New publication
           </Button>
         </div>
       </div>
@@ -266,34 +275,37 @@ export default function MyPublications() {
         <div className="flex flex-col px-2 overflow-y-auto custom-scrollbar">
           <div>
             <h5 className="mb-2 font-semibold text-gray-800 modal-title text-theme-xl dark:text-white/90 lg:text-2xl">
-              {editPublicationId ? "Nəşri redaktə et" : "Yeni nəşr"}
+              {editPublicationId ? "Update Publication" : "New Publication"}
             </h5>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              {editPublicationId ? "Nəşr məlumatlarını redaktə edin." : "Yeni nəşr yaratmaq üçün nəşr adını və əgər mövcuddursa link daxil edin!"}
+              {editPublicationId ? "Updated publication details" : "For adding new publication fill the publication name and url if available!"}
             </p>
           </div>
           <div className="mt-8">
             <div>
               <div className="mb-[20px]">
                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                  Nəşr adı
+                  Publication name
+                  <span className="text-red-500 ml-[5px]">*</span>
                 </label>
                 <input
                   id="event-title"
                   type="text"
                   value={publicationName}
+                  placeholder="Publication name"
                   onChange={(e) => setPublicationName(e.target.value)}
                   className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                 />
               </div>
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                  Nəşr linki (mövcuddursa)
+                  Publication url (if available)
                 </label>
                 <input
                   id="event-title"
                   type="text"
                   value={publicationUrl}
+                  placeholder="Publication url"
                   onChange={(e) => setPublicationUrl(e.target.value)}
                   className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                 />
@@ -306,7 +318,7 @@ export default function MyPublications() {
               type="button"
               className="flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] sm:w-auto"
             >
-              Bağla
+              Cancel
             </button>
             <button
               onClick={editPublicationId ? handlePublicationUpdate : handlePublicationCreate}
@@ -314,7 +326,7 @@ export default function MyPublications() {
               disabled={loading}
               className="btn btn-success btn-update-event flex w-full justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 sm:w-auto"
             >
-              {loading ? "Yadda saxlanılır" : "Yadda saxla"}
+              {loading ? "Saving..." : "Save"}
             </button>
           </div>
         </div>

@@ -22,7 +22,7 @@ export default function MyEducations() {
 
     const [editMode, setEditMode] = useState(false);
     const [editCode, setEditCode] = useState<string>("");
-    const [selectedEducation, setSelectedEducation] = useState<Education | null>(null);
+    const [_, setSelectedEducation] = useState<Education | null>(null);
 
     useEffect(() => {
         setLoading(true);
@@ -40,13 +40,22 @@ export default function MyEducations() {
     }, [fin_kod]);
 
     const handleEducationCreate = async () => {
+        if (!workPlace || !duty || !startDate) {
+            Swal.fire({
+                icon: "warning",
+                title: "Warning",
+                text: "Please fill all required fields!"
+            });
+            return;
+        }
+
         try {
             setLoading(true);
             const educationPayload: EducationPayload = {
                 fin_kod: fin_kod || "",
                 university: workPlace,
                 title: duty,
-                start_date: startDate ? startDate : 0,
+                start_date: startDate,
                 end_date: endDate
             }
             const result = await addEducation(educationPayload);
@@ -84,16 +93,23 @@ export default function MyEducations() {
         }
     }
 
-    console.log(editCode);
-
     const handleEducationEdit = async () => {
+        if (!workPlace || !duty || !startDate) {
+            Swal.fire({
+                icon: "warning",
+                title: "Xəta",
+                text: "Zəhmət olmasa bütün məcburi sahələri doldurun (End date istisna olmaqla)!"
+            });
+            return;
+        }
+
         try {
             setLoading(true);
             const educationPayload: EducationPayload = {
                 fin_kod: fin_kod || "",
                 university: workPlace,
                 title: duty,
-                start_date: startDate ? startDate : 0,
+                start_date: startDate,
                 end_date: endDate
             }
             const result = await updateEducation(editCode, educationPayload);
@@ -136,14 +152,14 @@ export default function MyEducations() {
 
     const handleDeleteEducation = (edu_code: string) => {
         Swal.fire({
-            title: 'Silmək istədiyinizə əminsiniz?',
-            text: "Bu əməliyyat geri qaytarıla bilməz!",
+            title: 'Are you sure to delete?',
+            text: "This action cannot be recovered!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Bəli, sil',
-            cancelButtonText: 'İmtina'
+            confirmButtonText: 'Yes, delete',
+            cancelButtonText: 'Cancel'
         }).then(async (result) => {
             if (result.isConfirmed) {
                 setLoading(true);
@@ -152,8 +168,8 @@ export default function MyEducations() {
                     setLoading(false);
                     if (res === "SUCCESS") {
                         Swal.fire(
-                            'Silindi!',
-                            'Təhsil məlumatları uğurla silindi.',
+                            'Deleted!',
+                            'Education details deleted successfully.',
                             'success'
                         );
                         const updatedEducations = await getEducations(fin_kod || "");
@@ -161,16 +177,16 @@ export default function MyEducations() {
                     } else {
                         Swal.fire({
                             icon: "error",
-                            title: "Xəta",
-                            text: "Server xətası"
+                            title: "Error",
+                            text: "Unexpected error occured. Please try again later."
                         });
                     }
                 } catch (error) {
                     setLoading(false);
                     Swal.fire({
                         icon: "error",
-                        title: "Xəta",
-                        text: "Server xətası"
+                        title: "Error",
+                        text: "Unexpected error occured. Please try again later."
                     });
                 }
             }
@@ -192,8 +208,10 @@ export default function MyEducations() {
                         </div>
                     ))
                 ) : educations.length === 0 ? (
-                    <div className="flex justify-center items-center">
-                        <div className="bg-yellow-200 text-yellow-800 w-[110px] flex justify-center items-center rounded-[20px] px-[5px]">Mövcud deyil</div>
+                    <div className="flex justify-center items-center min-h-[80px]">
+                        <span className="text-lg font-semibold text-gray-700 dark:text-gray-200 bg-yellow-200 text-yellow-600 py-[10px] px-[20px] rounded-[30px]">
+                            No educational details found
+                        </span>
                     </div>
                 ) : (
                     educations.map((education, index) => {
@@ -203,10 +221,10 @@ export default function MyEducations() {
                                 className="border border-gray-300 dark:border-gray-700 rounded-lg p-4 mb-3 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow flex justify-between items-center">
                                 <div>
                                     <p className="text-gray-800 dark:text-gray-100 font-medium">
-                                        Müəssisə: {education.university}
+                                        University: {education.university}
                                     </p>
                                     <p className="text-gray-800 dark:text-gray-100 font-medium">
-                                        Dərəcə: {education.title}
+                                        Degree: {education.title}
                                     </p>
                                     <p className="text-gray-800 dark:text-gray-100 font-medium">
                                         {education.start_date} - {education.end_date ? education.end_date : "present"}
@@ -250,7 +268,7 @@ export default function MyEducations() {
                         setSelectedEducation(null);
                         setEditCode("");
                     }}>
-                        Yeni təhsil
+                        New Education
                     </Button>
                 </div>
             </div>
@@ -262,58 +280,64 @@ export default function MyEducations() {
                 <div className="flex flex-col px-2 overflow-y-auto custom-scrollbar">
                     <div>
                         <h5 className="mb-2 font-semibold text-gray-800 modal-title text-theme-xl dark:text-white/90 lg:text-2xl">
-                            Yeni təhsil
+                            New Education
                         </h5>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                            Yeni təhsil əlavə etmək üçün aşağıdakı məlumatları daxil edib yadda saxlayın!
+                            For adding new educatiin fill all inputs and save!
                         </p>
                     </div>
                     <div className="mt-8">
                         <div>
                             <div className="mb-[20px]">
                                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Müəssisə adı <span className="text-red-500">*</span>
+                                    University <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     id="event-title"
                                     type="text"
                                     value={workPlace}
                                     onChange={(e) => setWorkPlace(e.target.value)}
+                                    placeholder="Azerbaijan Technical University"
                                     className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                                 />
                             </div>
                             <div className="mb-[20px]">
                                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Dərəcə <span className="text-red-500">*</span>
+                                    Degree <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     id="event-title"
                                     type="text"
                                     value={duty}
+                                    placeholder="Master"
                                     onChange={(e) => setDuty(e.target.value)}
                                     className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                                 />
                             </div>
                             <div className="mb-[20px]">
                                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Başlanğıc tarixi <span className="text-red-500">*</span>
+                                    Start date <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     id="event-title"
                                     type="text"
+                                    maxLength={4}
                                     value={startDate}
+                                    placeholder="2000"
                                     onChange={(e) => setStartDate(+e.target.value)}
                                     className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                                 />
                             </div>
                             <div className="mb-[20px]">
                                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Son tarixi (Son tarixi boş qoyaraq təhsilinizin davam etidiyini bildirirsiz!)
+                                    End date (Keep it blank if you are studying.)
                                 </label>
                                 <input
                                     id="event-title"
                                     type="text"
+                                    maxLength={4}
                                     value={endDate}
+                                    placeholder="2004"
                                     onChange={(e) => setEndDate(+e.target.value)}
                                     className="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                                 />

@@ -37,9 +37,17 @@ export const createUrl = async (urlPayload: UrlPayload) => {
 
         if (response.data.status_code === 201) {
             return "SUCCESS";
+        } else {
+            return "ERROR";
         }
-    } catch (err) {
-        return "ERROR";
+    } catch (error: any) {
+        if (error.response && error.response.status === 422) {
+            return "VALIDATION_ERROR";
+        } else if (error.response && error.response.status === 409) {
+            return "CONFLICT";
+        } else {
+            return "ERROR";
+        }
     }
 }
 
@@ -62,9 +70,9 @@ export const updateUrl = async (urlId: string, urlPayload: UrlPayload) => {
     }
 }
 
-export const deleteUrl = async (urlId: number) => {
+export const deleteUrl = async (urlId: number, url_name: string) => {
     try {
-        const response = await apiClient.delete(`/api/link/${urlId}/delete`);
+        const response = await apiClient.delete(`/api/link/${urlId}/delete/${url_name}`);
         if (response.data.status_code === 200) {
             return "SUCCESS";
         } else {

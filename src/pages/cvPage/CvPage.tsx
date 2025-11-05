@@ -7,12 +7,12 @@ export default function CvPage() {
     return (
         <>
             <PageMeta
-                title="AzTU Tədqiqatçılar bazası"
-                description="AzTU Tədqiqatçılar bazası AzTU olan tədqiqatçılar və onlar haqqında məlumatları özündə saxlayır."
+                title="AzTU Researchers Dashboard"
+                description="Azerbaijan Technical University researchers Dashboard"
             />
-            <PageBreadcrumb pageTitle="Cv" />
+            <PageBreadcrumb pageTitle="Resume" />
             <div className="space-y-6">
-                <ComponentCard title="Cv">
+                <ComponentCard title="Resume">
                     <Cv />
                 </ComponentCard>
             </div>

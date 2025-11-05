@@ -67,11 +67,11 @@ const navItems: NavItem[] = [
     name: "My publications",
     path: "/my-publications",
   },
-  // {
-  //   icon: <PublicIcon />,
-  //   name: "Beynəlxalq əlaqələrim",
-  //   path: "/my-international-coorperations",
-  // },
+  {
+    icon: <PeopleIcon />,
+    name: "Approve Pending Users",
+    path: "/approve-pending-users",
+  },
   {
     icon: <LinkIcon />,
     name: "My Urls",
@@ -297,22 +297,22 @@ const AppSidebar: React.FC = () => {
             <>
               <img
                 className="dark:hidden"
-                src="/aztu-logo.webp"
+                src="/aztu-logo.png"
                 alt="Logo"
-                width={150}
+                width={80}
                 height={40}
               />
               <img
                 className="hidden dark:block"
-                src="/aztu-logo.webp"
+                src="/aztu-logo-light.png"
                 alt="Logo"
-                width={150}
+                width={80}
                 height={40}
               />
             </>
           ) : (
             <img
-              src="/aztu-logo.webp"
+              src="/aztu-logo.png"
               alt="Logo"
               width={32}
               height={32}

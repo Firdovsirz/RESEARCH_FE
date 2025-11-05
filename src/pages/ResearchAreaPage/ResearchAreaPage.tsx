@@ -7,12 +7,12 @@ export default function ResearchAreasPage() {
     return (
         <>
             <PageMeta
-                title="AzTU Tədqiqatçılar bazası"
-                description="AzTU Tədqiqatçılar bazası AzTU olan tədqiqatçılar və onlar haqqında məlumatları özündə saxlayır."
+                title="AzTU Researchers Dashboard"
+                description="Azerbaijan Technical University researchers Dashboard"
             />
-            <PageBreadcrumb pageTitle="İxtisas sahələri" />
+            <PageBreadcrumb pageTitle="Research areas" />
             <div className="space-y-6">
-                <ComponentCard title="İxtisas sahələri">
+                <ComponentCard title="Research areas">
                     <ResearchAreas />
                 </ComponentCard>
             </div>

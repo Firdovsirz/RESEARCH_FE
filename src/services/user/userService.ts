@@ -63,13 +63,9 @@ export const createUserProfile = async (userPayload: UserPayload, token: string)
     }
 }
 
-export const getUserProfile = async (fin_kod: string, token: string) => {
+export const getUserProfile = async (fin_kod: string) => {
     try {
-        const response = await apiClient.get(`/api/user/${fin_kod}/profile?lang=${lang_code}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        const response = await apiClient.get(`/api/user/${fin_kod}/profile?lang=${lang_code}`);
 
         if (response.data.status_code === 200) {
             return response.data.user;

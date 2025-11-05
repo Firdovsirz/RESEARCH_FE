@@ -175,7 +175,7 @@ export default function LanguageDetails() {
                     ))
                 ) : languages.length === 0 ? (
                     <div className="flex justify-center items-center">
-                        <div className="bg-yellow-200 text-yellow-800 w-[110px] flex justify-center items-center rounded-[20px] px-[5px]">Mövcud deyil</div>
+                        <div className="bg-yellow-200 text-yellow-800 flex justify-center items-center rounded-[20px] px-[20px] py-[10px]">No language found.</div>
                     </div>
                 ) : (
                     languages.map((language, index) => {
@@ -185,10 +185,10 @@ export default function LanguageDetails() {
                                 className="border border-gray-300 dark:border-gray-700 rounded-lg p-4 mb-3 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow"
                             >
                                 <div className="flex justify-between items-center">
-                                <p className="text-gray-800 dark:text-gray-100 font-medium">
-                                    {language.language_name} ({language.language_short_name}) - {language.language_level}
-                                </p>
-                                <div
+                                    <p className="text-gray-800 dark:text-gray-100 font-medium">
+                                        {language.language_name} ({language.language_short_name}) - {language.language_level}
+                                    </p>
+                                    <div
                                         className="bg-red-500 w-[40px] h-[40px] flex justify-center items-center rounded-[10px] cursor-pointer"
                                         onClick={() => handleLangDelete(language.lang_serial)}
                                     >

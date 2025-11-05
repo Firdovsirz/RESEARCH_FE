@@ -7,12 +7,12 @@ export default function MyEducationsPage() {
     return (
         <>
             <PageMeta
-                title="AzTU Tədqiqatçılar bazası"
-                description="AzTU Tədqiqatçılar bazası AzTU olan tədqiqatçılar və onlar haqqında məlumatları özündə saxlayır."
+                title="AzTU Researchers Dashboard"
+                description="Azerbaijan Technical University researchers Dashboard"
             />
-            <PageBreadcrumb pageTitle="Təhsil məlumatlarım" />
+            <PageBreadcrumb pageTitle="My educations" />
             <div className="space-y-6">
-                <ComponentCard title="Təhsil məlumatlarım">
+                <ComponentCard title="My educations">
                     <MyEducations />
                 </ComponentCard>
             </div>

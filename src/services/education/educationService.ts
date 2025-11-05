@@ -34,7 +34,7 @@ export const addEducation = async (educationPayload: EducationPayload) => {
 
 export const getEducations = async (fin_kod: string) => {
     try {
-        const response = await apiClient.get(`/api/education/${fin_kod}`);
+        const response = await apiClient.get(`/api/education/${fin_kod}?lang_code=az`);
 
         if (response.data.status_code === 200) {
             return response.data.educations;

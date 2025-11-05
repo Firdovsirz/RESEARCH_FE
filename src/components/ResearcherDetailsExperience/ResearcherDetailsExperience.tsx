@@ -13,7 +13,7 @@ export default function ResearcherDetailsExperience({ user }: ResearchAreasProps
     useEffect(() => {
         setLoading(true);
         getExperiences(user?.fin_kod)
-            .then(setExperiences)
+            .then((res) => setExperiences(Array.isArray(res) ? res : []))
             .finally(() => {
                 setLoading(false);
             });
@@ -22,14 +22,16 @@ export default function ResearcherDetailsExperience({ user }: ResearchAreasProps
     return (
         <div className="flex flex-col items-start">
             <h2 className="relative text-gray-500 text-[20px] mb-[10px]">
-                Educational Details
-                <div className="absolute bg-blue-500 text-white top-[-10px] right-[-22px] w-6 h-6 rounded-full flex items-center justify-center text-[14px]">
-                    {loading ? (
-                        <div className="h-3 w-3 bg-gray-200 rounded-full animate-pulse"></div>
-                    ) : (
-                        experiences.length
-                    )}
-                </div>
+                Academic experience details
+                {Array.isArray(experiences) && experiences.length !== 0 ? (
+                    <div className="absolute bg-blue-500 text-white top-[-10px] right-[-22px] w-6 h-6 rounded-full flex items-center justify-center text-[14px]">
+                        {loading ? (
+                            <div className="h-3 w-3 bg-gray-200 rounded-full animate-pulse"></div>
+                        ) : (
+                            experiences.length
+                        )}
+                    </div>
+                ) : null}
             </h2>
             <div className="flex flex-col justify-between items-center w-full">
                 {loading ? (
@@ -42,7 +44,7 @@ export default function ResearcherDetailsExperience({ user }: ResearchAreasProps
                             </div>
                         ))}
                     </div>
-                ) : (
+                ) : Array.isArray(experiences) && experiences.length > 0 ? (
                     experiences.map((experience, index) => {
                         return (
                             <div key={index} className="border-b-2 border-gray-300 px-3 w-full py-[20px]">
@@ -58,6 +60,8 @@ export default function ResearcherDetailsExperience({ user }: ResearchAreasProps
                             </div>
                         );
                     })
+                ) : (
+                    <p className="text-gray-500 text-[16px] py-[20px]">No experience details found</p>
                 )}
             </div>
         </div>

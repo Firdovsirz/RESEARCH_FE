@@ -31,14 +31,13 @@ export default function UserCredentials() {
     const [finKodState, setFinKodState] = useState(fin_kod || "");
 
     const scientificNameOptions = [
-        { value: "Fəlsəfə doktoru (PhD)", label: "Fəlsəfə doktoru (PhD)" },
-        { value: "Magistr (MSc)", label: "Magistr (MSc)" },
-        { value: "Doktor (Dr.)", label: "Doktor (Dr.)" },
+        { value: "Doctor of Philosophy (PhD)", label: "Doctor of Philosophy (PhD)" },
+        { value: "Master (MSc)", label: "Master (MSc)" },
+        { value: "Doctor (Dr.)", label: "Doctor (Dr.)" },
         { value: "Professor (Prof.)", label: "Professor (Prof.)" },
-        { value: "Dosent", label: "Dosent" },
-        { value: "Assist. Prof.", label: "Assist. Prof." },
-        { value: "Müəllim", label: "Müəllim" },
-        { value: "Tədqiqatçı", label: "Tədqiqatçı" }
+        { value: "Associate Professor", label: "Associate Professor" },
+        { value: "Teacher", label: "Teacher" },
+        { value: "Researcher", label: "Researcher" }
     ];
 
     // master
@@ -54,10 +53,10 @@ export default function UserCredentials() {
     };
 
     const scientificDegreeOptions = [
-        { value: "Bakalavr", label: "Bakalavr" },
-        { value: "Magistr", label: "Magistr" },
-        { value: "Doktorant", label: "Doktorant" },
-        { value: "Dosent", label: "Dosent" },
+        { value: "Bachelor", label: "Bachelor" },
+        { value: "Master", label: "Master" },
+        { value: "Doctoral student", label: "Doctoral student" },
+        { value: "Associate Professor", label: "Associate Professor" },
         { value: "Professor", label: "Professor" }
     ]
 
@@ -66,7 +65,7 @@ export default function UserCredentials() {
     };
 
     useEffect(() => {
-        getUserProfile(fin_kod ? fin_kod : "", token ? token : "")
+        getUserProfile(fin_kod ? fin_kod : "")
             .then((res) => {
                 if (typeof res === "object") {
                     setUser(res);
@@ -114,22 +113,22 @@ export default function UserCredentials() {
             if (result === "SUCCESS") {
                 Swal.fire({
                     icon: "success",
-                    title: "Uğurlu",
-                    text: "Məlumatlarınız uğurla əlavə olundu."
+                    title: "Saved",
+                    text: "User details saved successfully"
                 }).then(() => setCreationLoading(false));
             } else {
                 Swal.fire({
                     icon: "error",
-                    title: "Xəta",
-                    text: "Server xətası."
+                    title: "Error",
+                    text: "Unexpected error occured. Please try again later."
                 }).then(() => setCreationLoading(false));
             }
         } catch (err) {
             setCreationLoading(false);
             Swal.fire({
                 icon: "error",
-                title: "Xəta",
-                text: "Server xətası."
+                title: "Error",
+                text: "Unexpected error occured. Please try again later."
             });
         }
     };
@@ -151,8 +150,8 @@ export default function UserCredentials() {
             if (result === "SUCCESS") {
                 Swal.fire({
                     icon: "success",
-                    title: "Uğurlu",
-                    text: "Məlumatlarınız uğurla yeniləndi."
+                    title: "Updated",
+                    text: "User details updated successfully."
                 }).then(() => {
                     setCreationLoading(false);
                     setIsEditing(false);
@@ -160,22 +159,22 @@ export default function UserCredentials() {
             } else if (result === "NOT_FOUND") {
                 Swal.fire({
                     icon: "error",
-                    title: "Xəta",
-                    text: "İstifadəçi tapılmadı."
+                    title: "Error",
+                    text: "Unexpected error occured. Please try again later."
                 }).then(() => setCreationLoading(false));
             } else {
                 Swal.fire({
                     icon: "error",
-                    title: "Xəta",
-                    text: "Server xətası."
+                    title: "Error",
+                    text: "Unexpected error occured. Please try again later."
                 }).then(() => setCreationLoading(false));
             }
         } catch (err) {
             setCreationLoading(false);
             Swal.fire({
                 icon: "error",
-                title: "Xəta",
-                text: "Server xətası."
+                title: "Error",
+                text: "Unexpected error occured. Please try again later."
             });
         }
     };
@@ -206,7 +205,7 @@ export default function UserCredentials() {
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-1 mb-[20px]">
                     <div className="sm:col-span-1 flex flex-col items-start">
                         <Label>
-                            Profil şəkli
+                            Profile image
                         </Label>
                         <div className="mb-2">
                             <img
@@ -215,7 +214,7 @@ export default function UserCredentials() {
                                     (user && user.image) ||
                                     "/placeholder-profile.png"
                                 }
-                                alt="Profil şəkli"
+                                alt="Profile image"
                                 className="w-32 h-32 object-cover rounded-full border border-gray-300"
                             />
                         </div>

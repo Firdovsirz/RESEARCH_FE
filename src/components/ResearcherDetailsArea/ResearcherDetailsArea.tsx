@@ -13,16 +13,35 @@ export default function ResearcherDetailsArea({ user }: ResearchAreasProps) {
     useEffect(() => {
         setLoading(true);
         getAreas(user?.fin_kod)
-            .then(setAreas)
+            .then((res) => {
+                if (res === "NO CONTENT") {
+                    setAreas(res);
+                } else if (res === "NO CONTENT") {
+                    setAreas([]);
+                } else if (res === "NOT FOUND") {
+                    setAreas([]);
+                } else {
+                    setAreas([]);
+                }
+            })
             .finally(() => {
                 setLoading(false);
             });
     }, []);
     return (
         <div className="flex flex-col items-start">
-            <h2 className="text-gray-500 text-[20px] mb-[10px]">
-                Educational Details
-            </h2>
+            <div className="relative text-gray-500 text-[20px] mb-[10px]">
+                Research Areas
+                {areas.length !== 0 ? (
+                    <div className="absolute bg-blue-500 text-white top-[-10px] right-[-22px] w-6 h-6 rounded-full flex items-center justify-center text-[14px]">
+                        {loading ? (
+                            <div className="h-3 w-3 bg-gray-200 rounded-full animate-pulse"></div>
+                        ) : (
+                            areas.length
+                        )}
+                    </div>
+                ) : null}
+            </div>
             <div className="flex flex-col justify-between items-center w-full">
                 {loading ? (
                     <div className="w-full">
@@ -33,13 +52,19 @@ export default function ResearcherDetailsArea({ user }: ResearchAreasProps) {
                         ))}
                     </div>
                 ) : (
-                    areas.map((area, index) => (
-                        <div className="border-b-2 border-gray-300 px-3 w-full py-[20px]" key={index}>
-                            <h2 className="text-[20px] mb-[10px] font-bold">
-                                {area.area}
-                            </h2>
+                    areas.length === 0 ? (
+                        <div className="flex justify-center items-center text-gray-500 py-[20px] px-3 w-full">
+                            No research areas found
                         </div>
-                    ))
+                    ) : (
+                        areas.map((area, index) => (
+                            <div className="border-b-2 border-gray-300 px-3 w-full py-[20px]" key={index}>
+                                <h2 className="text-[20px] mb-[10px] font-bold">
+                                    {area.area}
+                                </h2>
+                            </div>
+                        ))
+                    )
                 )}
             </div>
         </div>

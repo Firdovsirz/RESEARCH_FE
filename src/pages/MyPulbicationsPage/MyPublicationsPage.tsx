@@ -7,12 +7,12 @@ export default function MyPublicationsPage() {
     return (
         <>
             <PageMeta
-                title="AzTU Tədqiqatçılar bazası"
-                description="AzTU Tədqiqatçılar bazası AzTU olan tədqiqatçılar və onlar haqqında məlumatları özündə saxlayır."
+                title="AzTU Researchers Dashboard"
+                description="Azerbaijan Technical University researchers Dashboard"
             />
-            <PageBreadcrumb pageTitle="Nəşrlərim" />
+            <PageBreadcrumb pageTitle="My Publications" />
             <div className="space-y-6">
-                <ComponentCard title="Nəşrlərim">
+                <ComponentCard title="My Publications">
                     <MyPublications />
                 </ComponentCard>
             </div>

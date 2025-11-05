@@ -1,30 +1,63 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ThemeToggleButton } from "../common/ThemeToggleButton";
 import NotificationDropdown from "./NotificationDropdown";
 import UserDropdown from "./UserDropdown";
 import { Link } from "react-router";
-
-// Define the interface for the props
 interface HeaderProps {
-  onClick?: () => void; // Optional function that takes no arguments and returns void
+  onClick?: () => void;
   onToggle: () => void;
 }
 const Header: React.FC<HeaderProps> = ({ onClick, onToggle }) => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
+  const lastScrollY = useRef(0);
+  const [showHeader, setShowHeader] = useState(true);
+  const headerRef = useRef<HTMLHeadElement | null>(null);
 
   const toggleApplicationMenu = () => {
     setApplicationMenuOpen(!isApplicationMenuOpen);
   };
 
+  useEffect(() => {
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+          if (currentScrollY < 0) {
+            // ignore negative scroll
+            ticking = false;
+            return;
+          }
+          if (currentScrollY > lastScrollY.current && currentScrollY > 10) {
+            // Scrolling down
+            setShowHeader(false);
+          } else {
+            // Scrolling up
+            setShowHeader(true);
+          }
+          lastScrollY.current = currentScrollY;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <header className="sticky top-0 flex w-full bg-white border-gray-200 z-99999 dark:border-gray-800 dark:bg-gray-900 lg:border-b">
+    <header
+      ref={headerRef}
+      className={`fixed w-full z-[99999] flex bg-white border-gray-200 dark:border-gray-800 dark:bg-gray-900 border-b transition-transform duration-300 ${showHeader ? "translate-y-0" : "-translate-y-full"}`}
+    >
       <div className="flex flex-col items-center justify-between grow lg:flex-row lg:px-6">
         <div className="flex items-center justify-between w-full gap-2 px-3 py-3 border-b border-gray-200 dark:border-gray-800 sm:gap-4 lg:justify-normal lg:border-b-0 lg:px-0 lg:py-4">
           <button
             className="block w-10 h-10 text-gray-500 lg:hidden dark:text-gray-400"
             onClick={onToggle}
           >
-            {/* Hamburger Icon */}
             <svg
               className={`block`}
               width="16"
@@ -55,7 +88,6 @@ const Header: React.FC<HeaderProps> = ({ onClick, onToggle }) => {
                 fill="currentColor"
               />
             </svg>
-            {/* Cross Icon */}
           </button>
           <button
             onClick={onClick}

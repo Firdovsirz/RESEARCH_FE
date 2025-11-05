@@ -7,12 +7,12 @@ export default function LanguageDetailsPage() {
     return (
         <>
             <PageMeta
-                title="AzTU Tədqiqatçılar bazası"
-                description="AzTU Tədqiqatçılar bazası AzTU olan tədqiqatçılar və onlar haqqında məlumatları özündə saxlayır."
+                title="AzTU Researchers Dashboard"
+                description="Azerbaijan Technical University researchers Dashboard"
             />
-            <PageBreadcrumb pageTitle="Dil məlumatlarım" />
+            <PageBreadcrumb pageTitle="Language details" />
             <div className="space-y-6">
-                <ComponentCard title="Dil məlumatlarım">
+                <ComponentCard title="Language details">
                     <LanguageDetails />
                 </ComponentCard>
             </div>

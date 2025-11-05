@@ -5,24 +5,23 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { RootState } from "../../redux/store";
 import { useModal } from "../../hooks/useModal";
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { createUrl, getUrls, Url, UrlPayload, updateUrl, deleteUrl } from "../../services/links/linkService";
 
 export default function MyUrls() {
-    const [duty, setDuty] = useState("");
     const [loading, setLoading] = useState(false);
     const [urls, setUrls] = useState<Url>();
     const [linkedin, setLinkedin] = useState("");
     const [scopusUrl, setScopusUrl] = useState("");
-    const [workPlace, setWorkPlace] = useState("");
     const [scholarUrl, setScholarUrl] = useState("");
-    const [linkedinUrl, setLinkedinUrl] = useState("");
     const { isOpen, openModal, closeModal } = useModal();
     const [webOfScienceUrl, setWebOfScienceUrl] = useState("");
     const [editUrlId, setEditUrlId] = useState<string | null>(null);
     const token = useSelector((state: RootState) => state.auth.token);
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
+
+    console.log(linkedin);
+
 
     const fetchUrls = () => {
         setLoading(true);
@@ -52,40 +51,63 @@ export default function MyUrls() {
     const handleCreateUrl = async () => {
         try {
             setLoading(true);
-            const urlPayload: UrlPayload = {
-                fin_kod: fin_kod || "",
-                scopus_url: scopusUrl,
-                webofscience_url: webOfScienceUrl,
-                google_scholar_url: scholarUrl,
-                linkedin_url: linkedinUrl
-            }
+
+            // Build payload dynamically
+            const urlPayload: UrlPayload = { fin_kod: fin_kod || "" };
+
+            if (scopusUrl.trim()) urlPayload.scopus_url = scopusUrl.trim();
+            if (webOfScienceUrl.trim()) urlPayload.webofscience_url = webOfScienceUrl.trim();
+            if (scholarUrl.trim()) urlPayload.google_scholar_url = scholarUrl.trim();
+            if (linkedin.trim()) urlPayload.linkedin_url = linkedin.trim();
+
+            console.log(urlPayload);
+
             const result = await createUrl(urlPayload);
 
             closeModal();
             setLoading(false);
-            resetForm();
 
             if (result === "SUCCESS") {
                 Swal.fire({
                     icon: "success",
-                    title: "Uğurla əlavə olundu",
-                    text: "İş yeri uğurla əlavə edildi!"
-                });
-                fetchUrls();
+                    title: "Added",
+                    text: "Url added successfully."
+                }).then(() => {
+                    resetForm();
+                    fetchUrls();
+                })
+            } else if (result === "CONFLICT") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Existing url",
+                    text: "Url exists."
+                }).then(() => {
+                    resetForm();
+                })
+            } else if (result === "VALIDATION_ERROR") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Wrong url",
+                    text: "Provided urls should be valid."
+                }).then(() => {
+                    resetForm();
+                })
             } else {
                 Swal.fire({
                     icon: "error",
-                    title: "Xəta",
-                    text: "Server xətası"
-                });
+                    title: "Error",
+                    text: "Unexpected error occured. Please try again later."
+                }).then(() => {
+                    resetForm();
+                })
             }
         } catch (err) {
             closeModal();
             setLoading(false);
             Swal.fire({
                 icon: "error",
-                title: "Xəta",
-                text: "Server xətası"
+                title: "Error",
+                text: "Unexpected error occured. Please try again later.ı"
             });
         }
     }
@@ -110,15 +132,15 @@ export default function MyUrls() {
             if (result === "SUCCESS") {
                 Swal.fire({
                     icon: "success",
-                    title: "Uğurla yeniləndi",
-                    text: "İş yeri uğurla yeniləndi!"
+                    title: "Updated",
+                    text: "Url updated successfully"
                 });
                 fetchUrls();
             } else {
                 Swal.fire({
                     icon: "error",
-                    title: "Xəta",
-                    text: "Server xətası"
+                    title: "Error",
+                    text: "Unexpected error occured. Please try again later."
                 });
             }
         } catch (err) {
@@ -126,50 +148,50 @@ export default function MyUrls() {
             setLoading(false);
             Swal.fire({
                 icon: "error",
-                title: "Xəta",
-                text: "Server xətası"
+                title: "Error",
+                text: "Unexpected error occured. Please try again later."
             });
         }
     }
 
-    const handleUrlDelete = async (id: number) => {
+    const handleUrlDelete = async (id: number, urlName: string) => {
         const confirmResult = await Swal.fire({
-            title: 'Əminsiniz?',
-            text: "Bu linki silmək istəyirsiniz?",
+            title: 'Are you sure to delete?',
+            text: "This action can not be recovered.",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Bəli, sil',
-            cancelButtonText: 'Ləğv et'
+            confirmButtonText: 'Yes, delete',
+            cancelButtonText: 'Cancel'
         });
 
         if (confirmResult.isConfirmed) {
             try {
                 setLoading(true);
-                const result = await deleteUrl(id);
+                const result = await deleteUrl(id, urlName);
                 setLoading(false);
 
                 if (result === "SUCCESS") {
                     Swal.fire(
-                        'Silindi!',
-                        'Link uğurla silindi.',
+                        'Deleted!',
+                        'Url deleted successfully.',
                         'success'
                     );
                     fetchUrls();
                 } else {
                     Swal.fire({
                         icon: "error",
-                        title: "Xəta",
-                        text: "Server xətası"
+                        title: "Error",
+                        text: "Unexpected error occured. Please try again later."
                     });
                 }
             } catch (err) {
                 setLoading(false);
                 Swal.fire({
                     icon: "error",
-                    title: "Xəta",
-                    text: "Server xətası"
+                    title: "Error",
+                    text: "Unexpected error occured. Please try again later."
                 });
             }
         }
@@ -184,8 +206,6 @@ export default function MyUrls() {
         setEditUrlId(fin_kod || null);
         openModal();
     };
-
-    console.log(urls);
     return (
         <>
             <div>
@@ -198,65 +218,84 @@ export default function MyUrls() {
                             <div className="h-5 bg-gray-300 dark:bg-gray-700 rounded w-3/4"></div>
                         </div>
                     ))
-                ) : urls?.scopus_url.length === 0 ? (
+                ) : !urls?.scopus_url && !urls?.web_of_science && !urls?.google_scholar && !urls?.linkedin_url ? (
                     <div className="flex justify-center items-center">
-                        <div className="bg-yellow-200 text-yellow-800 w-[110px] flex justify-center items-center rounded-[20px] px-[5px]">Mövcud deyil</div>
+                        <div className="bg-yellow-200 text-yellow-800 w-[110px] flex justify-center items-center rounded-[20px] px-[5px]">
+                            No url found
+                        </div>
                     </div>
                 ) : (
                     <div>
-                        <div className="border border-gray-300 dark:border-gray-700 rounded-lg p-4 mb-3 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow flex justify-between items-center">
+                        {urls?.scopus_url ? (
+                            <div className="border border-gray-300 dark:border-gray-700 rounded-lg p-4 mb-3 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow flex justify-between items-center">
 
-                            {urls?.scopus_url ? (
                                 <p className="text-gray-800 dark:text-gray-100 font-medium">
                                     Scopus: <a className="italic" href={urls?.scopus_url}>{urls?.scopus_url}</a>
                                 </p>
-                            ) : null}
-                            <div className="flex mt-2">
-                                <div
-                                    className="bg-red-500 w-[40px] h-[40px] flex justify-center items-center rounded-[10px] cursor-pointer"
-                                    onClick={() => handleUrlDelete(urls?.id ? urls.id : 0)}
-                                >
-                                    <DeleteIcon className="text-white" />
+                                <div className="flex mt-2">
+                                    <div
+                                        className="bg-red-500 w-[40px] h-[40px] flex justify-center items-center rounded-[10px] cursor-pointer"
+                                        onClick={() => handleUrlDelete(urls?.id ? urls.id : 0, "scopus_url")}
+                                    >
+                                        <DeleteIcon className="text-white" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="border border-gray-300 dark:border-gray-700 rounded-lg p-4 mb-3 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow flex justify-between items-center">
-                            {urls?.web_of_science ? (
+                        ) : null}
+                        {urls?.web_of_science ? (
+                            <div className="border border-gray-300 dark:border-gray-700 rounded-lg p-4 mb-3 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow flex justify-between items-center">
                                 <p className="text-gray-800 dark:text-gray-100 font-medium">
                                     Web of Science: <a className="italic" href={urls?.web_of_science}>{urls?.web_of_science}</a>
                                 </p>
-                            ) : null}
-                            <div className="flex mt-2">
-                                <div
-                                    className="bg-red-500 w-[40px] h-[40px] flex justify-center items-center rounded-[10px] cursor-pointer"
-                                    onClick={() => handleUrlDelete(urls?.id ? urls.id : 0)}
-                                >
-                                    <DeleteIcon className="text-white" />
+                                <div className="flex mt-2">
+                                    <div
+                                        className="bg-red-500 w-[40px] h-[40px] flex justify-center items-center rounded-[10px] cursor-pointer"
+                                        onClick={() => handleUrlDelete(urls?.id ? urls.id : 0, "webofscience_url")}
+                                    >
+                                        <DeleteIcon className="text-white" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="border border-gray-300 dark:border-gray-700 rounded-lg p-4 mb-3 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow flex justify-between items-center">
-                            {urls?.google_scholar ? (
+                        ) : null}
+                        {urls?.google_scholar ? (
+                            <div className="border border-gray-300 dark:border-gray-700 rounded-lg p-4 mb-3 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow flex justify-between items-center">
                                 <p className="text-gray-800 dark:text-gray-100 font-medium">
                                     Google Scholar: <a className="italic" href={urls?.google_scholar}>{urls?.google_scholar}</a>
                                 </p>
-                            ) : null}
-                            <div className="flex mt-2">
-                                <div
-                                    className="bg-red-500 w-[40px] h-[40px] flex justify-center items-center rounded-[10px] cursor-pointer"
-                                    onClick={() => handleUrlDelete(urls?.id ? urls.id : 0)}
-                                >
-                                    <DeleteIcon className="text-white" />
+                                <div className="flex mt-2">
+                                    <div
+                                        className="bg-red-500 w-[40px] h-[40px] flex justify-center items-center rounded-[10px] cursor-pointer"
+                                        onClick={() => handleUrlDelete(urls?.id ? urls.id : 0, "google_scholar_url")}
+                                    >
+                                        <DeleteIcon className="text-white" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        ) : null}
+                        {urls?.linkedin_url ? (
+                            <div className="border border-gray-300 dark:border-gray-700 rounded-lg p-4 mb-3 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow flex justify-between items-center">
+                                <p className="text-gray-800 dark:text-gray-100 font-medium">
+                                    Linkedin: <a className="italic" href={urls?.linkedin_url}>{urls?.linkedin_url}</a>
+                                </p>
+                                <div className="flex mt-2">
+                                    <div
+                                        className="bg-red-500 w-[40px] h-[40px] flex justify-center items-center rounded-[10px] cursor-pointer"
+                                        onClick={() => handleUrlDelete(urls?.id ? urls.id : 0, "linkedin_url")}
+                                    >
+                                        <DeleteIcon className="text-white" />
+                                    </div>
+                                </div>
+                            </div>
+                        ) : null}
                     </div>
                 )
                 }
                 <div className="flex justify-end items-end">
-                    <Button onClick={handleEditClick} className="mr-[10px]">
-                        Edit
-                    </Button>
+                    {urls?.scopus_url || urls?.web_of_science || urls?.google_scholar || urls?.linkedin_url ? (
+                        <Button onClick={handleEditClick} className="mr-[10px]">
+                            Edit
+                        </Button>
+                    ) : null}
                     <Button onClick={() => { resetForm(); openModal(); }}>
                         New Url
                     </Button>
@@ -270,17 +309,17 @@ export default function MyUrls() {
                 <div className="flex flex-col px-2 overflow-y-auto custom-scrollbar">
                     <div>
                         <h5 className="mb-2 font-semibold text-gray-800 modal-title text-theme-xl dark:text-white/90 lg:text-2xl">
-                            Yeni iş yeri
+                            New url
                         </h5>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                            Yeni iş yeri əlavə etmək üçün müəssisəni və vəzifəni daxil edib yadda saxlayın!
+                            For adding new url provide available urls!
                         </p>
                     </div>
                     <div className="mt-8">
                         <div>
                             <div className="mb-[20px]">
                                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Scopus linki
+                                    Scopus url
                                 </label>
                                 <input
                                     id="event-title"
@@ -293,7 +332,7 @@ export default function MyUrls() {
                             </div>
                             <div className="mb-[20px]">
                                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Web of Science linki
+                                    Web of Science url
                                 </label>
                                 <input
                                     id="event-title"
@@ -306,7 +345,7 @@ export default function MyUrls() {
                             </div>
                             <div className="mb-[20px]">
                                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Google Scholar linki
+                                    Google Scholar url
                                 </label>
                                 <input
                                     id="event-title"
@@ -319,7 +358,7 @@ export default function MyUrls() {
                             </div>
                             <div className="mb-[20px]">
                                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    LinkedIn
+                                    LinkedIn url
                                 </label>
                                 <input
                                     id="event-title"
@@ -338,7 +377,7 @@ export default function MyUrls() {
                             type="button"
                             className="flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] sm:w-auto"
                         >
-                            Bağla
+                            Close
                         </button>
                         <button
                             onClick={editUrlId ? handleUrlUpdate : handleCreateUrl}
@@ -346,7 +385,7 @@ export default function MyUrls() {
                             disabled={loading}
                             className="btn btn-success btn-update-event flex w-full justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 sm:w-auto"
                         >
-                            {loading ? "Yadda saxlanılır" : "Yadda saxla"}
+                            {loading ? "Saving..." : "Save"}
                         </button>
                     </div>
                 </div>

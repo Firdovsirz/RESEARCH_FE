@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { getUserProfile } from "../services/user/userService";
 import { Link } from "react-router";
 import { ReactNode, useState, useCallback } from "react";
 import { UserProfile } from "../services/user/userService";
@@ -14,6 +16,21 @@ interface ResearcherLayoutProps {
 export default function ResearcherLayout({ children, user, heading }: ResearcherLayoutProps) {
     const [loading, setLoading] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
+    const [imageBase64, setImageBase64] = useState<string>("");
+
+    useEffect(() => {
+        getUserProfile(user?.fin_kod ? user?.fin_kod : "",)
+            .then((res) => {
+                if (typeof res === "object") {
+                    setImageBase64(res.profile_image ? `data:image/jpeg;base64,${res.profile_image}` : "");
+                } else {
+                    setImageBase64("");
+                }
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }, []);
 
     const particlesInit = useCallback(async (engine: any) => {
         await loadFull(engine);
@@ -21,24 +38,20 @@ export default function ResearcherLayout({ children, user, heading }: Researcher
 
     return (
         <div className="flex flex-col md:flex-row min-h-screen">
-            {/* Overlay */}
             <div
                 className={`fixed inset-0 bg-white/30 backdrop-blur-sm z-40 transition-opacity duration-300 md:hidden ${menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
                 onClick={() => setMenuOpen(false)}
             ></div>
 
             <aside
-                className={`fixed top-0 right-0 z-50 w-[250px] bg-gray-100 border-l border-gray-200 h-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 transform transition-transform duration-300
+                className={`fixed top-0 right-0 z-50 w-[250px] bg-gray-100 border-l border-gray-200 h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 transform transition-transform duration-300
                 ${menuOpen ? 'translate-x-0' : 'translate-x-full'}
                 md:relative md:translate-x-0 md:static
                 `}
                 style={{
-                    // On small screens, show only if menuOpen; on md+, always visible
                     display: menuOpen ? 'block' : undefined,
-                    // On md+, always visible (block), on sm, hidden unless menuOpen
                 }}
             >
-                {/* Particles background for aside */}
                 <Particles
                     className="absolute inset-0 z-0"
                     id="aside-particles"
@@ -78,7 +91,15 @@ export default function ResearcherLayout({ children, user, heading }: Researcher
                 />
                 <div className="relative z-10">
                     <div className="p-5 flex justify-center items-center">
-                        <img src={"/profile-image.webp"} alt={`${user.name} ${user.surname}`} className="mb-4 max-w-full w-[150px] object-cover rounded-full" />
+                        <img
+                            src={
+                                imageBase64 ||
+                                (user && user.image) ||
+                                "/placeholder-profile.png"
+                            }
+                            alt="Profile image"
+                            className="w-32 h-32 object-center object-contain rounded-full border border-gray-300"
+                        />
                     </div>
                     <div className="mb-2 p-5 flex flex-col justify-center items-center">
                         <h2 className="text-lg font-semibold">{user.name} {user.surname}</h2>
@@ -131,48 +152,48 @@ export default function ResearcherLayout({ children, user, heading }: Researcher
                         </div>
                     </div>
                     <ul>
-                        <li className="group font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-200 cursor-pointer border-y border-gray-300 p-5">
-                            <span className="inline-block transform transition-transform duration-200 group-hover:translate-x-3">
-                                <Link to={"/researcher-details"} state={{ user }} onClick={() => setMenuOpen(false)}>
+                        <Link to={"/researcher-details"} state={{ user }} onClick={() => setMenuOpen(false)}>
+                            <li className="group font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-200 cursor-pointer border-y border-gray-300 p-5">
+                                <span className="inline-block transform transition-transform duration-200 group-hover:translate-x-3">
                                     Home page
-                                </Link>
-                            </span>
-                        </li>
-                        <li className="group font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-200 cursor-pointer border-b border-gray-300 p-5">
-                            <span className="inline-block transform transition-transform duration-200 group-hover:translate-x-3">
-                                <Link to={"/researcher-details/education"} state={{ user }} onClick={() => setMenuOpen(false)}>
+                                </span>
+                            </li>
+                        </Link>
+                        <Link to={"/researcher-details/education"} state={{ user }} onClick={() => setMenuOpen(false)}>
+                            <li className="group font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-200 cursor-pointer border-b border-gray-300 p-5">
+                                <span className="inline-block transform transition-transform duration-200 group-hover:translate-x-3">
                                     Education
-                                </Link>
-                            </span>
-                        </li>
-                        <li className="group font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-200 cursor-pointer border-b border-gray-300 p-5">
-                            <span className="inline-block transform transition-transform duration-200 group-hover:translate-x-3">
-                                <Link to={"/researcher-details/areas"} state={{ user }} onClick={() => setMenuOpen(false)}>
+                                </span>
+                            </li>
+                        </Link>
+                        <Link to={"/researcher-details/areas"} state={{ user }} onClick={() => setMenuOpen(false)}>
+                            <li className="group font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-200 cursor-pointer border-b border-gray-300 p-5">
+                                <span className="inline-block transform transition-transform duration-200 group-hover:translate-x-3">
                                     Research Areas
-                                </Link>
-                            </span>
-                        </li>
-                        <li className="group font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-200 cursor-pointer border-b border-gray-300 p-5">
-                            <span className="inline-block transform transition-transform duration-200 group-hover:translate-x-3">
-                                <Link to={"/researcher-details/experience"} state={{ user }} onClick={() => setMenuOpen(false)}>
+                                </span>
+                            </li>
+                        </Link>
+                        <Link to={"/researcher-details/experience"} state={{ user }} onClick={() => setMenuOpen(false)}>
+                            <li className="group font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-200 cursor-pointer border-b border-gray-300 p-5">
+                                <span className="inline-block transform transition-transform duration-200 group-hover:translate-x-3">
                                     Academic experience
-                                </Link>
-                            </span>
-                        </li>
-                        <li className="group font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-200 cursor-pointer border-b border-gray-300 p-5">
-                            <span className="inline-block transform transition-transform duration-200 group-hover:translate-x-3">
-                                <Link to={"/researcher-details/cv"} state={{ user }} onClick={() => setMenuOpen(false)}>
+                                </span>
+                            </li>
+                        </Link>
+                        <Link to={"/researcher-details/cv"} state={{ user }} onClick={() => setMenuOpen(false)}>
+                            <li className="group font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-200 cursor-pointer border-b border-gray-300 p-5">
+                                <span className="inline-block transform transition-transform duration-200 group-hover:translate-x-3">
                                     CV
-                                </Link>
-                            </span>
-                        </li>
-                        <li className="group font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-200 cursor-pointer p-5">
-                            <span className="inline-block transform transition-transform duration-200 group-hover:translate-x-3">
-                                <Link to={"/researcher-details/contact"} state={{ user }} onClick={() => setMenuOpen(false)}>
+                                </span>
+                            </li>
+                        </Link>
+                        <Link to={"/researcher-details/contact"} state={{ user }} onClick={() => setMenuOpen(false)}>
+                            <li className="group font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-200 cursor-pointer p-5">
+                                <span className="inline-block transform transition-transform duration-200 group-hover:translate-x-3">
                                     Contact
-                                </Link>
-                            </span>
-                        </li>
+                                </span>
+                            </li>
+                        </Link>
                     </ul>
                 </div>
             </aside>
