@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 import { useState } from "react";
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
@@ -87,7 +87,7 @@ export default function PublicHeader({ onSearch, toggleMenu }: PublicHeaderProps
                                 </motion.button>
 
                                 {/* Login / Menu */}
-                                {location.pathname !== "/" ? (
+                                {location.pathname !== "/researchers" ? (
                                     <motion.button
                                         onClick={toggleMenu}
                                         className="p-2 rounded-xl text-white/60 hover:text-white hover:bg-white/10 transition-all duration-200 block sm:hidden"

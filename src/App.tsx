@@ -13,6 +13,7 @@ import { ScrollToTop } from "./components/common/ScrollToTop";
 import NewScopusPage from "./pages/NewScopusPage/NewScopusPage";
 import MyArticlesPage from "./pages/MyArticlesPage/MyArticlesPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router";
+import HomePage from "./pages/HomePage/HomePage";
 import ResearchersPage from "./pages/ResearchersPage/ResearchersPage";
 import ValidateSignUpPage from "./pages/AuthPages/ValidateSignUpPage";
 import MyEducationsPage from "./pages/MyEducationsPage/MyEducationsPage";
@@ -88,7 +89,8 @@ export default function App() {
           <Route path="/verify-signup" element={<ValidateSignUpPage />} />
 
           {/* Public Layout */}
-          <Route path="/" element={<ResearchersPage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/researchers" element={<ResearchersPage />} />
           <Route path="/researcher-details" element={<ResearcherDetailsPage />} />
           <Route path="/researcher-details/education" element={<ResearcherDetailsEducationPage />} />
           <Route path="/researcher-details/areas" element={<ResearcherDetailsAreasPage />} />
