@@ -1,10 +1,12 @@
 import Swal from "sweetalert2";
 import { useState } from 'react';
 import Label from '../form/Label';
-import Select from '../form/Select';
+// import Select from '../form/Select';
 import Button from '../ui/button/Button';
 import { useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router';
+import {
+    // useLocation,
+    useNavigate } from 'react-router';
 import { RootState } from '../../redux/store';
 import { addScientificName } from "../../services/scientificDetails/scientificDetailsService";
 import Input from "../form/input/InputField";
@@ -14,12 +16,14 @@ export default function NewScopus() {
     const navigate = useNavigate();
     const [scopusUrl, setScopusUrl] = useState("");
     const [selectedName, setSelectedName] = useState("");
-    const [seletecdDegree, setSelectedDegree] = useState("");
+    // const [seletecdDegree, setSelectedDegree] = useState("");
     const [selectedNameCode, setSelectedNameCode] = useState("");
     const [selectedDegreeCode, setSelectedDegreeCode] = useState("");
-    const [hoursPerWeek, setHoursPerWeek] = useState<number>();
+    // const [hoursPerWeek, setHoursPerWeek] = useState<number>();
     const token = useSelector((state: RootState) => state.auth.token);
     const finKod = useSelector((state: RootState) => state.auth.fin_kod);
+    console.log(setSelectedName, setSelectedNameCode, setSelectedDegreeCode);
+    
     // create subject logic
 
     const createTopic = async () => {

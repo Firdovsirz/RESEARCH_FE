@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 import Label from "../form/Label";
 import { Link } from "react-router";
-import { useParams } from "react-router";
+// import { useParams } from "react-router";
 import { useState, useRef } from "react";
 import Button from "../ui/button/Button";
 import { useNavigate } from "react-router";
@@ -11,7 +11,7 @@ import { verifySignUp } from "../../services/auth/authService";
 
 export default function ValidateSignUp() {
     const location = useLocation();
-    const { finKod } = useParams();
+    // const { finKod } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);

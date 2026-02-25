@@ -17,7 +17,7 @@ export default function MyEducations() {
     const [startDate, setStartDate] = useState<number>();
     const { isOpen, openModal, closeModal } = useModal();
     const [educations, setEducations] = useState<Education[]>([]);
-    const token = useSelector((state: RootState) => state.auth.token);
+    // const token = useSelector((state: RootState) => state.auth.token);
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
 
     const [editMode, setEditMode] = useState(false);
@@ -150,7 +150,7 @@ export default function MyEducations() {
         }
     }
 
-    const handleDeleteEducation = (edu_code: string) => {
+    const handleDeleteEducation = () => {
         Swal.fire({
             title: 'Are you sure to delete?',
             text: "This action cannot be recovered!",
@@ -164,7 +164,7 @@ export default function MyEducations() {
             if (result.isConfirmed) {
                 setLoading(true);
                 try {
-                    const res = await deleteEducation(fin_kod || "", edu_code);
+                    const res = await deleteEducation(fin_kod || "");
                     setLoading(false);
                     if (res === "SUCCESS") {
                         Swal.fire(
@@ -248,7 +248,7 @@ export default function MyEducations() {
                                     </div>
                                     <div
                                         className="bg-red-500 w-[40px] h-[40px] flex justify-center items-center rounded-[10px] cursor-pointer"
-                                        onClick={() => handleDeleteEducation(education.edu_code)}
+                                        onClick={() => handleDeleteEducation()}
                                     >
                                         <DeleteIcon className="text-white" />
                                     </div>

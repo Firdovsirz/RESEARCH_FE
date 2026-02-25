@@ -14,7 +14,7 @@ export default function LanguageDetails() {
     const [loading, setLoading] = useState(false);
     const [languageName, setLanguageName] = useState("");
     const { isOpen, openModal, closeModal } = useModal();
-    const [interCorpName, setInterCorpName] = useState("");
+    // const [interCorpName, setInterCorpName] = useState("");
     const [languages, setLanguages] = useState<Language[]>([]);
     const [languageShortName, setLanguageShortName] = useState("");
     const token = useSelector((state: RootState) => state.auth.token);

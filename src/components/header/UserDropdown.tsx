@@ -4,7 +4,7 @@ import { getUserProfile } from "../../services/user/userService";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/slices/authSlice";
 import { useState } from "react";
-import { DropdownItem } from "../ui/dropdown/DropdownItem";
+// import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { Link } from "react-router";
 import { useSelector } from "react-redux";
@@ -12,17 +12,17 @@ import { RootState } from "../../redux/store";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [_, setLoading] = useState(true);
   const [imageBase64, setImageBase64] = useState<string>("");
   const name = useSelector((state: RootState) => state.auth.name);
   const email = useSelector((state: RootState) => state.auth.email);
-  const token = useSelector((state: RootState) => state.auth.token);
+  // const token = useSelector((state: RootState) => state.auth.token);
   const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
   const surname = useSelector((state: RootState) => state.auth.surname);
   const father_name = useSelector((state: RootState) => state.auth.father_name);
 
   useEffect(() => {
-    getUserProfile(fin_kod ? fin_kod : "", token ? token : "")
+    getUserProfile(fin_kod ? fin_kod : "")
       .then((res) => {
         if (typeof res === "object") {
           setImageBase64(res.profile_image || "");

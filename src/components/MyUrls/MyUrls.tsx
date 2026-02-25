@@ -17,7 +17,7 @@ export default function MyUrls() {
     const { isOpen, openModal, closeModal } = useModal();
     const [webOfScienceUrl, setWebOfScienceUrl] = useState("");
     const [editUrlId, setEditUrlId] = useState<string | null>(null);
-    const token = useSelector((state: RootState) => state.auth.token);
+    // const token = useSelector((state: RootState) => state.auth.token);
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
 
     console.log(linkedin);

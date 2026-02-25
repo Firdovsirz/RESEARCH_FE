@@ -17,7 +17,7 @@ export default function MyWorks() {
     const [endDate, setEndDate] = useState<number>();
     const [startDate, setStartDate] = useState<number>();
     const { isOpen, openModal, closeModal } = useModal();
-    const token = useSelector((state: RootState) => state.auth.token);
+    // const token = useSelector((state: RootState) => state.auth.token);
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
     const [editMode, setEditMode] = useState(false);
     const [editCode, setEditCode] = useState<string>("");

@@ -2,27 +2,27 @@ import Swal from "sweetalert2";
 import { useState } from 'react';
 import Label from '../form/Label';
 import Button from '../ui/button/Button';
-import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router';
+// import { useSelector } from 'react-redux';
+// import { useLocation } from 'react-router';
 import Input from "../form/input/InputField";
-import { RootState } from '../../redux/store';
+// import { RootState } from '../../redux/store';
 
 export default function NewScientificDetails() {
-    const location = useLocation();
+    // const location = useLocation();
     const [duty, setDuty] = useState("");
     const [loading, setLoading] = useState(false);
     const [workPlace, setWorkPlace] = useState("");
-    const token = useSelector((state: RootState) => state.auth.token);
-    const finKod = useSelector((state: RootState) => state.auth.fin_kod);
+    // const token = useSelector((state: RootState) => state.auth.token);
+    // const finKod = useSelector((state: RootState) => state.auth.fin_kod);
 
     // create subject logic
 
     const createTopic = async () => {
         try {
             setLoading(true);
-            const scientificNamePayload = {
-                fin_kod: finKod ? finKod : ""
-            };
+            // const scientificNamePayload = {
+            //     fin_kod: finKod ? finKod : ""
+            // };
             let result = "";
             // const result = await addScientificName(scientificNamePayload, token ? token : "");
 

@@ -4,15 +4,15 @@ import Label from '../form/Label';
 import Select from '../form/Select';
 import Button from '../ui/button/Button';
 import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router';
+// import { useLocation } from 'react-router';
 import { RootState } from '../../redux/store';
 import { addScientificName } from "../../services/scientificDetails/scientificDetailsService";
 
 export default function NewScientificDetails() {
-    const location = useLocation();
+    // const location = useLocation();
     const [loading, setLoading] = useState(false);
     const [selectedName, setSelectedName] = useState("");
-    const [seletecdDegree, setSelectedDegree] = useState("");
+    const [_, setSelectedDegree] = useState("");
     const [selectedNameCode, setSelectedNameCode] = useState("");
     const [selectedDegreeCode, setSelectedDegreeCode] = useState("");
     const token = useSelector((state: RootState) => state.auth.token);

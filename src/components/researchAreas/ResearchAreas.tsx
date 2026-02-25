@@ -15,7 +15,7 @@ export default function ResearchAreas() {
     const [areas, setAreas] = useState<ResearchArea[]>([]);
     const { isOpen, openModal, closeModal } = useModal();
     const { isOpen: isEditOpen, openModal: openEditModal, closeModal: closeEditModal } = useModal();
-    const token = useSelector((state: RootState) => state.auth.token);
+    // const token = useSelector((state: RootState) => state.auth.token);
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
     const [selectedArea, setSelectedArea] = useState<ResearchArea | null>(null);
 

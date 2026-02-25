@@ -10,7 +10,7 @@ import { RootState } from '../../redux/store';
 
 export default function Scopus() {
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
+    const [_, setLoading] = useState(false);
     const [scopusUrl, setScopusUrl] = useState("");
     const [scopusOpen, setScopusOpen] = useState(false);
     const token = useSelector((state: RootState) => state.auth.token);

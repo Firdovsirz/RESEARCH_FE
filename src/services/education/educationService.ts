@@ -64,7 +64,7 @@ export const updateEducation = async (edu_code: string, educationPayload: Educat
     }
 };
 
-export const deleteEducation = async (fin_kod: string, edu_code: string) => {
+export const deleteEducation = async (edu_code: string) => {
     try {
         const response = await apiClient.delete(`/api/education/${edu_code}/delete`);
         if (response.data.status_code === 200) {

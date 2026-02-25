@@ -11,7 +11,7 @@ export default function UserInfoCard() {
 
   useEffect(() => {
     setLoading(true);
-    getUserProfile(fin_kod ? fin_kod : "", token ? token : "")
+    getUserProfile(fin_kod ? fin_kod : "")
       .then((res) => {
         if (typeof res === "object") {
           setUser(res);

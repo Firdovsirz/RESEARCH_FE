@@ -2,11 +2,11 @@ import Swal from "sweetalert2";
 import Label from "../form/Label";
 import { Link } from "react-router";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import Input from "../form/input/InputField";
 import DatePicker from "../form/date-picker";
-import { RootState } from "../../redux/store";
+// import { RootState } from "../../redux/store";
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 import { EyeCloseIcon, EyeIcon } from "../../icons";
@@ -15,13 +15,13 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 export default function SignUpForm() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [birthDate, setBirthDate] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [inputFocussed, setInputFocussed] = useState(false);
   const [showRepPassword, setShowRepPassword] = useState(false);
-  const token = useSelector((state: RootState) => state.auth.token);
+  // const token = useSelector((state: RootState) => state.auth.token);
 
   // Form Data
 
@@ -31,7 +31,7 @@ export default function SignUpForm() {
   const [finKod, setFinKod] = useState("");
   const [password, setPassword] = useState("");
   const [repeatedPassword, setRepeatedPassword] = useState("");
-  const [role, setRole] = useState("");
+  // const [role, setRole] = useState("");
   const [email, setEmail] = useState("");
 
   // Signup Service
