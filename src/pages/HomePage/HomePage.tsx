@@ -10,7 +10,7 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import ScienceIcon from "@mui/icons-material/Science";
 import SchoolIcon from "@mui/icons-material/School";
 
-/* ─── Animation helpers ───────────────────────────────────────────── */
+/* ─── Animation helper ────────────────────────────────────────────── */
 const fadeUp = {
     hidden: { opacity: 0, y: 28 },
     visible: (delay: number = 0) => ({
@@ -20,7 +20,7 @@ const fadeUp = {
     }),
 };
 
-/* ─── Research areas data ─────────────────────────────────────────── */
+/* ─── Static data ────────────────────────────────────────────────── */
 const researchAreas = [
     { title: "Engineering & Technology", icon: "⚙️", count: 12 },
     { title: "Computer Science & IT", icon: "💻", count: 9 },
@@ -54,11 +54,12 @@ export default function HomePage() {
                 description="Discover researchers, publications and academic excellence at Azerbaijan Technical University."
             />
 
-            <div className="relative min-h-screen bg-slate-950 text-white overflow-x-hidden">
-                {/* ── Global decorative background ─────────────────── */}
-                <div className="fixed inset-0 z-0 pointer-events-none">
-                    <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-blue-950/30 to-slate-950" />
-                    {/* Subtle grid */}
+            {/* ── Page shell ───────────────────────────────────────── */}
+            <div className="relative min-h-screen bg-gray-50 dark:bg-slate-950 text-gray-900 dark:text-white overflow-x-hidden transition-colors duration-300">
+
+                {/* ── Dark-mode only fixed ambient background ───── */}
+                <div className="fixed inset-0 z-0 pointer-events-none hidden dark:block">
+                    <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-blue-950/25 to-slate-950" />
                     <div
                         className="absolute inset-0 opacity-[0.03]"
                         style={{
@@ -69,25 +70,34 @@ export default function HomePage() {
                             backgroundSize: "80px 80px",
                         }}
                     />
-                    {/* Ambient glows */}
                     <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full bg-cyan-500/5 blur-3xl" />
-                    <div className="absolute top-1/2 -right-48 w-96 h-96 rounded-full bg-indigo-500/6 blur-3xl" />
-                    <div className="absolute bottom-1/4 -left-48 w-96 h-96 rounded-full bg-blue-500/6 blur-3xl" />
+                    <div className="absolute top-1/2 -right-48 w-96 h-96 rounded-full bg-indigo-500/5 blur-3xl" />
                 </div>
 
-                {/* ── Fixed Header ──────────────────────────────────── */}
+                {/* ── Light-mode only fixed background ───────────── */}
+                <div className="fixed inset-0 z-0 pointer-events-none dark:hidden">
+                    <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white" />
+                </div>
+
+                {/* ── Header ───────────────────────────────────────── */}
                 <HomeHeader />
 
                 {/* ═══════════════════════════════════════════════════
-                    HERO SECTION
+                    HERO — navy blue in both modes (institutional)
                 ═══════════════════════════════════════════════════ */}
-                <section className="relative z-10 min-h-screen flex flex-col items-center justify-center text-center px-4 pt-16">
-                    {/* Hero background layer */}
+                <section className="relative z-10 min-h-screen flex flex-col items-center justify-center text-center px-4 pt-16 bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-950 dark:from-slate-950 dark:via-blue-950/50 dark:to-indigo-950">
+
+                    {/* Decorative overlays */}
                     <div className="absolute inset-0 overflow-hidden">
-                        <div className="absolute inset-0 bg-[url('/aztu-logo.webp')] bg-center bg-no-repeat opacity-[0.03] scale-150" />
-                        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/20 via-transparent to-slate-950" />
-                        {/* Radial accent */}
-                        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-cyan-500/6 blur-3xl" />
+                        <div
+                            className="absolute inset-0 opacity-[0.05]"
+                            style={{
+                                backgroundImage: `linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)`,
+                                backgroundSize: "64px 64px",
+                            }}
+                        />
+                        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-cyan-400/8 blur-3xl" />
+                        <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-blue-900/50 dark:from-slate-950/80 to-transparent" />
                     </div>
 
                     <div className="relative z-10 max-w-4xl mx-auto">
@@ -96,34 +106,34 @@ export default function HomePage() {
                             initial={{ opacity: 0, scale: 0.85 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.5 }}
-                            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/22 text-cyan-300 text-[11px] tracking-[0.18em] uppercase mb-8"
+                            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-white/80 text-[11px] tracking-[0.18em] uppercase mb-8"
                         >
-                            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-cyan-300 animate-pulse" />
                             Academic Research Portal
                         </motion.div>
 
-                        {/* Main headline */}
+                        {/* Headline */}
                         <motion.h1
                             custom={0.1}
                             variants={fadeUp}
                             initial="hidden"
                             animate="visible"
-                            className="text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.08] tracking-tight mb-6"
+                            className="text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.08] tracking-tight mb-6 text-white"
                         >
-                            <span className="text-white">Azerbaijan</span>
+                            Azerbaijan
                             <br />
-                            <span className="bg-gradient-to-r from-cyan-300 via-blue-300 to-indigo-300 bg-clip-text text-transparent">
+                            <span className="bg-gradient-to-r from-cyan-200 via-blue-200 to-indigo-200 bg-clip-text text-transparent">
                                 Technical University
                             </span>
                         </motion.h1>
 
-                        {/* Subheadline */}
+                        {/* Subtext */}
                         <motion.p
                             custom={0.22}
                             variants={fadeUp}
                             initial="hidden"
                             animate="visible"
-                            className="text-white/45 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
+                            className="text-white/60 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
                         >
                             Explore the scientific profiles, research achievements and publications of
                             AzTU faculty members across all faculties and disciplines.
@@ -139,9 +149,9 @@ export default function HomePage() {
                         >
                             <Link to="/researchers">
                                 <motion.button
-                                    whileHover={{ scale: 1.04, boxShadow: "0 0 32px rgba(6,182,212,0.3)" }}
+                                    whileHover={{ scale: 1.04, boxShadow: "0 0 32px rgba(6,182,212,0.35)" }}
                                     whileTap={{ scale: 0.97 }}
-                                    className="px-7 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold text-base shadow-lg shadow-cyan-500/20 flex items-center gap-2"
+                                    className="px-7 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-semibold text-base shadow-lg shadow-cyan-500/25 flex items-center gap-2"
                                 >
                                     Browse Researchers
                                     <ArrowForwardIcon fontSize="small" />
@@ -151,34 +161,34 @@ export default function HomePage() {
                                 <motion.button
                                     whileHover={{ scale: 1.04 }}
                                     whileTap={{ scale: 0.97 }}
-                                    className="px-7 py-3 rounded-xl border border-white/15 bg-white/5 backdrop-blur-sm text-white font-semibold text-base hover:bg-white/10 hover:border-white/25 transition-all duration-200"
+                                    className="px-7 py-3 rounded-xl border border-white/25 bg-white/10 backdrop-blur-sm text-white font-semibold text-base hover:bg-white/18 hover:border-white/40 transition-all duration-200"
                                 >
                                     Sign In to Portal
                                 </motion.button>
                             </Link>
                         </motion.div>
 
-                        {/* Scroll indicator */}
+                        {/* Scroll cue */}
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 1.4 }}
-                            className="mt-24 flex flex-col items-center gap-2 text-white/18"
+                            className="mt-24 flex flex-col items-center gap-2 text-white/25"
                         >
                             <span className="text-[10px] tracking-[0.2em] uppercase">Scroll to explore</span>
                             <motion.div
                                 animate={{ y: [0, 8, 0] }}
                                 transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-                                className="w-px h-8 bg-gradient-to-b from-white/20 to-transparent"
+                                className="w-px h-8 bg-gradient-to-b from-white/30 to-transparent"
                             />
                         </motion.div>
                     </div>
                 </section>
 
                 {/* ═══════════════════════════════════════════════════
-                    STATS SECTION
+                    STATS
                 ═══════════════════════════════════════════════════ */}
-                <section className="relative z-10 py-16 px-4">
+                <section className="relative z-10 py-16 px-4 bg-white dark:bg-transparent transition-colors duration-300">
                     <div className="max-w-5xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-4">
                         {statsData.map((s, i) => (
                             <motion.div
@@ -187,24 +197,24 @@ export default function HomePage() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: i * 0.1, duration: 0.5 }}
-                                className="group bg-white/4 backdrop-blur border border-white/8 rounded-2xl p-6 text-center hover:bg-white/7 hover:border-white/14 transition-all duration-300"
+                                className="group bg-white border border-gray-100 shadow-sm rounded-2xl p-6 text-center hover:shadow-md hover:border-gray-200 dark:bg-white/4 dark:border-white/8 dark:shadow-none dark:hover:bg-white/7 dark:hover:border-white/14 transition-all duration-300"
                             >
                                 <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${s.color} mb-4 opacity-90 group-hover:opacity-100 transition-opacity`}>
                                     <s.Icon className="text-white" style={{ fontSize: 20 }} />
                                 </div>
-                                <p className="text-3xl font-bold text-white mb-1 tabular-nums">{s.value}</p>
-                                <p className="text-white/38 text-xs tracking-wide uppercase">{s.label}</p>
+                                <p className="text-3xl font-bold text-gray-900 dark:text-white mb-1 tabular-nums transition-colors duration-300">{s.value}</p>
+                                <p className="text-gray-400 dark:text-white/38 text-xs tracking-wide uppercase transition-colors duration-300">{s.label}</p>
                             </motion.div>
                         ))}
                     </div>
                 </section>
 
                 {/* ═══════════════════════════════════════════════════
-                    RESEARCH AREAS SECTION
+                    RESEARCH AREAS
                 ═══════════════════════════════════════════════════ */}
-                <section id="research-areas" className="relative z-10 py-20 px-4">
+                <section id="research-areas" className="relative z-10 py-20 px-4 bg-gray-50 dark:bg-transparent transition-colors duration-300">
                     <div className="max-w-6xl mx-auto">
-                        {/* Section header */}
+                        {/* Section heading */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -212,14 +222,14 @@ export default function HomePage() {
                             transition={{ duration: 0.55 }}
                             className="text-center mb-12"
                         >
-                            <p className="text-cyan-400 text-xs tracking-[0.22em] uppercase mb-3">Explore by Field</p>
-                            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">Research Areas</h2>
-                            <p className="text-white/38 max-w-xl mx-auto leading-relaxed">
+                            <p className="text-cyan-600 dark:text-cyan-400 text-xs tracking-[0.22em] uppercase mb-3 transition-colors duration-300">Explore by Field</p>
+                            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">Research Areas</h2>
+                            <p className="text-gray-500 dark:text-white/38 max-w-xl mx-auto leading-relaxed transition-colors duration-300">
                                 Discover cutting-edge research across AzTU's diverse academic disciplines and faculties
                             </p>
                         </motion.div>
 
-                        {/* Area cards grid */}
+                        {/* Area cards */}
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                             {researchAreas.map((area, i) => (
                                 <motion.div
@@ -229,19 +239,15 @@ export default function HomePage() {
                                     viewport={{ once: true }}
                                     transition={{ delay: i * 0.07, duration: 0.4 }}
                                     whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                                    className="group relative bg-white/4 border border-white/8 rounded-2xl p-5 sm:p-6 cursor-pointer hover:bg-white/7 hover:border-cyan-400/22 transition-all duration-300 overflow-hidden"
+                                    className="group relative bg-white border border-gray-200 rounded-2xl p-5 sm:p-6 cursor-pointer shadow-sm hover:shadow-md hover:border-cyan-300 dark:bg-white/4 dark:border-white/8 dark:shadow-none dark:hover:bg-white/7 dark:hover:border-cyan-400/22 transition-all duration-300 overflow-hidden"
                                 >
-                                    {/* Hover top glow line */}
                                     <div className="absolute top-0 inset-x-6 h-px bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
                                     <div className="text-3xl mb-3">{area.icon}</div>
-                                    <h3 className="text-white font-semibold text-sm sm:text-base mb-1.5 leading-snug">
+                                    <h3 className="text-gray-800 dark:text-white font-semibold text-sm sm:text-base mb-1.5 leading-snug transition-colors duration-300">
                                         {area.title}
                                     </h3>
-                                    <p className="text-white/32 text-xs">{area.count} research groups</p>
-
-                                    {/* Hover underline */}
-                                    <div className="mt-3 h-px bg-gradient-to-r from-cyan-400/40 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
+                                    <p className="text-gray-400 dark:text-white/32 text-xs transition-colors duration-300">{area.count} research groups</p>
+                                    <div className="mt-3 h-px bg-gradient-to-r from-cyan-400/50 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
                                 </motion.div>
                             ))}
                         </div>
@@ -256,7 +262,7 @@ export default function HomePage() {
                                 <motion.button
                                     whileHover={{ scale: 1.04 }}
                                     whileTap={{ scale: 0.97 }}
-                                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl border border-cyan-400/28 text-cyan-300 text-sm font-medium hover:bg-cyan-400/7 transition-all duration-200"
+                                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl border border-cyan-300 text-cyan-600 dark:border-cyan-400/28 dark:text-cyan-300 text-sm font-medium hover:bg-cyan-50 dark:hover:bg-cyan-400/7 transition-all duration-200"
                                 >
                                     View All Researchers
                                     <ArrowForwardIcon fontSize="small" />
@@ -267,30 +273,30 @@ export default function HomePage() {
                 </section>
 
                 {/* ═══════════════════════════════════════════════════
-                    ABOUT AZTU SECTION
+                    ABOUT AzTU
                 ═══════════════════════════════════════════════════ */}
-                <section id="about" className="relative z-10 py-20 px-4">
+                <section id="about" className="relative z-10 py-20 px-4 bg-white dark:bg-transparent transition-colors duration-300">
                     <div className="max-w-6xl mx-auto">
                         <div className="grid md:grid-cols-2 gap-12 items-center">
-                            {/* Left – text */}
+                            {/* Left text */}
                             <motion.div
                                 initial={{ opacity: 0, x: -30 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                             >
-                                <p className="text-cyan-400 text-xs tracking-[0.22em] uppercase mb-3">About AzTU</p>
-                                <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6 leading-tight">
+                                <p className="text-cyan-600 dark:text-cyan-400 text-xs tracking-[0.22em] uppercase mb-3 transition-colors duration-300">About AzTU</p>
+                                <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6 leading-tight transition-colors duration-300">
                                     Building the Future
                                     <br />
-                                    <span className="text-white/50">Through Research</span>
+                                    <span className="text-gray-400 dark:text-white/50 transition-colors duration-300">Through Research</span>
                                 </h2>
-                                <p className="text-white/45 leading-relaxed mb-5">
+                                <p className="text-gray-500 dark:text-white/45 leading-relaxed mb-5 transition-colors duration-300">
                                     Azerbaijan Technical University (AzTU) is the leading technical higher education institution
                                     in Azerbaijan, training engineers and technical specialists since 1950. Our researchers drive
                                     innovation across engineering, technology, and applied sciences.
                                 </p>
-                                <p className="text-white/45 leading-relaxed mb-8">
+                                <p className="text-gray-500 dark:text-white/45 leading-relaxed mb-8 transition-colors duration-300">
                                     The AzTU Research Portal connects the academic community, showcasing the work of our faculty
                                     members, enabling international collaboration, and making Azerbaijani research accessible to
                                     the world.
@@ -307,7 +313,7 @@ export default function HomePage() {
                                 </Link>
                             </motion.div>
 
-                            {/* Right – decorative card */}
+                            {/* Right decorative card */}
                             <motion.div
                                 initial={{ opacity: 0, x: 30 }}
                                 whileInView={{ opacity: 1, x: 0 }}
@@ -315,35 +321,32 @@ export default function HomePage() {
                                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                                 className="relative"
                             >
-                                {/* Main card */}
-                                <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-gradient-to-br from-slate-900/80 to-blue-950/60 backdrop-blur aspect-[4/3] flex items-center justify-center">
-                                    {/* AzTU logo watermark */}
+                                {/* Card */}
+                                <div className="relative rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-900/80 dark:to-blue-950/60 aspect-[4/3] flex items-center justify-center shadow-md dark:shadow-none transition-all duration-300">
                                     <img
                                         src="/aztu-logo.png"
                                         alt="AzTU"
-                                        className="w-32 h-auto object-contain opacity-10"
+                                        className="w-32 h-auto object-contain opacity-8 dark:opacity-10"
                                     />
-                                    {/* Gradient overlay */}
-                                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-950/30 via-transparent to-indigo-950/40" />
-                                    {/* Top glow line */}
+                                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-600/5 via-transparent to-indigo-600/5 dark:from-cyan-950/30 dark:via-transparent dark:to-indigo-950/40" />
                                     <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent" />
 
-                                    {/* Info overlay */}
-                                    <div className="absolute bottom-0 inset-x-0 p-6 bg-gradient-to-t from-slate-950/80 to-transparent">
+                                    {/* Info bar */}
+                                    <div className="absolute bottom-0 inset-x-0 p-6 bg-gradient-to-t from-blue-100/90 dark:from-slate-950/80 to-transparent transition-colors duration-300">
                                         <div className="flex gap-6">
                                             <div>
-                                                <p className="text-2xl font-bold text-white">1950</p>
-                                                <p className="text-white/35 text-xs">Year Founded</p>
+                                                <p className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-300">1950</p>
+                                                <p className="text-gray-400 dark:text-white/35 text-xs transition-colors duration-300">Year Founded</p>
                                             </div>
-                                            <div className="w-px bg-white/10" />
+                                            <div className="w-px bg-gray-300 dark:bg-white/10 transition-colors duration-300" />
                                             <div>
-                                                <p className="text-2xl font-bold text-white">Baku</p>
-                                                <p className="text-white/35 text-xs">Azerbaijan</p>
+                                                <p className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-300">Baku</p>
+                                                <p className="text-gray-400 dark:text-white/35 text-xs transition-colors duration-300">Azerbaijan</p>
                                             </div>
-                                            <div className="w-px bg-white/10" />
+                                            <div className="w-px bg-gray-300 dark:bg-white/10 transition-colors duration-300" />
                                             <div>
-                                                <p className="text-2xl font-bold text-white">AzTU</p>
-                                                <p className="text-white/35 text-xs">aztu.edu.az</p>
+                                                <p className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-300">AzTU</p>
+                                                <p className="text-gray-400 dark:text-white/35 text-xs transition-colors duration-300">aztu.edu.az</p>
                                             </div>
                                         </div>
                                     </div>
@@ -354,47 +357,44 @@ export default function HomePage() {
                 </section>
 
                 {/* ═══════════════════════════════════════════════════
-                    CTA BANNER SECTION
+                    CTA BANNER — always dark (brand prominence)
                 ═══════════════════════════════════════════════════ */}
-                <section className="relative z-10 py-20 px-4">
+                <section className="relative z-10 py-20 px-4 bg-gray-50 dark:bg-transparent transition-colors duration-300">
                     <div className="max-w-4xl mx-auto">
                         <motion.div
                             initial={{ opacity: 0, y: 24 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6 }}
-                            className="relative rounded-3xl overflow-hidden border border-white/10 p-10 sm:p-16 text-center"
+                            className="relative rounded-3xl overflow-hidden border border-transparent p-10 sm:p-16 text-center"
                         >
-                            {/* Background gradient */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-cyan-950/50 via-blue-950/50 to-indigo-950/60" />
-                            {/* Grid pattern */}
+                            {/* Deep blue gradient bg — looks great in both modes */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-950" />
                             <div
-                                className="absolute inset-0 opacity-[0.04]"
+                                className="absolute inset-0 opacity-[0.05]"
                                 style={{
-                                    backgroundImage: `linear-gradient(rgba(147,197,253,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(147,197,253,0.8) 1px, transparent 1px)`,
+                                    backgroundImage: `linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)`,
                                     backgroundSize: "40px 40px",
                                 }}
                             />
-                            {/* Top glow line */}
-                            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-cyan-400/35 to-transparent" />
-                            {/* Corner glows */}
-                            <div className="absolute -top-12 -left-12 w-40 h-40 rounded-full bg-cyan-500/10 blur-2xl" />
-                            <div className="absolute -bottom-12 -right-12 w-40 h-40 rounded-full bg-indigo-500/10 blur-2xl" />
+                            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-cyan-300/40 to-transparent" />
+                            <div className="absolute -top-16 -left-16 w-48 h-48 rounded-full bg-cyan-400/10 blur-3xl" />
+                            <div className="absolute -bottom-16 -right-16 w-48 h-48 rounded-full bg-indigo-400/10 blur-3xl" />
 
                             <div className="relative z-10">
                                 <motion.div
                                     initial={{ opacity: 0, scale: 0.9 }}
                                     whileInView={{ opacity: 1, scale: 1 }}
                                     viewport={{ once: true }}
-                                    className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/22 text-cyan-300 text-[10px] tracking-widest uppercase mb-6"
+                                    className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white/75 text-[10px] tracking-widest uppercase mb-6"
                                 >
-                                    <span className="w-1 h-1 rounded-full bg-cyan-400" />
+                                    <span className="w-1 h-1 rounded-full bg-cyan-300" />
                                     Join the Community
                                 </motion.div>
                                 <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
                                     Are you an AzTU Researcher?
                                 </h2>
-                                <p className="text-white/45 mb-8 max-w-lg mx-auto leading-relaxed">
+                                <p className="text-white/55 mb-8 max-w-lg mx-auto leading-relaxed">
                                     Create your academic profile, share your research publications, and connect with the
                                     global scientific community.
                                 </p>
@@ -403,7 +403,7 @@ export default function HomePage() {
                                         <motion.button
                                             whileHover={{ scale: 1.04 }}
                                             whileTap={{ scale: 0.97 }}
-                                            className="px-7 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-lg shadow-cyan-500/20"
+                                            className="px-7 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-semibold shadow-lg shadow-cyan-500/20"
                                         >
                                             Register as Researcher
                                         </motion.button>
@@ -412,7 +412,7 @@ export default function HomePage() {
                                         <motion.button
                                             whileHover={{ scale: 1.04 }}
                                             whileTap={{ scale: 0.97 }}
-                                            className="px-7 py-3 rounded-xl border border-white/15 bg-white/5 text-white font-semibold hover:bg-white/10 hover:border-white/25 transition-all duration-200"
+                                            className="px-7 py-3 rounded-xl border border-white/25 bg-white/10 text-white font-semibold hover:bg-white/18 transition-all duration-200"
                                         >
                                             Browse Profiles
                                         </motion.button>
@@ -426,7 +426,7 @@ export default function HomePage() {
                 {/* ═══════════════════════════════════════════════════
                     FOOTER
                 ═══════════════════════════════════════════════════ */}
-                <footer className="relative z-10 border-t border-white/8 py-14 px-4">
+                <footer className="relative z-10 border-t border-gray-200 dark:border-white/8 py-14 px-4 bg-white dark:bg-transparent transition-colors duration-300">
                     <div className="max-w-6xl mx-auto">
                         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10 mb-10">
                             {/* Brand */}
@@ -434,11 +434,11 @@ export default function HomePage() {
                                 <div className="flex items-center gap-3 mb-4">
                                     <img src="/aztu-logo.png" alt="AzTU" className="w-7 h-9 object-contain opacity-70" />
                                     <div>
-                                        <p className="text-white/35 text-[9px] tracking-[0.2em] uppercase">Azerbaijan</p>
-                                        <p className="text-white font-semibold text-sm">Technical University</p>
+                                        <p className="text-gray-400 dark:text-white/35 text-[9px] tracking-[0.2em] uppercase transition-colors duration-300">Azerbaijan</p>
+                                        <p className="text-gray-800 dark:text-white font-semibold text-sm transition-colors duration-300">Technical University</p>
                                     </div>
                                 </div>
-                                <p className="text-white/30 text-sm leading-relaxed">
+                                <p className="text-gray-400 dark:text-white/30 text-sm leading-relaxed transition-colors duration-300">
                                     H. Cavid Ave. 25<br />
                                     Baku, Azerbaijan AZ1073
                                 </p>
@@ -446,7 +446,7 @@ export default function HomePage() {
 
                             {/* Quick Links */}
                             <div>
-                                <p className="text-white/45 text-[10px] tracking-[0.2em] uppercase mb-5">Quick Links</p>
+                                <p className="text-gray-400 dark:text-white/45 text-[10px] tracking-[0.2em] uppercase mb-5 transition-colors duration-300">Quick Links</p>
                                 <ul className="space-y-2.5">
                                     {[
                                         { label: "Home", to: "/" },
@@ -457,9 +457,9 @@ export default function HomePage() {
                                         <li key={l.to}>
                                             <Link
                                                 to={l.to}
-                                                className="text-white/35 text-sm hover:text-white/75 transition-colors duration-200 flex items-center gap-1.5 group"
+                                                className="text-gray-400 dark:text-white/35 text-sm hover:text-cyan-600 dark:hover:text-white/75 transition-colors duration-200 flex items-center gap-1.5 group"
                                             >
-                                                <span className="w-1 h-1 rounded-full bg-white/20 group-hover:bg-cyan-400/60 transition-colors" />
+                                                <span className="w-1 h-1 rounded-full bg-gray-300 dark:bg-white/20 group-hover:bg-cyan-500 dark:group-hover:bg-cyan-400/60 transition-colors" />
                                                 {l.label}
                                             </Link>
                                         </li>
@@ -469,25 +469,21 @@ export default function HomePage() {
 
                             {/* Contact */}
                             <div>
-                                <p className="text-white/45 text-[10px] tracking-[0.2em] uppercase mb-5">Contact</p>
+                                <p className="text-gray-400 dark:text-white/45 text-[10px] tracking-[0.2em] uppercase mb-5 transition-colors duration-300">Contact</p>
                                 <ul className="space-y-2.5">
-                                    {[
-                                        { label: "info@aztu.edu.az" },
-                                        { label: "+994 12 538 32 35" },
-                                        { label: "aztu.edu.az" },
-                                    ].map((c, i) => (
-                                        <li key={i} className="text-white/35 text-sm">{c.label}</li>
+                                    {["info@aztu.edu.az", "+994 12 538 32 35", "aztu.edu.az"].map((c, i) => (
+                                        <li key={i} className="text-gray-400 dark:text-white/35 text-sm transition-colors duration-300">{c}</li>
                                     ))}
                                 </ul>
                             </div>
                         </div>
 
                         {/* Bottom bar */}
-                        <div className="border-t border-white/8 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3">
-                            <p className="text-white/22 text-xs">
+                        <div className="border-t border-gray-200 dark:border-white/8 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 transition-colors duration-300">
+                            <p className="text-gray-300 dark:text-white/22 text-xs transition-colors duration-300">
                                 © {new Date().getFullYear()} Azerbaijan Technical University. All rights reserved.
                             </p>
-                            <p className="text-white/18 text-xs">AzTU Research Portal</p>
+                            <p className="text-gray-300 dark:text-white/18 text-xs transition-colors duration-300">AzTU Research Portal</p>
                         </div>
                     </div>
                 </footer>

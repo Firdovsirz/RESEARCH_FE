@@ -25,27 +25,27 @@ const cardVariants = {
 /* ─── Skeleton card ──────────────────────────────────────────────── */
 function SkeletonCard() {
     return (
-        <div className="relative bg-white/8 backdrop-blur-md border border-white/10 rounded-2xl p-5 flex flex-col gap-4 overflow-hidden">
+        <div className="relative bg-white dark:bg-white/8 backdrop-blur-md border border-gray-100 dark:border-white/10 rounded-2xl p-5 flex flex-col gap-4 overflow-hidden">
             {/* shimmer sweep */}
-            <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/8 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-gray-100/80 dark:via-white/8 to-transparent pointer-events-none" />
             <div className="flex flex-col items-center gap-3">
-                <div className="w-20 h-20 rounded-full bg-white/15" />
-                <div className="h-4 w-36 rounded-full bg-white/15" />
-                <div className="h-3 w-24 rounded-full bg-white/10" />
+                <div className="w-20 h-20 rounded-full bg-gray-200 dark:bg-white/15" />
+                <div className="h-4 w-36 rounded-full bg-gray-200 dark:bg-white/15" />
+                <div className="h-3 w-24 rounded-full bg-gray-100 dark:bg-white/10" />
             </div>
-            <div className="bg-white/5 border border-white/8 rounded-xl p-4 flex flex-col gap-3">
+            <div className="bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/8 rounded-xl p-4 flex flex-col gap-3">
                 <div className="flex justify-between items-center">
                     <div className="flex flex-col gap-1.5">
-                        <div className="h-3 w-20 rounded-full bg-white/10" />
-                        <div className="h-3 w-16 rounded-full bg-white/10" />
+                        <div className="h-3 w-20 rounded-full bg-gray-100 dark:bg-white/10" />
+                        <div className="h-3 w-16 rounded-full bg-gray-100 dark:bg-white/10" />
                     </div>
                     <div className="flex gap-2">
                         {[0, 1, 2, 3].map(i => (
-                            <div key={i} className="w-8 h-8 rounded-full bg-white/10" />
+                            <div key={i} className="w-8 h-8 rounded-full bg-gray-200 dark:bg-white/10" />
                         ))}
                     </div>
                 </div>
-                <div className="h-3 w-44 rounded-full bg-white/10" />
+                <div className="h-3 w-44 rounded-full bg-gray-100 dark:bg-white/10" />
             </div>
         </div>
     );
@@ -60,7 +60,7 @@ function SocialBtn({ href, src, alt }: { href?: string; src: string; alt: string
             rel="noreferrer"
             whileHover={{ scale: 1.18, y: -2 }}
             whileTap={{ scale: 0.9 }}
-            className="block rounded-full ring-1 ring-white/10 hover:ring-cyan-400/40 transition-all duration-200"
+            className="block rounded-full ring-1 ring-gray-200 dark:ring-white/10 hover:ring-cyan-400/40 transition-all duration-200"
         >
             <img src={src} alt={alt} className="w-8 h-8 rounded-full object-cover" />
         </motion.a>
@@ -110,10 +110,10 @@ export default function Researchers() {
     }, [search]);
 
     return (
-        <div className="relative min-h-screen w-full">
+        <div className="relative min-h-screen w-full bg-gray-50 dark:bg-slate-950 transition-colors duration-300">
 
-            {/* ── Background ─────────────────────────────────────────── */}
-            <div className="fixed inset-0 z-0">
+            {/* ── Dark-mode background ────────────────────────────── */}
+            <div className="fixed inset-0 z-0 pointer-events-none hidden dark:block">
                 {/* Photo */}
                 <div className="absolute inset-0 bg-[url('/aztu.webp')] bg-cover bg-center bg-no-repeat" />
                 {/* Dark gradient overlay */}
@@ -130,9 +130,14 @@ export default function Researchers() {
                     }}
                 />
                 {/* Radial glow top-left */}
-                <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-cyan-500/10 blur-3xl pointer-events-none" />
+                <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-cyan-500/10 blur-3xl" />
                 {/* Radial glow bottom-right */}
-                <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none" />
+                <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-indigo-500/10 blur-3xl" />
+            </div>
+
+            {/* ── Light-mode background ───────────────────────────── */}
+            <div className="fixed inset-0 z-0 pointer-events-none dark:hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white" />
             </div>
 
             {/* ── Content ────────────────────────────────────────────── */}
@@ -149,7 +154,7 @@ export default function Researchers() {
                         className="w-full max-w-[1400px] mx-auto px-4 sm:px-8 md:px-10 mt-2 mb-4 flex items-center gap-2"
                     >
                         <span className="inline-block w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                        <p className="text-white/40 text-xs tracking-[0.15em] uppercase">
+                        <p className="text-gray-500 dark:text-white/40 text-xs tracking-[0.15em] uppercase">
                             {userLength} researcher{userLength !== 1 ? "s" : ""} found
                         </p>
                     </motion.div>
@@ -184,11 +189,11 @@ export default function Researchers() {
                                 className="
                                     relative group
                                     w-full sm:w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(33.333%-1.1rem)]
-                                    bg-white/8 backdrop-blur-xl
-                                    border border-white/12
+                                    bg-white border border-gray-200 shadow-sm
+                                    dark:bg-white/8 dark:backdrop-blur-xl dark:border-white/12 dark:shadow-none
                                     rounded-2xl p-5 flex flex-col
-                                    hover:border-cyan-400/35
-                                    hover:shadow-[0_8px_40px_rgba(6,182,212,0.12)]
+                                    hover:border-cyan-300 dark:hover:border-cyan-400/35
+                                    hover:shadow-md dark:hover:shadow-[0_8px_40px_rgba(6,182,212,0.12)]
                                     transition-all duration-300
                                 "
                             >
@@ -218,14 +223,14 @@ export default function Researchers() {
                                         <img
                                             src={user.image ? user.image : "profile-image.webp"}
                                             alt={`${user.name} ${user.surname}`}
-                                            className="w-20 h-20 rounded-full border border-white/20 object-cover relative z-10"
+                                            className="w-20 h-20 rounded-full border border-gray-200 dark:border-white/20 object-cover relative z-10"
                                         />
                                     </div>
 
-                                    <h2 className="text-white font-semibold text-base sm:text-lg text-center leading-tight">
+                                    <h2 className="text-gray-900 dark:text-white font-semibold text-base sm:text-lg text-center leading-tight">
                                         {user.name} {user.surname}
                                     </h2>
-                                    <p className="text-white/45 text-xs sm:text-sm text-center mt-1 leading-snug">
+                                    <p className="text-gray-500 dark:text-white/45 text-xs sm:text-sm text-center mt-1 leading-snug">
                                         {[user.scientific_name, user.scientific_degree_name].filter(Boolean).join(" · ")}
                                     </p>
 
@@ -234,7 +239,7 @@ export default function Researchers() {
                                         <motion.div
                                             whileHover={{ scale: 1.06 }}
                                             whileTap={{ scale: 0.94 }}
-                                            className="px-2.5 py-1 rounded-lg text-[11px] font-medium text-cyan-300/80 border border-cyan-400/25 hover:text-cyan-200 hover:bg-cyan-400/10 hover:border-cyan-400/50 transition-all duration-200"
+                                            className="px-2.5 py-1 rounded-lg text-[11px] font-medium text-cyan-600 border border-cyan-300 dark:text-cyan-300/80 dark:border-cyan-400/25 hover:text-cyan-700 hover:bg-cyan-50 dark:hover:text-cyan-200 dark:hover:bg-cyan-400/10 hover:border-cyan-400 dark:hover:border-cyan-400/50 transition-all duration-200"
                                         >
                                             View
                                         </motion.div>
@@ -242,18 +247,18 @@ export default function Researchers() {
                                 </div>
 
                                 {/* ── Info card ── */}
-                                <div className="mt-auto bg-white/5 border border-white/8 rounded-xl p-4 flex flex-col gap-3">
+                                <div className="mt-auto bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/8 rounded-xl p-4 flex flex-col gap-3">
                                     {/* Birth date + social links */}
                                     <div className="flex justify-between items-start gap-2">
                                         <div>
-                                            <div className="flex items-center gap-1.5 text-white/35 mb-0.5">
+                                            <div className="flex items-center gap-1.5 text-gray-400 dark:text-white/35 mb-0.5">
                                                 <CalendarMonthIcon sx={{ fontSize: 13 }} />
                                                 <span className="text-[11px] tracking-wide">Doğum tarixi</span>
                                             </div>
-                                            <span className="text-white/75 text-sm">
+                                            <span className="text-gray-700 dark:text-white/75 text-sm">
                                                 {user.birth_date
                                                     ? new Date(user.birth_date).toLocaleDateString("en-GB")
-                                                    : <span className="text-white/25">—</span>
+                                                    : <span className="text-gray-300 dark:text-white/25">—</span>
                                                 }
                                             </span>
                                         </div>
@@ -267,13 +272,13 @@ export default function Researchers() {
 
                                     {/* Email */}
                                     <div>
-                                        <div className="flex items-center gap-1.5 text-white/35 mb-0.5">
+                                        <div className="flex items-center gap-1.5 text-gray-400 dark:text-white/35 mb-0.5">
                                             <EmailIcon sx={{ fontSize: 13 }} />
                                             <span className="text-[11px] tracking-wide">E-poçt</span>
                                         </div>
                                         <a
                                             href={`mailto:${user?.email}`}
-                                            className="text-cyan-300/70 text-sm hover:text-cyan-200 transition-colors duration-200 break-all"
+                                            className="text-cyan-600 dark:text-cyan-300/70 text-sm hover:text-cyan-700 dark:hover:text-cyan-200 transition-colors duration-200 break-all"
                                         >
                                             {user?.email}
                                         </a>
