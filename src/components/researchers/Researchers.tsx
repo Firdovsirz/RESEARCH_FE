@@ -1,12 +1,73 @@
 import { Link } from "react-router";
 import { useEffect, useState } from "react";
-import Skeleton from '@mui/material/Skeleton';
 import EmailIcon from '@mui/icons-material/Email';
-import PublicHeader from '../publicHeader/PublicHeader';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import PublicHeader from '../publicHeader/PublicHeader';
+import { motion } from "framer-motion";
 import { getAllUsers, UserProfile } from "../../services/user/userService";
 
+/* ─── Animation variants ─────────────────────────────────────────── */
+const containerVariants = {
+    hidden: {},
+    visible: {
+        transition: { staggerChildren: 0.07 }
+    }
+};
+
+const cardVariants = {
+    hidden: { opacity: 0, y: 36, scale: 0.97 },
+    visible: {
+        opacity: 1, y: 0, scale: 1,
+        transition: { duration: 0.48, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }
+    }
+};
+
+/* ─── Skeleton card ──────────────────────────────────────────────── */
+function SkeletonCard() {
+    return (
+        <div className="relative bg-white/8 backdrop-blur-md border border-white/10 rounded-2xl p-5 flex flex-col gap-4 overflow-hidden">
+            {/* shimmer sweep */}
+            <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/8 to-transparent pointer-events-none" />
+            <div className="flex flex-col items-center gap-3">
+                <div className="w-20 h-20 rounded-full bg-white/15" />
+                <div className="h-4 w-36 rounded-full bg-white/15" />
+                <div className="h-3 w-24 rounded-full bg-white/10" />
+            </div>
+            <div className="bg-white/5 border border-white/8 rounded-xl p-4 flex flex-col gap-3">
+                <div className="flex justify-between items-center">
+                    <div className="flex flex-col gap-1.5">
+                        <div className="h-3 w-20 rounded-full bg-white/10" />
+                        <div className="h-3 w-16 rounded-full bg-white/10" />
+                    </div>
+                    <div className="flex gap-2">
+                        {[0, 1, 2, 3].map(i => (
+                            <div key={i} className="w-8 h-8 rounded-full bg-white/10" />
+                        ))}
+                    </div>
+                </div>
+                <div className="h-3 w-44 rounded-full bg-white/10" />
+            </div>
+        </div>
+    );
+}
+
+/* ─── Social link button ─────────────────────────────────────────── */
+function SocialBtn({ href, src, alt }: { href?: string; src: string; alt: string }) {
+    return (
+        <motion.a
+            href={href}
+            target="_blank"
+            rel="noreferrer"
+            whileHover={{ scale: 1.18, y: -2 }}
+            whileTap={{ scale: 0.9 }}
+            className="block rounded-full ring-1 ring-white/10 hover:ring-cyan-400/40 transition-all duration-200"
+        >
+            <img src={src} alt={alt} className="w-8 h-8 rounded-full object-cover" />
+        </motion.a>
+    );
+}
+
+/* ─── Main component ─────────────────────────────────────────────── */
 export default function Researchers() {
     const [start] = useState(0);
     const [end] = useState(10);
@@ -29,6 +90,7 @@ export default function Researchers() {
             })
             .finally(() => setLoading(false));
     }, []);
+
     useEffect(() => {
         setLoading(true);
         const handler = setTimeout(() => {
@@ -49,158 +111,178 @@ export default function Researchers() {
 
     return (
         <div className="relative min-h-screen w-full">
-            {/* Sticky background image with blue overlay */}
-            <div className="fixed inset-0 w-full h-full z-0">
-                <div className="absolute inset-0 bg-[url('/aztu.webp')] bg-cover bg-center bg-no-repeat"></div>
-                <div className="absolute inset-0 bg-blue-900/60"></div>
-            </div>
-            {/* Main content */}
-            <div className="relative z-10 min-h-screen flex flex-col">
-                {/* Header at the top, full width */}
-                <div className="w-full">
-                    <PublicHeader onSearch={setSearch} />
-                </div>
-                {/* Cards grid */}
+
+            {/* ── Background ─────────────────────────────────────────── */}
+            <div className="fixed inset-0 z-0">
+                {/* Photo */}
+                <div className="absolute inset-0 bg-[url('/aztu.webp')] bg-cover bg-center bg-no-repeat" />
+                {/* Dark gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-950/85 via-blue-950/75 to-indigo-950/85" />
+                {/* Subtle grid lines */}
                 <div
+                    className="absolute inset-0 opacity-[0.06]"
+                    style={{
+                        backgroundImage: `
+                            linear-gradient(rgba(147,197,253,0.6) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(147,197,253,0.6) 1px, transparent 1px)
+                        `,
+                        backgroundSize: "64px 64px"
+                    }}
+                />
+                {/* Radial glow top-left */}
+                <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-cyan-500/10 blur-3xl pointer-events-none" />
+                {/* Radial glow bottom-right */}
+                <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none" />
+            </div>
+
+            {/* ── Content ────────────────────────────────────────────── */}
+            <div className="relative z-10 min-h-screen flex flex-col">
+
+                <PublicHeader onSearch={setSearch} />
+
+                {/* Result count */}
+                {!loading && userLength !== undefined && (
+                    <motion.div
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.2, duration: 0.4 }}
+                        className="w-full max-w-[1400px] mx-auto px-4 sm:px-8 md:px-10 mt-2 mb-4 flex items-center gap-2"
+                    >
+                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                        <p className="text-white/40 text-xs tracking-[0.15em] uppercase">
+                            {userLength} researcher{userLength !== 1 ? "s" : ""} found
+                        </p>
+                    </motion.div>
+                )}
+
+                {/* ── Card grid ──────────────────────────────────────── */}
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
                     className="
-                        flex flex-wrap gap-4 sm:gap-6 px-2 sm:px-6 md:px-10 py-6 md:py-10
+                        flex flex-wrap gap-4 sm:gap-5
+                        px-4 sm:px-8 md:px-10 pb-12
                         justify-center md:justify-start items-stretch
                         w-full max-w-[1400px] mx-auto
-                        "
+                    "
                 >
                     {loading
-                        ? Array.from({ length: 6 }).map((_, index) => (
+                        ? Array.from({ length: 6 }).map((_, i) => (
                             <div
-                                key={index}
-                                className="
-                                    flex flex-col justify-between items-center
-                                    bg-gray-100 shadow-md rounded-2xl
-                                    hover:shadow-lg transition-shadow duration-300
-                                    w-full sm:w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] lg:w-[32%]
-                                    max-w-full p-4 sm:p-5 mb-4
-                                "
-                                style={{ borderRadius: 20 }}
+                                key={i}
+                                className="w-full sm:w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(33.333%-1.1rem)]"
                             >
-                                <div className="flex justify-between items-start w-full mb-4">
-                                    <div className="flex flex-col items-center">
-                                        <Skeleton variant="circular" width={70} height={70} className="mb-2 max-w-full" />
-                                        <Skeleton variant="text" width={100} height={20} />
-                                        <Skeleton variant="text" width={80} height={15} />
-                                        <Skeleton variant="text" width={120} height={15} />
-                                    </div>
-                                    <Skeleton variant="circular" width={24} height={24} />
-                                </div>
-                                <div className="bg-white mt-1 rounded-[10px] p-2 w-full">
-                                    <div className="flex justify-between items-center mb-5">
-                                        <div>
-                                            <div className="flex justify-start items-center mb-1">
-                                                <CalendarMonthIcon className="mr-2 text-gray-500" />
-                                                <Skeleton variant="text" width={80} height={15} />
-                                            </div>
-                                            <Skeleton variant="text" width={100} height={15} />
-                                        </div>
-                                        <div className="flex justify-between items-center">
-                                            {Array.from({ length: 3 }).map((_, i) => (
-                                                <Skeleton key={i} variant="circular" width={36} height={36} className="mr-2" />
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="flex justify-start items-center mb-1">
-                                            <EmailIcon className="mr-2 text-gray-500" />
-                                            <Skeleton variant="text" width={60} height={15} />
-                                        </div>
-                                        <Skeleton variant="text" width={140} height={15} />
-                                    </div>
-                                </div>
+                                <SkeletonCard />
                             </div>
                         ))
                         : users.map((user, index) => (
-                            <div
+                            <motion.div
                                 key={index}
+                                variants={cardVariants}
+                                whileHover={{ y: -6, transition: { duration: 0.22 } }}
                                 className="
-                                    hover:shadow-lg transition-shadow duration-300
-                                    bg-[#f4f5f5] rounded-2xl
-                                    w-full sm:w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] lg:w-[32%]
-                                    max-w-full flex flex-col p-4 sm:p-5 mb-4
+                                    relative group
+                                    w-full sm:w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(33.333%-1.1rem)]
+                                    bg-white/8 backdrop-blur-xl
+                                    border border-white/12
+                                    rounded-2xl p-5 flex flex-col
+                                    hover:border-cyan-400/35
+                                    hover:shadow-[0_8px_40px_rgba(6,182,212,0.12)]
+                                    transition-all duration-300
                                 "
                             >
-                                <div className="flex justify-between items-start mb-5">
-                                    <div className="flex flex-col items-center justify-center w-full">
+                                {/* Top edge glow on hover */}
+                                <div className="absolute top-0 inset-x-8 h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 rounded-t-full" />
+
+                                {/* ── Profile ── */}
+                                <div className="flex flex-col items-center mb-4 relative">
+                                    {/* Avatar with animated ring */}
+                                    <div className="relative mb-3">
+                                        <motion.div
+                                            className="absolute -inset-1.5 rounded-full border border-cyan-400/25"
+                                            animate={{
+                                                scale: [1, 1.1, 1],
+                                                opacity: [0.4, 0.1, 0.4]
+                                            }}
+                                            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+                                        />
+                                        <motion.div
+                                            className="absolute -inset-3 rounded-full border border-cyan-400/12"
+                                            animate={{
+                                                scale: [1, 1.08, 1],
+                                                opacity: [0.25, 0.05, 0.25]
+                                            }}
+                                            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
+                                        />
                                         <img
                                             src={user.image ? user.image : "profile-image.webp"}
-                                            alt=""
-                                            className="w-[70px] h-[70px] rounded-full border-2 border-white object-center object-contain mb-2"
+                                            alt={`${user.name} ${user.surname}`}
+                                            className="w-20 h-20 rounded-full border border-white/20 object-cover relative z-10"
                                         />
-                                        <h2 className="text-base sm:text-lg md:text-xl font-semibold text-center">
-                                            {user.name} {user.surname}
-                                        </h2>
-                                        <p className="text-gray-500 text-sm sm:text-base text-center">
-                                            {user.scientific_name} | {user.scientific_degree_name}
-                                        </p>
                                     </div>
+
+                                    <h2 className="text-white font-semibold text-base sm:text-lg text-center leading-tight">
+                                        {user.name} {user.surname}
+                                    </h2>
+                                    <p className="text-white/45 text-xs sm:text-sm text-center mt-1 leading-snug">
+                                        {[user.scientific_name, user.scientific_degree_name].filter(Boolean).join(" · ")}
+                                    </p>
+
+                                    {/* View profile button */}
+                                    <Link to="/researcher-details" state={{ user }} className="absolute top-0 right-0">
+                                        <motion.div
+                                            whileHover={{ scale: 1.06 }}
+                                            whileTap={{ scale: 0.94 }}
+                                            className="px-2.5 py-1 rounded-lg text-[11px] font-medium text-cyan-300/80 border border-cyan-400/25 hover:text-cyan-200 hover:bg-cyan-400/10 hover:border-cyan-400/50 transition-all duration-200"
+                                        >
+                                            View
+                                        </motion.div>
+                                    </Link>
+                                </div>
+
+                                {/* ── Info card ── */}
+                                <div className="mt-auto bg-white/5 border border-white/8 rounded-xl p-4 flex flex-col gap-3">
+                                    {/* Birth date + social links */}
+                                    <div className="flex justify-between items-start gap-2">
+                                        <div>
+                                            <div className="flex items-center gap-1.5 text-white/35 mb-0.5">
+                                                <CalendarMonthIcon sx={{ fontSize: 13 }} />
+                                                <span className="text-[11px] tracking-wide">Doğum tarixi</span>
+                                            </div>
+                                            <span className="text-white/75 text-sm">
+                                                {user.birth_date
+                                                    ? new Date(user.birth_date).toLocaleDateString("en-GB")
+                                                    : <span className="text-white/25">—</span>
+                                                }
+                                            </span>
+                                        </div>
+                                        <div className="flex gap-1.5 flex-shrink-0">
+                                            <SocialBtn href={user?.google_scholar_url} src="/linkedin-logo.webp" alt="linkedin" />
+                                            <SocialBtn href={user?.google_scholar_url} src="/google-scholar-logo.webp" alt="scholar" />
+                                            <SocialBtn href={user?.scopus_url} src="/scopus-logo.webp" alt="scopus" />
+                                            <SocialBtn href={user?.webofscience_url} src="/web-of-science-logo.webp" alt="wos" />
+                                        </div>
+                                    </div>
+
+                                    {/* Email */}
                                     <div>
-                                        <Link to="/researcher-details" state={{ user }}>
-                                            <MoreHorizIcon className="w-6 h-6 sm:w-7 sm:h-7" />
-                                        </Link>
+                                        <div className="flex items-center gap-1.5 text-white/35 mb-0.5">
+                                            <EmailIcon sx={{ fontSize: 13 }} />
+                                            <span className="text-[11px] tracking-wide">E-poçt</span>
+                                        </div>
+                                        <a
+                                            href={`mailto:${user?.email}`}
+                                            className="text-cyan-300/70 text-sm hover:text-cyan-200 transition-colors duration-200 break-all"
+                                        >
+                                            {user?.email}
+                                        </a>
                                     </div>
                                 </div>
-                                <div className="bg-white mt-1 rounded-[10px] p-2 sm:p-3">
-                                    <div className="flex justify-between items-center mb-5 flex-wrap">
-                                        <div className="mb-2 md:mb-0">
-                                            <div className="flex justify-start items-center">
-                                                <CalendarMonthIcon className="mr-2 text-gray-500 w-5 h-5 sm:w-6 sm:h-6" />
-                                                <p className="text-gray-500 text-sm sm:text-base">Doğum tarixi</p>
-                                            </div>
-                                            <div>
-                                                {user.birth_date && (
-                                                    <span className="text-sm sm:text-base">{new Date(user.birth_date).toLocaleDateString('en-GB')}</span>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-wrap justify-between items-center gap-2">
-                                            <div
-                                                className="border border-gray-200 p-1 rounded-full cursor-pointer flex items-center justify-center min-w-[42px] min-h-[42px] mr-1"
-                                            >
-                                                <a href={user?.google_scholar_url} target="_blank" rel="noreferrer">
-                                                    <img src="/linkedin-logo.webp" alt="linkedin" className="rounded-full w-9 h-9 max-w-full" />
-                                                </a>
-                                            </div>
-                                            <div
-                                                className="border border-gray-200 p-1 rounded-full cursor-pointer flex items-center justify-center min-w-[42px] min-h-[42px] mr-1"
-                                            >
-                                                <a href={user?.google_scholar_url} target="_blank" rel="noreferrer">
-                                                    <img src="/google-scholar-logo.webp" alt="google scholar" className="rounded-full w-9 h-9 max-w-full" />
-                                                </a>
-                                            </div>
-                                            <div
-                                                className="border border-gray-200 p-1 rounded-full cursor-pointer flex items-center justify-center min-w-[42px] min-h-[42px] mr-1"
-                                            >
-                                                <a href={user?.scopus_url} target="_blank" rel="noreferrer">
-                                                    <img src="/scopus-logo.webp" alt="scopus" className="rounded-full w-9 h-9 max-w-full" />
-                                                </a>
-                                            </div>
-                                            <div
-                                                className="border border-gray-200 p-1 rounded-full cursor-pointer flex items-center justify-center min-w-[42px] min-h-[42px]"
-                                            >
-                                                <a href={user?.webofscience_url} target="_blank" rel="noreferrer">
-                                                    <img src="/web-of-science-logo.webp" alt="web of science" className="rounded-full w-9 h-9 max-w-full" />
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="flex justify-start items-center">
-                                            <EmailIcon className="mr-2 text-gray-500 w-5 h-5 sm:w-6 sm:h-6" />
-                                            <p className="text-gray-500 text-sm sm:text-base">E-poçt</p>
-                                        </div>
-                                        <a href={`mailto:${user?.email}`} className="text-sm sm:text-base break-all">{user?.email}</a>
-                                    </div>
-                                </div>
-                            </div>
+                            </motion.div>
                         ))
                     }
-                </div>
+                </motion.div>
             </div>
         </div>
     );
