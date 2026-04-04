@@ -48,11 +48,34 @@ export default function ResearcherLayout({ children, user, heading }: Researcher
     }, []);
 
     return (
-        <div className="flex flex-col min-h-screen bg-[#f8f9fa] dark:bg-slate-950 transition-colors duration-300">
-            <PublicHeader toggleMenu={() => setMenuOpen(!menuOpen)} />
+        <div className="flex flex-col min-h-screen bg-[#f8f9fa] dark:bg-slate-950 transition-colors duration-300 relative overflow-hidden">
+            {/* ── Ambient Background Elements ─────────────────── */}
+            <div className="fixed inset-0 z-0 pointer-events-none">
+                {/* Subtle Grid */}
+                <div 
+                    className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]"
+                    style={{
+                        backgroundImage: `radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)`,
+                        backgroundSize: '40px 40px',
+                        color: 'rgba(59, 130, 246, 0.5)'
+                    }}
+                />
+                
+                {/* Soft Radial Glows */}
+                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/5 dark:bg-blue-400/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4" />
+                <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-500/5 dark:bg-indigo-400/5 rounded-full blur-[100px] translate-y-1/4 -translate-x-1/4" />
+                
+                {/* Institutional Watermark (Large) */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center opacity-[0.015] dark:opacity-[0.02] rotate-[-15deg]">
+                    <img src="/aztu-logo.png" alt="" className="w-[800px] h-auto object-contain" />
+                </div>
+            </div>
 
-            <div className="flex flex-col md:flex-row flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 gap-8">
-                {/* ── Sidebar ────────────────────────────────────────── */}
+            <div className="relative z-10 flex flex-col min-h-screen">
+                <PublicHeader toggleMenu={() => setMenuOpen(!menuOpen)} />
+
+                <div className="flex flex-col md:flex-row flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 gap-8 relative">
+                    {/* ── Sidebar ────────────────────────────────────────── */}
                 <aside className="w-full md:w-80 flex-shrink-0">
                     <div className="sticky top-24 space-y-6">
                         {/* Profile Card */}
