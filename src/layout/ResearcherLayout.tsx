@@ -199,5 +199,6 @@ export default function ResearcherLayout({ children, user, heading }: Researcher
                 </main>
             </div>
         </div>
-    );
+    </div>
+);
 }
