@@ -149,6 +149,29 @@ export default function ResearcherLayout({ children, user, heading }: Researcher
                                 })}
                             </ul>
                         </nav>
+
+                        {/* Institutional Support Card */}
+                        <div className="bg-gradient-to-br from-slate-800 to-slate-950 rounded-3xl p-6 text-white shadow-lg relative overflow-hidden hidden md:block">
+                            <div className="relative z-10">
+                                <h3 className="text-sm font-bold mb-2">Academic Support</h3>
+                                <p className="text-[11px] text-slate-400 leading-relaxed mb-4">
+                                    Need help with your profile or publications? Contact the university research department.
+                                </p>
+                                <a 
+                                    href="mailto:research@aztu.edu.az"
+                                    className="text-[11px] font-bold text-blue-400 hover:text-blue-300 flex items-center gap-1 transition-colors"
+                                >
+                                    research@aztu.edu.az
+                                    <span>→</span>
+                                </a>
+                            </div>
+                            {/* Decorative Logo */}
+                            <img 
+                                src="/aztu-logo.png" 
+                                alt="" 
+                                className="absolute -bottom-4 -right-4 w-20 h-24 opacity-10 rotate-12 pointer-events-none" 
+                            />
+                        </div>
                     </div>
                 </aside>
 
