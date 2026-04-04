@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { getUserProfile } from "../services/user/userService";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { ReactNode, useState, useCallback } from "react";
 import { UserProfile } from "../services/user/userService";
 import PublicHeader from "../components/publicHeader/PublicHeader";
@@ -13,13 +13,24 @@ interface ResearcherLayoutProps {
     heading?: string
 }
 
+const navLinks = [
+    { label: "General Info", path: "/researcher-details" },
+    { label: "Education", path: "/researcher-details/education" },
+    { label: "Research Areas", path: "/researcher-details/areas" },
+    { label: "Experience", path: "/researcher-details/experience" },
+    { label: "Resume (CV)", path: "/researcher-details/cv" },
+    { label: "Contact", path: "/researcher-details/contact" },
+];
+
 export default function ResearcherLayout({ children, user, heading }: ResearcherLayoutProps) {
     const [loading, setLoading] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const [imageBase64, setImageBase64] = useState<string>("");
+    const location = useLocation();
 
     useEffect(() => {
-        getUserProfile(user?.fin_kod ? user?.fin_kod : "",)
+        setLoading(true);
+        getUserProfile(user?.fin_kod ? user?.fin_kod : "")
             .then((res) => {
                 if (typeof res === "object") {
                     setImageBase64(res.profile_image ? `data:image/jpeg;base64,${res.profile_image}` : "");
@@ -30,237 +41,117 @@ export default function ResearcherLayout({ children, user, heading }: Researcher
             .finally(() => {
                 setLoading(false);
             });
-    }, []);
+    }, [user?.fin_kod]);
 
     const particlesInit = useCallback(async (engine: any) => {
         await loadFull(engine);
     }, []);
 
     return (
-        <div className="flex flex-col md:flex-row min-h-screen">
-            <div
-                className={`fixed inset-0 bg-white/30 backdrop-blur-sm z-40 transition-opacity duration-300 md:hidden ${menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
-                onClick={() => setMenuOpen(false)}
-            ></div>
+        <div className="flex flex-col min-h-screen bg-[#f8f9fa] dark:bg-slate-950 transition-colors duration-300">
+            <PublicHeader toggleMenu={() => setMenuOpen(!menuOpen)} />
 
-            <aside
-                className={`fixed top-0 right-0 z-50 w-[250px] bg-gray-100 border-l border-gray-200 h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 transform transition-transform duration-300
-                ${menuOpen ? 'translate-x-0' : 'translate-x-full'}
-                md:relative md:translate-x-0 md:static
-                `}
-                style={{
-                    display: menuOpen ? 'block' : undefined,
-                }}
-            >
-                <Particles
-                    className="absolute inset-0 z-0"
-                    id="aside-particles"
-                    init={particlesInit}
-                    options={{
-                        fullScreen: { enable: false },
-                        background: { color: "transparent" },
-                        fpsLimit: 60,
-                        interactivity: {
-                            events: {
-                                onHover: { enable: false },
-                                onClick: { enable: false },
-                                resize: true,
-                            },
-                        },
-                        particles: {
-                            color: { value: "#3b82f6" },
-                            collisions: { enable: false },
-                            move: {
-                                direction: "none",
-                                enable: true,
-                                outModes: "out",
-                                random: false,
-                                speed: 0.4,
-                                straight: false,
-                            },
-                            number: {
-                                density: { enable: true, area: 800 },
-                                value: 120,
-                            },
-                            opacity: { value: 0.28 },
-                            shape: { type: "circle" },
-                            size: { value: { min: 1, max: 3 } },
-                        },
-                        detectRetina: true,
-                    }}
-                />
-                <div className="relative z-10">
-                    <div className="p-5 flex justify-center items-center">
-                        <img
-                            src={
-                                imageBase64 ||
-                                (user && user.image) ||
-                                "/placeholder-profile.png"
-                            }
-                            alt="Profile image"
-                            className="w-32 h-32 object-center object-contain rounded-full border border-gray-300"
-                        />
-                    </div>
-                    <div className="mb-2 p-5 flex flex-col justify-center items-center">
-                        <h2 className="text-lg font-semibold">{user.name} {user.surname}</h2>
-                        <p className="text-sm text-gray-600">{user.email}</p>
-                    </div>
-                    <div className="grid grid-cols-3 gap-4 justify-center justify-items-center px-5 mb-2">
-                        <div
-                            className="border border-black/20 rounded-full cursor-pointer min-w-[50px] min-h-[50px] flex items-center justify-center"
-                        >
-                            {loading ? (
-                                <div className="animate-pulse bg-gray-300 dark:bg-gray-700 rounded-full w-15 h-15"></div>
-                            ) : (
-                                <a href={user?.google_scholar_url} target="_blank" rel="noreferrer">
-                                    <img src="/linkedin-logo.webp" alt="scopus" className="rounded-full max-w-full w-9 h-9" />
-                                </a>
-                            )}
-                        </div>
-                        <div
-                            className="border border-black/20 rounded-full cursor-pointer min-w-[50px] min-h-[50px] flex items-center justify-center"
-                        >
-                            {loading ? (
-                                <div className="animate-pulse bg-gray-300 dark:bg-gray-700 rounded-full w-15 h-15"></div>
-                            ) : (
-                                <a href={user?.google_scholar_url} target="_blank" rel="noreferrer">
-                                    <img src="/google-scholar-logo.webp" alt="scopus" className="rounded-full max-w-full w-9 h-9" />
-                                </a>
-                            )}
-                        </div>
-                        <div
-                            className="border border-black/20 rounded-full cursor-pointer min-w-[50px] min-h-[50px] flex items-center justify-center"
-                        >
-                            {loading ? (
-                                <div className="animate-pulse bg-gray-300 dark:bg-gray-700 rounded-full w-15 h-15"></div>
-                            ) : (
-                                <a href={user?.scopus_url} target="_blank" rel="noreferrer">
-                                    <img src="/scopus-logo.webp" alt="scopus" className="rounded-full max-w-full w-9 h-9" />
-                                </a>
-                            )}
-                        </div>
-                        <div
-                            className="border border-black/20 rounded-full cursor-pointer min-w-[50px] min-h-[50px] flex items-center justify-center"
-                        >
-                            {loading ? (
-                                <div className="animate-pulse bg-gray-300 dark:bg-gray-700 rounded-full w-15 h-15"></div>
-                            ) : (
-                                <a href={user?.webofscience_url} target="_blank" rel="noreferrer">
-                                    <img src="/web-of-science-logo.webp" alt="scopus" className="rounded-full max-w-full w-9 h-9" />
-                                </a>
-                            )}
-                        </div>
-                    </div>
-                    <ul>
-                        <Link to={"/researcher-details"} state={{ user }} onClick={() => setMenuOpen(false)}>
-                            <li className="group font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-200 cursor-pointer border-y border-gray-300 p-5">
-                                <span className="inline-block transform transition-transform duration-200 group-hover:translate-x-3">
-                                    Home page
-                                </span>
-                            </li>
-                        </Link>
-                        <Link to={"/researcher-details/education"} state={{ user }} onClick={() => setMenuOpen(false)}>
-                            <li className="group font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-200 cursor-pointer border-b border-gray-300 p-5">
-                                <span className="inline-block transform transition-transform duration-200 group-hover:translate-x-3">
-                                    Education
-                                </span>
-                            </li>
-                        </Link>
-                        <Link to={"/researcher-details/areas"} state={{ user }} onClick={() => setMenuOpen(false)}>
-                            <li className="group font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-200 cursor-pointer border-b border-gray-300 p-5">
-                                <span className="inline-block transform transition-transform duration-200 group-hover:translate-x-3">
-                                    Research Areas
-                                </span>
-                            </li>
-                        </Link>
-                        <Link to={"/researcher-details/experience"} state={{ user }} onClick={() => setMenuOpen(false)}>
-                            <li className="group font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-200 cursor-pointer border-b border-gray-300 p-5">
-                                <span className="inline-block transform transition-transform duration-200 group-hover:translate-x-3">
-                                    Academic experience
-                                </span>
-                            </li>
-                        </Link>
-                        <Link to={"/researcher-details/cv"} state={{ user }} onClick={() => setMenuOpen(false)}>
-                            <li className="group font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-200 cursor-pointer border-b border-gray-300 p-5">
-                                <span className="inline-block transform transition-transform duration-200 group-hover:translate-x-3">
-                                    CV
-                                </span>
-                            </li>
-                        </Link>
-                        <Link to={"/researcher-details/contact"} state={{ user }} onClick={() => setMenuOpen(false)}>
-                            <li className="group font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-200 cursor-pointer p-5">
-                                <span className="inline-block transform transition-transform duration-200 group-hover:translate-x-3">
-                                    Contact
-                                </span>
-                            </li>
-                        </Link>
-                    </ul>
-                </div>
-            </aside>
+            <div className="flex flex-col md:flex-row flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 gap-8">
+                {/* ── Sidebar ────────────────────────────────────────── */}
+                <aside className="w-full md:w-80 flex-shrink-0">
+                    <div className="sticky top-24 space-y-6">
+                        {/* Profile Card */}
+                        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 shadow-sm overflow-hidden transition-all duration-300">
+                            <div className="h-24 bg-gradient-to-r from-blue-600 to-indigo-700 relative">
+                                <div className="absolute inset-0 opacity-10 bg-[url('/aztu-logo.png')] bg-center bg-no-repeat bg-contain scale-150" />
+                            </div>
+                            <div className="px-6 pb-8 text-center -mt-12 relative z-10">
+                                <div className="inline-block relative">
+                                    <div className="absolute -inset-1 rounded-full bg-white dark:bg-slate-900 shadow-sm" />
+                                    <img
+                                        src={imageBase64 || (user && user.image) || "profile-image.webp"}
+                                        alt="Profile"
+                                        className="relative w-24 h-24 rounded-full object-cover border-4 border-white dark:border-slate-900 shadow-md"
+                                    />
+                                </div>
+                                <h2 className="mt-4 text-xl font-bold text-gray-900 dark:text-white leading-tight">
+                                    {user.name} {user.surname}
+                                </h2>
+                                <p className="text-sm text-blue-600 font-bold uppercase tracking-wider mt-1">
+                                    {user.scientific_name || "Researcher"}
+                                </p>
+                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 truncate">
+                                    {user.email}
+                                </p>
 
-            <div className="flex flex-col flex-1 w-full md:w-[calc(100%-250px)] min-h-screen">
-                <header className="relative border-b-2 py-4 md:py-15 shadow-md h-[160px] md:h-[160px] overflow-hidden flex flex-col justify-center items-center">
-                    <Particles
-                        className="absolute inset-0 z-0"
-                        id="tsparticles"
-                        init={particlesInit}
-                        options={{
-                            fullScreen: { enable: false },
-                            background: { color: "red" },
-                            fpsLimit: 60,
-                            interactivity: {
-                                events: {
-                                    onHover: { enable: true, mode: "grab" },
-                                    onClick: { enable: true, mode: "push" },
-                                    resize: true,
-                                },
-                                modes: {
-                                    repulse: { distance: 70, duration: 0.4 },
-                                    grab: { distance: 100, line_linked: { opacity: 1 } },
-                                    push: { quantity: 4 }
-                                },
-                            },
-                            particles: {
-                                color: { value: "#3b82f6" },
-                                links: {
-                                    color: "#3b82f6",
-                                    distance: 150,
-                                    enable: true,
-                                    opacity: 0.6,
-                                    width: 2,
-                                },
-                                collisions: { enable: false },
-                                move: {
-                                    direction: "none",
-                                    enable: true,
-                                    outModes: "out",
-                                    random: false,
-                                    speed: 0.6,
-                                    straight: false,
-                                },
-                                number: {
-                                    density: { enable: true, area: 800 },
-                                    value: 120,
-                                },
-                                opacity: { value: 0.45 },
-                                shape: { type: "circle" },
-                                size: { value: { min: 2, max: 4 } },
-                            },
-                            detectRetina: true,
-                        }}
-                    />
-                    <div className="relative z-10 w-full flex items-center justify-between px-4 md:px-0">
-                        <PublicHeader toggleMenu={() => setMenuOpen(!menuOpen)} />
-                        <div className="w-6 md:w-0"></div>{/* spacer for alignment */}
+                                {/* Social Links */}
+                                <div className="flex justify-center gap-3 mt-6">
+                                    {[
+                                        { href: user?.google_scholar_url, src: "/linkedin-logo.webp" },
+                                        { href: user?.google_scholar_url, src: "/google-scholar-logo.webp" },
+                                        { href: user?.scopus_url, src: "/scopus-logo.webp" },
+                                        { href: user?.webofscience_url, src: "/web-of-science-logo.webp" }
+                                    ].map((link, i) => (
+                                        link.href && (
+                                            <a
+                                                key={i}
+                                                href={link.href}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className="w-8 h-8 rounded-full border border-gray-100 dark:border-slate-800 flex items-center justify-center hover:scale-110 hover:border-blue-400 transition-all bg-gray-50 dark:bg-slate-800"
+                                            >
+                                                <img src={link.src} alt="social" className="w-5 h-5 object-contain rounded-full" />
+                                            </a>
+                                        )
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Navigation Menu */}
+                        <nav className="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 shadow-sm p-3">
+                            <ul className="space-y-1">
+                                {navLinks.map((link) => {
+                                    const isActive = location.pathname === link.path;
+                                    return (
+                                        <li key={link.path}>
+                                            <Link
+                                                to={link.path}
+                                                state={{ user }}
+                                                className={`flex items-center px-5 py-3.5 rounded-2xl text-sm font-bold transition-all duration-200 ${
+                                                    isActive
+                                                        ? "bg-blue-600 text-white shadow-lg shadow-blue-500/30"
+                                                        : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800"
+                                                }`}
+                                            >
+                                                {link.label}
+                                            </Link>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        </nav>
                     </div>
-                    <p className="absolute bottom-0 left-4 text-lg font-semibold border-b-4 border-blue-500">
-                        {heading}
-                    </p>
-                </header>
-                <main className="flex-1 p-8 bg-white">
-                    {children}
+                </aside>
+
+                {/* ── Main Content Area ──────────────────────────────── */}
+                <main className="flex-1 min-w-0">
+                    <div className="bg-white dark:bg-slate-900 rounded-[32px] border border-gray-200 dark:border-slate-800 shadow-sm min-h-full flex flex-col overflow-hidden transition-all duration-300">
+                        {/* Content Header */}
+                        <div className="px-8 py-10 bg-gradient-to-br from-gray-50 to-white dark:from-slate-900 dark:to-slate-800 border-b border-gray-100 dark:border-slate-800 relative">
+                            <h1 className="text-3xl font-black text-gray-900 dark:text-white mb-2">
+                                {heading}
+                            </h1>
+                            <div className="w-12 h-1 bg-blue-600 rounded-full" />
+                            
+                            {/* Subtle Background Pattern */}
+                            <div className="absolute top-0 right-0 w-32 h-32 opacity-[0.03] dark:opacity-[0.05] pointer-events-none">
+                                <img src="/aztu-logo.png" alt="" className="w-full h-full object-contain rotate-12" />
+                            </div>
+                        </div>
+
+                        {/* Main Body */}
+                        <div className="p-8 flex-1">
+                            {children}
+                        </div>
+                    </div>
                 </main>
             </div>
         </div>
     );
-}   
+}
