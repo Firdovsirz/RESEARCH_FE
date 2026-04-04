@@ -29,13 +29,9 @@ export const getArticleByFinKod = async (finKod: string) => {
     }
 };
 
-export const createArticle = async (aritclePayload: ArticlePayload, token: string) => {
+export const createArticle = async (aritclePayload: ArticlePayload) => {
     try {
-        const response = await apiClient.post("/api/article/create", aritclePayload, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        const response = await apiClient.post("/api/article/create", aritclePayload);
 
         if (response.data.status_code === 201) {
             return "SUCCESS";
@@ -53,13 +49,9 @@ export const createArticle = async (aritclePayload: ArticlePayload, token: strin
     }
 };
 
-export const deleteArticle = async (articleCode: string, token: string) => {
+export const deleteArticle = async (articleCode: string) => {
     try {
-        const response = await apiClient.delete(`/api/article/${articleCode}/delete`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        const response = await apiClient.delete(`/api/article/${articleCode}/delete`);
 
         if (response.status === 200) {
             return "SUCCESS";
@@ -72,13 +64,9 @@ export const deleteArticle = async (articleCode: string, token: string) => {
     }
 };
 
-export const updateArticle = async (articleCode: string, articlePayload: ArticlePayload, token: string) => {
+export const updateArticle = async (articleCode: string, articlePayload: ArticlePayload) => {
     try {
-        const response = await apiClient.put(`/api/article/${articleCode}/update`, articlePayload, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        const response = await apiClient.put(`/api/article/${articleCode}/update`, articlePayload);
 
         if (response.data.status_code === 200) {
             return "SUCCESS";

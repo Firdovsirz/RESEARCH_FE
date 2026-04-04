@@ -7,7 +7,6 @@ export default function UserBio() {
 
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<UserProfile | null>(null);
-  const token = useSelector((state: RootState) => state.auth.token);
   const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
 
   useEffect(() => {
@@ -23,7 +22,7 @@ export default function UserBio() {
       .finally(() => {
         setLoading(false);
       });
-  }, [fin_kod, token]);
+  }, [fin_kod]);
   return (
     <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">

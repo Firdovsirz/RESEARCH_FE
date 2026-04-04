@@ -13,7 +13,6 @@ export default function Scopus() {
     const [_, setLoading] = useState(false);
     const [scopusUrl, setScopusUrl] = useState("");
     const [scopusOpen, setScopusOpen] = useState(false);
-    const token = useSelector((state: RootState) => state.auth.token);
     const finKod = useSelector((state: RootState) => state.auth.fin_kod);
 
     const toggleScientificOpen = () => {
@@ -22,7 +21,7 @@ export default function Scopus() {
 
     useEffect(() => {
         setLoading(true);
-        getScopusByFinKod(finKod ? finKod : "", token ? token : "")
+        getScopusByFinKod(finKod ? finKod : "")
             .then((res) => {
                 if (res === "NOT FOUND") {
                     setScopusUrl("");

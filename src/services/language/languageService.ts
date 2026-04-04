@@ -15,16 +15,11 @@ export interface Language {
     lang_serial: string;
 }
 
-export const addLanguage = async (languagePayload: LanguagePaylaod, token: string) => {
+export const addLanguage = async (languagePayload: LanguagePaylaod) => {
     try {
         const response = await apiClient.post(
             "/api/language/create",
-            languagePayload,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
+            languagePayload
         );
 
         if (response.data.status_code === 201) {
@@ -42,11 +37,7 @@ export const addLanguage = async (languagePayload: LanguagePaylaod, token: strin
 
 export const getLanguageByFinCode = async (fin_kod: string) => {
     try {
-        const response = await apiClient.get(`/api/language/${fin_kod}`, {
-            // headers: {
-            //     Authorization: `Bearer ${token}`,
-            // },
-        });
+        const response = await apiClient.get(`/api/language/${fin_kod}`);
 
         if (response.data.status_code === 200) {
             return response.data.languages;
@@ -65,13 +56,9 @@ export const getLanguageByFinCode = async (fin_kod: string) => {
 
 
 
-export const deleteLanguage = async (lang_serial: string, token: string) => {
+export const deleteLanguage = async (lang_serial: string) => {
     try {
-        const response = await apiClient.delete(`/api/language/${lang_serial}/delete`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        const response = await apiClient.delete(`/api/language/${lang_serial}/delete`);
 
         if (response.data.status_code === 200) {
             return "SUCCESS";

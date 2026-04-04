@@ -25,16 +25,11 @@ export interface Experience {
     exp_code: string;
 };
     
-export const addWork = async (workPayload: WorkPayload, token: string) => {
+export const addWork = async (workPayload: WorkPayload) => {
     try {
         const response = await apiClient.post(
             "/api/work/create",
-            workPayload,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
+            workPayload
         );
 
         if (response.data.status_code === 201) {
@@ -52,11 +47,7 @@ export const addWork = async (workPayload: WorkPayload, token: string) => {
 
 export const getWorkByFinCode = async (fin_kod: string) => {
     try {
-        const response = await apiClient.get(`/api/work/${fin_kod}?lang=${lang_code}`, {
-            // headers: {
-            //     Authorization: `Bearer ${token}`,
-            // },
-        });
+        const response = await apiClient.get(`/api/work/${fin_kod}?lang=${lang_code}`);
 
         if (response.data.status_code === 200) {
             return response.data.works;

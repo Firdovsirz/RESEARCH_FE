@@ -16,11 +16,9 @@ export interface InterCorp {
     email: string;
 }
 
-export const createInterCorp = async (interCorpPayload: InterCorpPayload, token: string) => {
+export const createInterCorp = async (interCorpPayload: InterCorpPayload) => {
     try {
-        const response = await apiClient.post("/api/inter-corp/create", interCorpPayload, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await apiClient.post("/api/inter-corp/create", interCorpPayload);
 
         if (response.data.status_code === 201) {
             return "SUCCESS";
@@ -33,11 +31,9 @@ export const createInterCorp = async (interCorpPayload: InterCorpPayload, token:
     }
 }
 
-export const getInterCorpByFinCode = async (fin_kod: string, token: string) => {
+export const getInterCorpByFinCode = async (fin_kod: string) => {
     try {
-        const response = await apiClient.get(`/api/inter-corp/${fin_kod}`, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await apiClient.get(`/api/inter-corp/${fin_kod}`);
 
         if (response.data.status_code === 200) {
             return response.data.inter_corps;

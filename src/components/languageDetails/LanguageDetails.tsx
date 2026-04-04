@@ -17,7 +17,6 @@ export default function LanguageDetails() {
     // const [interCorpName, setInterCorpName] = useState("");
     const [languages, setLanguages] = useState<Language[]>([]);
     const [languageShortName, setLanguageShortName] = useState("");
-    const token = useSelector((state: RootState) => state.auth.token);
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
 
     // language level logic
@@ -93,7 +92,7 @@ export default function LanguageDetails() {
                 language_level: selectedLanguageLevel,
                 language_name: languageName
             }
-            const result = await addLanguage(languagePayload, token || "");
+            const result = await addLanguage(languagePayload);
 
             // Close the modal first
             closeModal();
@@ -132,7 +131,7 @@ export default function LanguageDetails() {
     const handleLangDelete = async (lang_serial: string) => {
         try {
             setLoading(true);
-            const result = await deleteLanguage(lang_serial, token ? token : "");
+            const result = await deleteLanguage(lang_serial);
 
             if (result === "SUCCESS") {
                 Swal.fire({

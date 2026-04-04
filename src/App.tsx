@@ -38,14 +38,14 @@ export default function App() {
         <ScrollToTop />
         <Routes>
           <Route element={<AppLayout />}>
-            <Route index path="/home" element={<Home />} />
+            <Route path="/home" element={<Home />} />
 
             {/* User */}
-            <Route index path="/user-credentials" element={<UserCredentialsPage />} />
-            <Route index path="/approve-pending-users" element={<PendingUsersPage />} />
+            <Route path="/user-credentials" element={<UserCredentialsPage />} />
+            <Route path="/approve-pending-users" element={<PendingUsersPage />} />
 
             {/* Profile */}
-            <Route index path="/profile" element={<UserProfiles />} />
+            <Route path="/profile" element={<UserProfiles />} />
 
             {/* Scientific details */}
             <Route path="/new-scientific-details" element={<NewScientificDetailsPage />} />

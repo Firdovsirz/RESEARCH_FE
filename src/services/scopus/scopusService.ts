@@ -1,12 +1,8 @@
 import apiClient from "../../util/apiClient";
 
-export const getScopusByFinKod = async (finKod: string, token: string) => {
+export const getScopusByFinKod = async (finKod: string) => {
     try {
-        const response = await apiClient.get(`/api/scopus/profile/${finKod}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        const response = await apiClient.get(`/api/scopus/profile/${finKod}`);
 
         if (response.data.status_code === 200) {
             return response.data.scopus_url;

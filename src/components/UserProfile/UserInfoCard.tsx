@@ -6,7 +6,6 @@ import { UserProfile, getUserProfile } from "../../services/user/userService";
 export default function UserInfoCard() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<UserProfile | null>(null);
-  const token = useSelector((state: RootState) => state.auth.token);
   const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
 
   useEffect(() => {
@@ -22,7 +21,7 @@ export default function UserInfoCard() {
       .finally(() => {
         setLoading(false);
       });
-  }, [fin_kod, token]);
+  }, [fin_kod]);
   const auth = useSelector((state: RootState) => state.auth);
   return (
     <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">

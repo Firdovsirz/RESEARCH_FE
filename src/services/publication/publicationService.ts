@@ -15,11 +15,7 @@ export interface Publication {
 
 export const getPublicationByFinCode = async (fin_kod: string) => {
     try {
-        const response = await apiClient.get(`/api/publication/${fin_kod}`, {
-            // headers: {
-            //     Authorization: `Bearer ${token}`
-            // }
-        });
+        const response = await apiClient.get(`/api/publication/${fin_kod}`);
 
         if (response.data.status_code === 200) {
             return response.data.publications;
@@ -37,13 +33,9 @@ export const getPublicationByFinCode = async (fin_kod: string) => {
     }
 }
 
-export const createPublication = async (publicationPayload: PublicationPayload, token: string) => {
+export const createPublication = async (publicationPayload: PublicationPayload) => {
     try {
-        const response = await apiClient.post("/api/publication/create", publicationPayload, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        const response = await apiClient.post("/api/publication/create", publicationPayload);
 
         if (response.data.status_code === 201) {
             return "SUCCESS";
@@ -61,13 +53,9 @@ export const createPublication = async (publicationPayload: PublicationPayload, 
     }
 };
 
-export const deletePublication = async (publicationCode: string, token: string) => {
+export const deletePublication = async (publicationCode: string) => {
     try {
-        const response = await apiClient.delete(`/api/publication/${publicationCode}/delete`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        const response = await apiClient.delete(`/api/publication/${publicationCode}/delete`);
 
         if (response.status === 200) {
             return "SUCCESS";
@@ -83,13 +71,9 @@ export const deletePublication = async (publicationCode: string, token: string) 
     }
 };
 
-export const updatePublication = async (publicationCode: string, publicationPayload: PublicationPayload, token: string) => {
+export const updatePublication = async (publicationCode: string, publicationPayload: PublicationPayload) => {
     try {
-        const response = await apiClient.put(`/api/publication/${publicationCode}/update`, publicationPayload, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        const response = await apiClient.put(`/api/publication/${publicationCode}/update`, publicationPayload);
 
         if (response.status === 200) {
             return "SUCCESS";

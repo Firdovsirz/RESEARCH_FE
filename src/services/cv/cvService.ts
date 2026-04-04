@@ -19,7 +19,6 @@ export const addCv = async (payload: CvPayload | FormData) => {
     const response = await apiClient.post("/api/cv/create", data, {
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
 
@@ -30,13 +29,9 @@ export const addCv = async (payload: CvPayload | FormData) => {
   }
 };
 
-export const getCvByFinCode = async (fin_kod: string, token: string) => {
+export const getCvByFinCode = async (fin_kod: string) => {
     try {
-        const response = await apiClient.get(`/api/cv/${fin_kod}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        const response = await apiClient.get(`/api/cv/${fin_kod}`);
 
         if (response.data.status_code === 200) {
             return response.data.cv_path;
@@ -51,13 +46,9 @@ export const getCvByFinCode = async (fin_kod: string, token: string) => {
     }
 }
 
-export const deleteCv = async (fin_kod: string, token: string) => {
+export const deleteCv = async (fin_kod: string) => {
     try {
-        const response = await apiClient.delete(`/api/cv/${fin_kod}/delete`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        const response = await apiClient.delete(`/api/cv/${fin_kod}/delete`);
 
         if (response.data.status_code === 200) {
             return "SUCCESS";

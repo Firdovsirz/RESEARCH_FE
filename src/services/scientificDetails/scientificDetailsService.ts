@@ -6,16 +6,11 @@ export interface ScientificNamePayload {
     scientific_name: string;
 }
 
-export const addScientificName = async (scientificNamePayload: ScientificNamePayload, token: string) => {
+export const addScientificName = async (scientificNamePayload: ScientificNamePayload) => {
     try {
         const response = await apiClient.post(
             "/api/scientific_name/create",
-            scientificNamePayload,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
+            scientificNamePayload
         );
 
         if (response.data.status_code === 201) {

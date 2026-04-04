@@ -42,13 +42,9 @@ export interface UserProfile {
     created_at: string;
 }
 
-export const createUserProfile = async (userPayload: UserPayload, token: string) => {
+export const createUserProfile = async (userPayload: UserPayload) => {
     try {
-        const response = await apiClient.post("/api/user/create", userPayload, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        const response = await apiClient.post("/api/user/create", userPayload);
 
         if (response.data.status_code === 201) {
             return "SUCCESS";
@@ -97,13 +93,9 @@ export const getAllUsers = async (start?: number, end?: number, search?: string)
     }
 }
 
-export const updateUserProfile = async (fin_kod: string, userPayload: Partial<UserPayload>, token: string) => {
+export const updateUserProfile = async (fin_kod: string, userPayload: Partial<UserPayload>) => {
     try {
-        const response = await apiClient.patch(`/api/user/${fin_kod}/update`, userPayload, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        const response = await apiClient.patch(`/api/user/${fin_kod}/update`, userPayload);
 
         if (response.data.status_code === 200) {
             return "SUCCESS";

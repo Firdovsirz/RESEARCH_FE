@@ -15,12 +15,11 @@ export default function MyInternationalCoorperations() {
     const { isOpen, openModal, closeModal } = useModal();
     const [interCorpName, setInterCorpName] = useState("");
     const [interCorps, setInterCorps] = useState<InterCorp[]>([]);
-    const token = useSelector((state: RootState) => state.auth.token);
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
 
     useEffect(() => {
         setLoading(true);
-        getInterCorpByFinCode(fin_kod || "", token ? token : "")
+        getInterCorpByFinCode(fin_kod || "")
             .then((res) => {
                 if (res && Array.isArray(res)) {
                     setInterCorps(res);
@@ -43,7 +42,7 @@ export default function MyInternationalCoorperations() {
                 surname: surname,
                 email: email
             }
-            const result = await createInterCorp(interCorpPayload, token || "");
+            const result = await createInterCorp(interCorpPayload);
 
             closeModal();
             setLoading(false);

@@ -20,22 +20,19 @@ export default function NewScopus() {
     const [selectedNameCode, setSelectedNameCode] = useState("");
     const [selectedDegreeCode, setSelectedDegreeCode] = useState("");
     // const [hoursPerWeek, setHoursPerWeek] = useState<number>();
-    const token = useSelector((state: RootState) => state.auth.token);
     const finKod = useSelector((state: RootState) => state.auth.fin_kod);
-    console.log(setSelectedName, setSelectedNameCode, setSelectedDegreeCode);
     
     // create subject logic
 
     const createTopic = async () => {
         try {
             setLoading(true);
-            console.log("Selected Scientific Name:", selectedNameCode, "Selected Degree:", selectedDegreeCode);
             const scientificNamePayload = {
                 fin_kod: finKod ? finKod : "",
                 scientific_name: selectedName ? selectedName : "",
                 scientific_code: +selectedNameCode ? +selectedNameCode : 0,
             };
-            const result = await addScientificName(scientificNamePayload, token ? token : "");
+            const result = await addScientificName(scientificNamePayload);
 
             if (result === "SUCCESS") {
                 Swal.fire({

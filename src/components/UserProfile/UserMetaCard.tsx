@@ -9,7 +9,6 @@ import { getUserProfile, UserProfile } from "../../services/user/userService";
 export default function UserMetaCard() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<UserProfile | null>(null);
-  const token = useSelector((state: RootState) => state.auth.token);
   const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
 
   useEffect(() => {
@@ -25,7 +24,7 @@ export default function UserMetaCard() {
       .finally(() => {
         setLoading(false);
       });
-  }, [fin_kod, token]);
+  }, [fin_kod]);
   return (
     <>
       <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">

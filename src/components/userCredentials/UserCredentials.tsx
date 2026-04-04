@@ -20,7 +20,6 @@ export default function UserCredentials() {
     const [isEditing, setIsEditing] = useState(false);
 
     const name = useSelector((state: RootState) => state.auth.name);
-    const token = useSelector((state: RootState) => state.auth.token);
     const surname = useSelector((state: RootState) => state.auth.surname);
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
     const fatherName = useSelector((state: RootState) => state.auth.father_name);
@@ -93,10 +92,6 @@ export default function UserCredentials() {
         }
     }, [user]);
 
-    console.log(user);
-
-    console.log(imageBase64);
-
 
     const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -109,7 +104,7 @@ export default function UserCredentials() {
                 bio: bio,
                 profile_image: imageBase64
             };
-            const result = await createUserProfile(userPayload, token ? token : "");
+            const result = await createUserProfile(userPayload);
             if (result === "SUCCESS") {
                 Swal.fire({
                     icon: "success",
@@ -146,7 +141,7 @@ export default function UserCredentials() {
                 bio: bio,
                 image: imageBase64
             };
-            const result = await updateUserProfile(finKodState, updatePayload, token ? token : "");
+            const result = await updateUserProfile(finKodState, updatePayload);
             if (result === "SUCCESS") {
                 Swal.fire({
                     icon: "success",

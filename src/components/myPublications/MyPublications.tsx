@@ -16,7 +16,6 @@ export default function MyPublications() {
   const [publicationName, setPublicationName] = useState("");
   const [publications, setPublications] = useState<Publication[]>([]);
   const [editPublicationId, setEditPublicationId] = useState<string | null>(null);
-  const token = useSelector((state: RootState) => state.auth.token);
   const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
 
   useEffect(() => {
@@ -66,7 +65,7 @@ export default function MyPublications() {
         publication_name: publicationName,
         publication_url: publicationUrl
       }
-      const result = await createPublication(publicationPayload, token || "");
+      const result = await createPublication(publicationPayload);
 
       // Close the modal first
       closeModal();
@@ -114,7 +113,7 @@ export default function MyPublications() {
         publication_name: publicationName,
         publication_url: publicationUrl
       }
-      const result = await updatePublication(editPublicationId, publicationPayload, token || "");
+      const result = await updatePublication(editPublicationId, publicationPayload);
 
       closeModal();
       setLoading(false);
@@ -167,7 +166,7 @@ export default function MyPublications() {
     if (confirmResult.isConfirmed) {
       try {
         setLoading(true);
-        const result = await deletePublication(publication_code, token || "");
+        const result = await deletePublication(publication_code);
         setLoading(false);
 
         if (result === "SUCCESS") {
@@ -209,7 +208,6 @@ export default function MyPublications() {
     setPublicationUrl("");
   }
 
-  console.log(publications);
   return (
     <>
       <div>

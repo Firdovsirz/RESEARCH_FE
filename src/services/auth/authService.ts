@@ -87,13 +87,9 @@ export const signin = async (credentials: Credentials) => {
         return "ERROR";
     };
 };
-export const getPendingUsers = async (token: string) => {
+export const getPendingUsers = async () => {
     try {
-        const response = await apiClient.get('/auth/pending-users', {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        const response = await apiClient.get('/auth/pending-users');
 
         if (response.data.status_code === 200) {
             return response.data.users;

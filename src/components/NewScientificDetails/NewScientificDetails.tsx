@@ -15,7 +15,6 @@ export default function NewScientificDetails() {
     const [_, setSelectedDegree] = useState("");
     const [selectedNameCode, setSelectedNameCode] = useState("");
     const [selectedDegreeCode, setSelectedDegreeCode] = useState("");
-    const token = useSelector((state: RootState) => state.auth.token);
     const finKod = useSelector((state: RootState) => state.auth.fin_kod);
 
     const scientificDegreeOptions = [
@@ -40,17 +39,6 @@ export default function NewScientificDetails() {
             setSelectedDegree(selected.label);
         }
     }
-    console.log(selectedDegreeCode, selectedNameCode);
-    
-    const scientificNameOptions = [
-        {
-            value: "1",
-            label: "Dosent"
-        }, {
-            value: "2",
-            label: "Professor"
-        }
-    ];
     const handleNameChange = (value: string) => {
         setSelectedNameCode(value);
         const selected = scientificNameOptions.find(opt => opt.value === value);
@@ -64,13 +52,12 @@ export default function NewScientificDetails() {
     const createTopic = async () => {
         try {
             setLoading(true);
-            console.log("Selected Scientific Name:", selectedNameCode, "Selected Degree:", selectedDegreeCode);
             const scientificNamePayload = {
                 fin_kod: finKod ? finKod : "",
                 scientific_name: selectedName ? selectedName : "",
                 scientific_code: +selectedNameCode ? +selectedNameCode : 0,
             };
-            const result = await addScientificName(scientificNamePayload, token ? token : "");
+            const result = await addScientificName(scientificNamePayload);
 
             if (result === "SUCCESS") {
                 Swal.fire({

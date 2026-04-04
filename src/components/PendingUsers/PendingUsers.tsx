@@ -6,8 +6,6 @@ import {
     TableHeader,
     TableRow
 } from "../ui/table"
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
 import DoneIcon from '@mui/icons-material/Done';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { getPendingUsers, PendingUser } from "../../services/auth/authService";
@@ -15,11 +13,9 @@ import { getPendingUsers, PendingUser } from "../../services/auth/authService";
 export default function PendingUsers() {
     const [users, setUsers] = useState<PendingUser[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const token = useSelector((state: RootState) => state.auth.token);
-
     useEffect(() => {
         setLoading(true);
-        getPendingUsers(token ? token : "")
+        getPendingUsers()
             .then((res) => {
                 if (Array.isArray(res)) {
                     setUsers(res);
@@ -28,7 +24,7 @@ export default function PendingUsers() {
                 }
             })
             .finally(() => setLoading(false));
-    }, [token]);
+    }, []);
 
     const skeletonRows = Array.from({ length: 5 });
 

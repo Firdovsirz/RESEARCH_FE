@@ -15,12 +15,11 @@ export default function Cv() {
     const [cv, setCv] = useState("");
     const [loading, setLoading] = useState(false);
     const [cvFile, setCvFile] = useState<File | null>(null);
-    const token = useSelector((state: RootState) => state.auth.token);
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
 
     useEffect(() => {
         setLoading(true);
-        getCvByFinCode(fin_kod || "", token ? token : "")
+        getCvByFinCode(fin_kod || "")
             .then(setCv)
             .finally(() => {
                 setLoading(false);
@@ -67,8 +66,6 @@ export default function Cv() {
             });
         }
     }
-    console.log(cv);
-
     const handleCvDelete = async () => {
         const confirmResult = await Swal.fire({
             title: "Are you sure to delete?",
@@ -82,7 +79,7 @@ export default function Cv() {
         if (confirmResult.isConfirmed) {
             try {
                 setLoading(true);
-                const result = await deleteCv(fin_kod || "", token || "");
+                const result = await deleteCv(fin_kod || "");
                 setLoading(false);
 
                 if (result === "SUCCESS") {

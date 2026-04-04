@@ -17,7 +17,6 @@ export default function MyArticles() {
   const [editArticleId, setEditArticleId] = useState<string | null>(null);
 
   const { isOpen, openModal, closeModal } = useModal();
-  const token = useSelector((state: RootState) => state.auth.token);
   const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
 
   const fetchArticles = () => {
@@ -44,8 +43,7 @@ export default function MyArticles() {
     try {
       setLoading(true);
 
-      let result;
-      result = await createArticle({ fin_kod: fin_kod || "", article_field: newField }, token || "");
+      const result = await createArticle({ fin_kod: fin_kod || "", article_field: newField });
 
       closeModal();
       setLoading(false);
@@ -56,8 +54,8 @@ export default function MyArticles() {
       if (result === "SUCCESS") {
         Swal.fire({
           icon: "success",
-          title: editArticleId ? "Updated successfully" : "Added successfully",
-          text: editArticleId ? "Article edited successfully!" : "Article added successfully!"
+          title: "Added successfully",
+          text: "Article added successfully!"
         });
       } else if (result === "NOT_FOUND") {
         Swal.fire({ icon: "error", title: "Error", text: "User not found!" });
@@ -76,7 +74,7 @@ export default function MyArticles() {
       if (!editArticleId) return;
       setLoading(true);
 
-      const result = await updateArticle(editArticleId, { fin_kod: fin_kod || "", article_field: newField }, token || "");
+      const result = await updateArticle(editArticleId, { fin_kod: fin_kod || "", article_field: newField });
 
       closeModal();
       setLoading(false);
@@ -87,7 +85,7 @@ export default function MyArticles() {
       if (result === "SUCCESS") {
         Swal.fire({
           icon: "success",
-          title: "Successfully updated1",
+          title: "Successfully updated",
           text: "Article updated successfully!"
         });
       } else if (result === "NOT_FOUND") {
@@ -122,7 +120,7 @@ export default function MyArticles() {
 
     if (confirmed.isConfirmed) {
       setLoading(true);
-      const result = await deleteArticle(articleId, token || "");
+      const result = await deleteArticle(articleId);
       setLoading(false);
       fetchArticles();
 
