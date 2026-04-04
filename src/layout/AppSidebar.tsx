@@ -294,22 +294,26 @@ const AppSidebar: React.FC = () => {
       >
         <Link to="/">
           {isExpanded || isHovered || isMobileOpen ? (
-            <>
+            <div className="flex items-center gap-3">
               <img
                 className="dark:hidden"
                 src="/aztu-logo.png"
                 alt="Logo"
-                width={80}
-                height={40}
+                width={36}
+                height={44}
               />
               <img
                 className="hidden dark:block"
                 src="/aztu-logo-light.png"
                 alt="Logo"
-                width={80}
-                height={40}
+                width={36}
+                height={44}
               />
-            </>
+              <div className="flex flex-col">
+                <span className="text-[10px] font-bold tracking-widest text-slate-400 uppercase leading-none mb-1">Azerbaijan</span>
+                <span className="text-sm font-black text-blue-600 dark:text-blue-400 leading-none">AVESİS</span>
+              </div>
+            </div>
           ) : (
             <img
               src="/aztu-logo.png"
@@ -325,13 +329,13 @@ const AppSidebar: React.FC = () => {
           <div className="flex flex-col gap-4">
             <div>
               <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered
+                className={`mb-4 text-[10px] font-bold tracking-[0.15em] uppercase flex leading-[20px] text-slate-400 dark:text-slate-500 ${!isExpanded && !isHovered
                   ? "lg:justify-center"
                   : "justify-start"
                   }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Menu"
+                  "Portal Navigation"
                 ) : (
                   <HorizontaLDots className="size-6" />
                 )}
