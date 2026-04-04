@@ -784,6 +784,20 @@ span.flatpickr-weekday,
   @apply opacity-100;
 }
 
+.featured-researchers-swiper .swiper-pagination-bullet-active {
+  @apply !bg-blue-600;
+}
+
+.featured-researchers-swiper .swiper-button-next,
+.featured-researchers-swiper .swiper-button-prev {
+  @apply !text-blue-600 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-full w-10 h-10 shadow-lg border border-gray-100 dark:border-slate-700;
+}
+
+.featured-researchers-swiper .swiper-button-next:after,
+.featured-researchers-swiper .swiper-button-prev:after {
+  @apply text-sm font-bold;
+}
+
 @keyframes shimmer {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(100%); }

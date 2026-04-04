@@ -12,6 +12,10 @@ import SchoolIcon from "@mui/icons-material/School";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 
+// Swiper imports
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+
 /* ─── Static mock data ─────────────────────────────────────────── */
 const researchAreas = [
     { title: "Engineering & Technology", icon: "⚙️", count: 12 },
@@ -29,15 +33,29 @@ const latestUpdates = [
     { type: "Certificate", title: "International Research Excellence Award", author: "Prof. Ibrahimov R.", date: "3 days ago" },
 ];
 
+const sampleResearchers: Partial<UserProfile>[] = [
+    { name: "Anar", surname: "Aliyev", scientific_name: "Dr.", scientific_degree_name: "PhD", image: "", email: "anar.aliyev@aztu.edu.az" },
+    { name: "Leyla", surname: "Guliyeva", scientific_name: "Prof.", scientific_degree_name: "DSc", image: "", email: "leyla.g@aztu.edu.az" },
+    { name: "Murad", surname: "Hasanov", scientific_name: "Dr.", scientific_degree_name: "PhD", image: "", email: "m.hasanov@aztu.edu.az" },
+    { name: "Sona", surname: "Mammadova", scientific_name: "Assoc. Prof.", scientific_degree_name: "PhD", image: "", email: "sona.m@aztu.edu.az" },
+    { name: "Rufat", surname: "Ibrahimov", scientific_name: "Prof.", scientific_degree_name: "DSc", image: "", email: "r.ibrahimov@aztu.edu.az" },
+];
+
 /* ─── Main component ──────────────────────────────────────────────── */
 export default function HomePage() {
     const navigate = useNavigate();
     const [researcherCount, setResearcherCount] = useState<number | null>(null);
+    const [featuredResearchers, setFeaturedResearchers] = useState<UserProfile[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
-        getAllUsers(0, 1, "").then((res) => {
-            if (typeof res === "object") setResearcherCount(res.total);
+        getAllUsers(0, 10, "").then((res) => {
+            if (typeof res === "object") {
+                setResearcherCount(res.total);
+                if (res.users && res.users.length > 0) {
+                    setFeaturedResearchers(res.users);
+                }
+            }
         });
     }, []);
 
@@ -125,6 +143,63 @@ export default function HomePage() {
                                 </motion.div>
                             ))}
                         </div>
+                    </div>
+                </section>
+
+                {/* ── Featured Researchers Slider ──────────────────── */}
+                <section className="py-16 px-4 bg-gray-50 dark:bg-slate-950">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="flex items-center justify-between mb-10 border-b border-gray-200 dark:border-slate-800 pb-4">
+                            <h3 className="text-2xl font-bold flex items-center gap-3">
+                                <GroupsIcon className="text-blue-600" />
+                                Featured Researchers
+                            </h3>
+                            <Link to="/researchers" className="text-blue-600 hover:text-blue-700 font-semibold text-sm">Meet All</Link>
+                        </div>
+
+                        <Swiper
+                            modules={[Autoplay, Pagination, Navigation]}
+                            spaceBetween={24}
+                            slidesPerView={1}
+                            autoplay={{ delay: 4000, disableOnInteraction: false }}
+                            pagination={{ clickable: true }}
+                            navigation
+                            breakpoints={{
+                                640: { slidesPerView: 2 },
+                                1024: { slidesPerView: 4 },
+                                1280: { slidesPerView: 5 },
+                            }}
+                            className="pb-14 featured-researchers-swiper"
+                        >
+                            {(featuredResearchers.length > 0 ? featuredResearchers : (sampleResearchers as UserProfile[])).map((user, i) => (
+                                <SwiperSlide key={i}>
+                                    <motion.div
+                                        whileHover={{ y: -5 }}
+                                        className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-gray-100 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all h-full flex flex-col items-center text-center group"
+                                    >
+                                        <div className="relative mb-5">
+                                            <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-blue-600 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity blur-sm" />
+                                            <img
+                                                src={user.image || "profile-image.webp"}
+                                                alt={user.name}
+                                                className="relative w-24 h-24 rounded-full border-2 border-white dark:border-slate-800 object-cover shadow-md"
+                                            />
+                                        </div>
+                                        <h4 className="font-bold text-gray-900 dark:text-white mb-1">{user.name} {user.surname}</h4>
+                                        <p className="text-xs text-blue-600 font-bold uppercase tracking-wider mb-3">
+                                            {user.scientific_name} {user.scientific_degree_name}
+                                        </p>
+                                        <Link
+                                            to="/researcher-details"
+                                            state={{ user }}
+                                            className="mt-auto px-5 py-2 bg-gray-50 dark:bg-slate-800 group-hover:bg-blue-600 group-hover:text-white text-gray-600 dark:text-gray-300 rounded-xl text-xs font-bold transition-all"
+                                        >
+                                            View Profile
+                                        </Link>
+                                    </motion.div>
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
                     </div>
                 </section>
 
