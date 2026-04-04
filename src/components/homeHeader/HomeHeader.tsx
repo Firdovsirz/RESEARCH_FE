@@ -60,9 +60,6 @@ export default function HomeHeader() {
                                 <p className="text-gray-400 dark:text-white/35 text-[9px] tracking-[0.2em] uppercase leading-none mb-0.5 transition-colors duration-300">
                                     Azerbaijan Technical University
                                 </p>
-                                <p className="font-semibold text-sm leading-none bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-300 dark:to-blue-300 bg-clip-text text-transparent transition-all duration-300">
-                                    Research Portal
-                                </p>
                             </div>
                         </Link>
 

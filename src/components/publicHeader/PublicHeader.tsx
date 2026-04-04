@@ -29,11 +29,12 @@ function MoonIcon() {
 interface PublicHeaderProps {
     onSearch?: (value: string) => void;
     toggleMenu?: () => void;
+    initialSearch?: string;
 }
 
-export default function PublicHeader({ onSearch, toggleMenu }: PublicHeaderProps) {
-    const [searchOpen, setSearchOpen] = useState(false);
-    const [searchTerm, setSearchTerm] = useState("");
+export default function PublicHeader({ onSearch, toggleMenu, initialSearch = "" }: PublicHeaderProps) {
+    const [searchOpen, setSearchOpen] = useState(!!initialSearch);
+    const [searchTerm, setSearchTerm] = useState(initialSearch);
     const location = useLocation();
     const { theme, toggleTheme } = useTheme();
 
@@ -78,9 +79,6 @@ export default function PublicHeader({ onSearch, toggleMenu }: PublicHeaderProps
                                     <p className="text-gray-400 dark:text-white/40 text-[10px] tracking-[0.18em] uppercase leading-none mb-0.5 transition-colors duration-300">
                                         Azerbaijan Technical University
                                     </p>
-                                    <h1 className="font-bold text-base leading-none bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-300 dark:via-blue-300 dark:to-indigo-300 bg-clip-text text-transparent transition-all duration-300">
-                                        AzTU Researchers
-                                    </h1>
                                 </div>
                             </Link>
 

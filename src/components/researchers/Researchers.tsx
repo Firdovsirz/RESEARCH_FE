@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { useEffect, useState } from "react";
 import EmailIcon from '@mui/icons-material/Email';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -69,12 +69,16 @@ function SocialBtn({ href, src, alt }: { href?: string; src: string; alt: string
 
 /* ─── Main component ─────────────────────────────────────────────── */
 export default function Researchers() {
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const initialSearch = queryParams.get("search") || "";
+
     const [start] = useState(0);
     const [end] = useState(10);
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState<UserProfile[]>([]);
     const [userLength, setUserLength] = useState<number>();
-    const [search, setSearch] = useState<string>("");
+    const [search, setSearch] = useState<string>(initialSearch);
 
     useEffect(() => {
         setLoading(true);
@@ -143,7 +147,7 @@ export default function Researchers() {
             {/* ── Content ────────────────────────────────────────────── */}
             <div className="relative z-10 min-h-screen flex flex-col">
 
-                <PublicHeader onSearch={setSearch} />
+                <PublicHeader onSearch={setSearch} initialSearch={search} />
 
                 {/* Result count */}
                 {!loading && userLength !== undefined && (
